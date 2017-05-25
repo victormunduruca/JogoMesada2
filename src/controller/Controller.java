@@ -8,16 +8,20 @@ import javax.swing.JOptionPane;
 
 import excpeptions.IdNaoEncontradoException;
 import model.Jogador;
+import model.Observer;
+import model.Publisher;
 
-public class Controller {
+public class Controller implements Publisher{
 	
+	private ArrayList<Observer> observers;
 	private ArrayList<Jogador> jogadores; //Jogadores na partida
 	private int idAtual; //Id do jogador que está em sua vez
 	private int idJogadorMaquina; //Id jogador desse computador
 	private ArrayList<String> cartasCorreio; //Cartas referentes a casa correio
 	private ArrayList<String> bufferCartasCorreio;
-	
+	private int saldoCliente;
 	public Controller() {
+		observers = new ArrayList<Observer>();
 		criaCartas();
 	}
 	//Colocar método update para mudar o id do jogador atual com base no controller de rede
@@ -133,7 +137,11 @@ public class Controller {
 			
 		}
 	}
-	/**
+	public void mudaSaldoTeste() {
+		saldoCliente++;
+		notifyObserver();
+	}
+ 	/**
 	 * Método para obter o jogador a partir de um determinado id
 	 * @param Id do jogador que se deseja obter
 	 * @return O jogador com o id especificado
@@ -147,6 +155,24 @@ public class Controller {
 				return jogador;
 		}
 		throw new IdNaoEncontradoException();
+	}
+	@Override
+	public void register(Observer o) {
+		// TODO Auto-generated method stub
+		observers.add(o);
+		
+	}
+	@Override
+	public void unregister(Observer o) {
+		// TODO Auto-generated method stub
+		observers.remove(o);
+	}
+	@Override
+	public void notifyObserver() {
+		// TODO Auto-generated method stub
+		for(Observer observer : observers) {
+			observer.update(saldoCliente);
+		}
 	}
 	
 }

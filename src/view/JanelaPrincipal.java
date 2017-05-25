@@ -2,7 +2,6 @@ package view;
 
 import java.awt.Dimension;
 import java.awt.EventQueue;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Random;
@@ -17,8 +16,11 @@ import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-public class JanelaPrincipal {
+import controller.Controller;
 
+public class JanelaPrincipal {
+	
+	private Controller controllerTeste;
 	private JFrame frame;
 
 	/**
@@ -52,6 +54,8 @@ public class JanelaPrincipal {
 	 * Create the application.
 	 */
 	public JanelaPrincipal() {
+		controllerTeste = new Controller();
+		
 		initialize();
 	}
 
@@ -78,7 +82,8 @@ public class JanelaPrincipal {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		panel.setBounds(10, 39, 896, 685);
-
+		ObserverSaldo observerSaldo = new ObserverSaldo(frame);
+		controllerTeste.register(observerSaldo);
 		jLay.setPreferredSize(new Dimension(896, 685));
 		jLay.add(imagemTabuleiro, new Integer(10));
 
@@ -92,12 +97,13 @@ public class JanelaPrincipal {
 		imagemTabuleiro.setBounds(0, 0, 896, 685);
 		frame.getContentPane().add(panel);
 		panel.add(jLay);
-
+		
 		JButton btnRodarDado = new JButton("Jogar Dado");
 		btnRodarDado.addActionListener(new ActionListener() {
 			int valorDado = 0;
-
+			
 			public void actionPerformed(ActionEvent arg0) {
+				
 				valorDado = jogaDado();
 				andaDado(valorDado, pinoAmarelo);
 				andaDado(valorDado, pinoAzul);
@@ -112,14 +118,14 @@ public class JanelaPrincipal {
 		});
 		btnRodarDado.setBounds(966, 39, 113, 51);
 		frame.getContentPane().add(btnRodarDado);
-
-		JLabel saldo = new JLabel();
-
-		saldo.setFont(new Font("Lucida Sans Typewriter", Font.BOLD, 22));
-		saldo.setBounds(77, 756, 360, 51);
-		frame.getContentPane().add(saldo);
-
-		JButton btnConsultarSaldos = new JButton("Consultar Saldos");
+		
+		JButton btnConsultarSaldos = new JButton("Mudar Saldo");
+		btnConsultarSaldos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				controllerTeste.mudaSaldoTeste();
+			}
+		});
 		btnConsultarSaldos.setBounds(966, 132, 113, 23);
 		frame.getContentPane().add(btnConsultarSaldos);
 
