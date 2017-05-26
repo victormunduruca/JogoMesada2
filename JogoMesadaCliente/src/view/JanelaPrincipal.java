@@ -11,8 +11,10 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -20,7 +22,7 @@ import controller.Controller;
 
 public class JanelaPrincipal {
 	
-	private Controller controllerTeste;
+	private Controller controller;
 	private JFrame frame;
 
 	/**
@@ -54,7 +56,7 @@ public class JanelaPrincipal {
 	 * Create the application.
 	 */
 	public JanelaPrincipal() {
-		controllerTeste = new Controller();
+		controller = new Controller();
 		
 		initialize();
 	}
@@ -83,7 +85,7 @@ public class JanelaPrincipal {
 		frame.getContentPane().setLayout(null);
 		panel.setBounds(10, 39, 896, 685);
 		ObserverSaldo observerSaldo = new ObserverSaldo(frame);
-		controllerTeste.register(observerSaldo);
+		controller.register(observerSaldo);
 		jLay.setPreferredSize(new Dimension(896, 685));
 		jLay.add(imagemTabuleiro, new Integer(10));
 
@@ -116,22 +118,27 @@ public class JanelaPrincipal {
 				System.out.println("Valor dado: " + valorDado);
 			}
 		});
-		btnRodarDado.setBounds(966, 39, 113, 51);
+		btnRodarDado.setBounds(927, 266, 113, 51);
 		frame.getContentPane().add(btnRodarDado);
 		
 		JButton btnConsultarSaldos = new JButton("Mudar Saldo");
 		btnConsultarSaldos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
-				controllerTeste.mudaSaldoTeste();
+				controller.mudaSaldoTeste();
 			}
 		});
-		btnConsultarSaldos.setBounds(966, 132, 113, 23);
+		btnConsultarSaldos.setBounds(927, 216, 113, 23);
 		frame.getContentPane().add(btnConsultarSaldos);
 
 		JButton btnConsultarCartas = new JButton("Consultar Cartas");
-		btnConsultarCartas.setBounds(966, 179, 113, 23);
+		btnConsultarCartas.setBounds(1050, 216, 113, 23);
 		frame.getContentPane().add(btnConsultarCartas);
+		
+		JList list = new JList(controller.getJogadores().toArray());
+		
+		list.setBounds(927, 39, 222, 101);
+		frame.getContentPane().add(list);
 	}
 
 	public void andaDado(int numeroDado, Pino pino) {

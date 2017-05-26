@@ -14,6 +14,7 @@ import model.Publisher;
 public class Controller implements Publisher{
 	
 	private ArrayList<Observer> observers;
+	
 	private ArrayList<Jogador> jogadores; //Jogadores na partida
 	private int idAtual; //Id do jogador que está em sua vez
 	private int idJogadorMaquina; //Id jogador desse computador
@@ -21,6 +22,13 @@ public class Controller implements Publisher{
 	private ArrayList<String> bufferCartasCorreio;
 	private int saldoCliente;
 	public Controller() {
+		//TESTEEEEEEEEE
+		jogadores = new ArrayList<Jogador>();
+		for(int i = 0; i < 7; i++) {
+			Jogador jogador = new Jogador(i, i+1, i+1000); //tirar esse construtor
+			jogadores.add(jogador);
+		}
+		//TESTEEEEEEEEE
 		observers = new ArrayList<Observer>();
 		criaCartas();
 	}
@@ -173,6 +181,29 @@ public class Controller implements Publisher{
 		for(Observer observer : observers) {
 			observer.update(saldoCliente);
 		}
+	}
+	public ArrayList<Jogador> getJogadores() {
+		return jogadores;
+	}
+
+	public void setJogadores(ArrayList<Jogador> jogadores) {
+		this.jogadores = jogadores;
+	}
+
+	public int getIdAtual() {
+		return idAtual;
+	}
+
+	public void setIdAtual(int idAtual) {
+		this.idAtual = idAtual;
+	}
+
+	public int getIdJogadorMaquina() {
+		return idJogadorMaquina;
+	}
+
+	public void setIdJogadorMaquina(int idJogadorMaquina) {
+		this.idJogadorMaquina = idJogadorMaquina;
 	}
 	
 }

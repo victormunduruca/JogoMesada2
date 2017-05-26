@@ -14,7 +14,11 @@ public class Jogador {
 		int posicaoPino = 0; 
 		cartasCompras = new ArrayList<CartaCompra>();
 	}
-	
+	public Jogador(int id, int posicaoPino, int saldo) {
+		this.id = id;
+		this.posicaoPino = posicaoPino;
+		this.saldo = saldo;
+	}
 	public int getPosicaoPino() {
 		return posicaoPino;
 	}
@@ -34,7 +38,10 @@ public class Jogador {
 		this.id = id;
 	}
 	
-	
+	@Override
+	public String toString() {
+		return "ID: "+id+" Posição: "+posicaoPino+" Saldo: "+saldo;
+	}
 	
 	
 }
