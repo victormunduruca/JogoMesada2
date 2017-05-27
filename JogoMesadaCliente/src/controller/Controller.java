@@ -7,6 +7,7 @@ import java.util.Random;
 import javax.swing.JOptionPane;
 
 import excpeptions.IdNaoEncontradoException;
+import model.CartaCompra;
 import model.Jogador;
 import model.Observer;
 import model.Publisher;
@@ -69,11 +70,18 @@ public class Controller implements Publisher{
 //		return jogador.getId();
 //	}
 	public static void main(String[] args) {
-		JOptionPane.showConfirmDialog(null, "teste");
+		//JOptionPane.showConfirmDialog(null, "teste");
+		System.out.println("AFF");
 		Controller controller = new Controller();
 		Jogador jogador = new Jogador();
-		jogador.setPosicaoPino(3);
-		ArrayList<String> cartinhas = controller.casaCorreio(jogador);
+		System.out.println("Saldo antes: " +jogador.getSaldo());
+		controller.acaoCompraEntretenimento(false, jogador, controller.getCompraEntretenimento());
+		System.out.println("Nome da carta: " +jogador.getCartasCompras().get(0).getNomeCarta());
+		controller.casaAchouComprador(jogador);
+		System.out.println("Saldo depois: " +jogador.getSaldo());
+		
+		//jogador.setPosicaoPino(3);
+		//ArrayList<String> cartinhas = controller.casaCorreio(jogador);
 		
 	}
 	/**
@@ -163,6 +171,33 @@ public class Controller implements Publisher{
 				return jogador;
 		}
 		throw new IdNaoEncontradoException();
+	}
+	/**
+	 * 
+	 * @return CartaCompra criada no controller
+	 */
+	public CartaCompra getCompraEntretenimento() {
+		CartaCompra carta = new CartaCompra();
+		return carta;  
+	}
+	/**
+	 * Método que realiza compra da carta de compras e entretenimento, ou diretamente ou por meio de empréstimo
+	 * @param Sinalização se é empréstimo ou não
+	 * @param Joador
+	 * @param Carta Compra
+	 */
+	public void acaoCompraEntretenimento(boolean eEmprestimo, Jogador jogador, CartaCompra carta) {
+		if(eEmprestimo)
+			jogador.setDivida(jogador.getDivida()+carta.getValorCarta());
+		jogador.addCarta(carta); //adiciona a carta, debitando o valor no saldo internamente
+	}
+	public void casaAchouComprador(Jogador jogador) {
+		CartaCompra carta;
+		if(!jogador.getCartasCompras().isEmpty()) {
+			carta = jogador.getCartasCompras().get(0);
+			jogador.getCartasCompras().remove(0);
+			jogador.setSaldo(jogador.getSaldo()+carta.getValorRevendaCarta());
+		}			
 	}
 	@Override
 	public void register(Observer o) {

@@ -135,6 +135,7 @@ public class JanelaPrincipal {
 		btnConsultarCartas.setBounds(1050, 216, 113, 23);
 		frame.getContentPane().add(btnConsultarCartas);
 		
+
 		JList list = new JList(controller.getJogadores().toArray());
 		
 		list.setBounds(927, 39, 222, 101);
