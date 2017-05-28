@@ -20,8 +20,12 @@ public class Controller implements Publisher{
 	private int idAtual; //Id do jogador que está em sua vez
 	private int idJogadorMaquina; //Id jogador desse computador
 	private ArrayList<String> cartasCorreio; //Cartas referentes a casa correio
-	private ArrayList<String> bufferCartasCorreio;
+//	private ArrayList<String> bufferCartasCorreio;
+	private int jogadaDado; //Camada de rede retorna a jogada do dado
 	private int saldoCliente;
+	
+	
+	
 	public Controller() {
 		//TESTEEEEEEEEE
 		jogadores = new ArrayList<Jogador>();
@@ -74,11 +78,13 @@ public class Controller implements Publisher{
 		System.out.println("AFF");
 		Controller controller = new Controller();
 		Jogador jogador = new Jogador();
-		System.out.println("Saldo antes: " +jogador.getSaldo());
-		controller.acaoCompraEntretenimento(false, jogador, controller.getCompraEntretenimento());
-		System.out.println("Nome da carta: " +jogador.getCartasCompras().get(0).getNomeCarta());
-		controller.casaAchouComprador(jogador);
-		System.out.println("Saldo depois: " +jogador.getSaldo());
+		jogador.setId(1);
+		
+//		System.out.println("Saldo antes: " +jogador.getSaldo());
+//		controller.acaoCompraEntretenimento(false, jogador, controller.getCompraEntretenimento());
+//		System.out.println("Nome da carta: " +jogador.getCartasCompras().get(0).getNomeCarta());
+//		controller.casaAchouComprador(jogador);
+//		System.out.println("Saldo depois: " +jogador.getSaldo());
 		
 		//jogador.setPosicaoPino(3);
 		//ArrayList<String> cartinhas = controller.casaCorreio(jogador);
@@ -153,9 +159,14 @@ public class Controller implements Publisher{
 			
 		}
 	}
-	public void mudaSaldoTeste() {
-		saldoCliente++;
-		notifyObserver();
+//	public void mudaSaldoTeste() {
+//		saldoCliente++;
+//		notifyObserver();
+//	}
+	public void metodoTeste() throws IdNaoEncontradoException {
+		Jogador jogador = getJogador(1);
+		jogador.setSaldo(jogador.getSaldo() + 1000);
+		notifyObserver(2, jogador);
 	}
  	/**
 	 * Método para obter o jogador a partir de um determinado id
@@ -199,6 +210,13 @@ public class Controller implements Publisher{
 			jogador.setSaldo(jogador.getSaldo()+carta.getValorRevendaCarta());
 		}			
 	}
+	public void casaPrêmio(Jogador jogador) {
+		jogador.setSaldo(jogador.getSaldo() + 5000);
+	}
+	public void vendeseCasa(int valorDado, Jogador jogador) {
+		jogador.setSaldo(jogador.getSaldo() - 100*valorDado);
+		jogador.addCarta(getCompraEntretenimento());
+	}
 	@Override
 	public void register(Observer o) {
 		// TODO Auto-generated method stub
@@ -211,10 +229,10 @@ public class Controller implements Publisher{
 		observers.remove(o);
 	}
 	@Override
-	public void notifyObserver() {
+	public void notifyObserver(int jogadaDado, Jogador jogador) {
 		// TODO Auto-generated method stub
 		for(Observer observer : observers) {
-			observer.update(saldoCliente);
+			observer.update(jogadaDado, jogador);
 		}
 	}
 	public ArrayList<Jogador> getJogadores() {
