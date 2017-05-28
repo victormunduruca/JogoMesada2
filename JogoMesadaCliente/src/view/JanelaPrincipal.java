@@ -27,8 +27,8 @@ public class JanelaPrincipal {
 	private Controller controller;
 	private JFrame frame;
 	private ArrayList<Pino> pinos;
-	private static JanelaPrincipal instanciaJanelaPrincipal;
-//	private ObserverJogador observerJogador;
+//	private static JanelaPrincipal instanciaJanelaPrincipal;
+	private ObserverJogador observerJogador;
 	
 	public JanelaPrincipal() {
 		controller = new Controller();
@@ -108,7 +108,7 @@ public class JanelaPrincipal {
 		panel.setBounds(10, 39, 896, 685);
 		//ObserverSaldo observerSaldo = new ObserverSaldo(frame);
 		//controller.register(observerSaldo);
-		ObserverJogador observerJogador = new ObserverJogador(frame, this);
+		ObserverJogador observerJogador = new ObserverJogador(frame, pinos);
 		controller.register(observerJogador);
 		
 		jLay.setPreferredSize(new Dimension(896, 685));
@@ -131,13 +131,19 @@ public class JanelaPrincipal {
 
 			public void actionPerformed(ActionEvent arg0) {
 
-				valorDado = jogaDado();
+		//		valorDado = jogaDado();
 //				andaDado(valorDado, pinoAmarelo);
 //				andaDado(valorDado, pinoAzul);
 //				andaDado(valorDado, pinoRosa);
 //				andaDado(valorDado, pinoVerde);
 //				andaDado(valorDado, pinoRoxo);
 //				andaDado(valorDado, pinoVermelho);
+				try {
+					controller.metodoTeste();
+				} catch (IdNaoEncontradoException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				JOptionPane.showMessageDialog(null, "Valor do dado foi de = "
 						+ valorDado);
 				System.out.println("Valor dado: " + valorDado);
@@ -171,43 +177,43 @@ public class JanelaPrincipal {
 		frame.getContentPane().add(list);
 	}
 
-	public void andaDado(int numeroDado, Pino pino) {
-		for (int i = numeroDado; i > 0; i--) {
-			System.out.println("\n i = " + i + "\n");
-			System.out.println("X: " + pino.getX() + " Y: " + pino.getY());
-			if (pino.getX() >= 384 && pino.getY() == 137 * 4) { // chega no
-				// final
-				pino.getLabel().setBounds(0, 0, 128, 137);
-				pino.setY(0);
-				pino.setX(0);
-				break;
-			}
-			if (pino.getX() >= 768) { // se for igual ao valor fora da borda ele
-				// desce
-				pino.getLabel().setBounds(0, pino.getY() + 137, 128, 137);
-				pino.setY(pino.getY() + 137);
-				pino.setX(0);
-			} else {
-				System.out.println("Entrou no else");
-				pino.getLabel().setBounds(pino.getX() + 128, pino.getY(), 128,
-						137);
-				pino.setX(pino.getX() + 128);
-				System.out.println("DEPOIS X: " + pino.getX() + " Y: "
-						+ pino.getY());
-			}
-		}
-	}
-	public Pino getPino(int idJogador){
-		Iterator<Pino> it = (Iterator) pinos.iterator();
-		while(it.hasNext()) {
-			Pino pino = (Pino) it.next();
-			if(pino.getIdJogador() == idJogador)
-				return pino;
-		}
-		return null;
-	}
-	private static int jogaDado() {
-		Random rand = new Random();
-		return rand.nextInt(6) + 1;
-	}
+//	public void andaDado(int numeroDado, Pino pino) {
+//		for (int i = numeroDado; i > 0; i--) {
+//			System.out.println("\n i = " + i + "\n");
+//			System.out.println("X: " + pino.getX() + " Y: " + pino.getY());
+//			if (pino.getX() >= 384 && pino.getY() == 137 * 4) { // chega no
+//				// final
+//				pino.getLabel().setBounds(0, 0, 128, 137);
+//				pino.setY(0);
+//				pino.setX(0);
+//				break;
+//			}
+//			if (pino.getX() >= 768) { // se for igual ao valor fora da borda ele
+//				// desce
+//				pino.getLabel().setBounds(0, pino.getY() + 137, 128, 137);
+//				pino.setY(pino.getY() + 137);
+//				pino.setX(0);
+//			} else {
+//				System.out.println("Entrou no else");
+//				pino.getLabel().setBounds(pino.getX() + 128, pino.getY(), 128,
+//						137);
+//				pino.setX(pino.getX() + 128);
+//				System.out.println("DEPOIS X: " + pino.getX() + " Y: "
+//						+ pino.getY());
+//			}
+//		}
+//	}
+//	public Pino getPino(int idJogador){
+//		Iterator<Pino> it = (Iterator) pinos.iterator();
+//		while(it.hasNext()) {
+//			Pino pino = (Pino) it.next();
+//			if(pino.getIdJogador() == idJogador)
+//				return pino;
+//		}
+//		return null;
+//	}
+//	private static int jogaDado() {
+//		Random rand = new Random();
+//		return rand.nextInt(6) + 1;
+//	}
 }
