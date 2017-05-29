@@ -7,6 +7,7 @@ import java.util.Random;
 import javax.swing.JOptionPane;
 
 import excpeptions.IdNaoEncontradoException;
+import model.CartaCompra;
 import model.Jogador;
 import model.Observer;
 import model.Publisher;
@@ -14,13 +15,25 @@ import model.Publisher;
 public class Controller implements Publisher{
 	
 	private ArrayList<Observer> observers;
+	
 	private ArrayList<Jogador> jogadores; //Jogadores na partida
 	private int idAtual; //Id do jogador que está em sua vez
 	private int idJogadorMaquina; //Id jogador desse computador
 	private ArrayList<String> cartasCorreio; //Cartas referentes a casa correio
-	private ArrayList<String> bufferCartasCorreio;
+//	private ArrayList<String> bufferCartasCorreio;
+	private int jogadaDado; //Camada de rede retorna a jogada do dado
 	private int saldoCliente;
+	
+	
+	
 	public Controller() {
+		//TESTEEEEEEEEE
+		jogadores = new ArrayList<Jogador>();
+		for(int i = 0; i < 7; i++) {
+			Jogador jogador = new Jogador(i, i+1, i+1000); //tirar esse construtor
+			jogadores.add(jogador);
+		}
+		//TESTEEEEEEEEE
 		observers = new ArrayList<Observer>();
 		criaCartas();
 	}
@@ -37,36 +50,26 @@ public class Controller implements Publisher{
 	 * Alternativa: while na view
 	 */
 	
-//	public int jogar(int valorDado) throws IdNaoEncontradoException {
-//		
-//		if(idAtual != idJogadorMaquina) {
-//			//
-//		}
-//		Jogador jogador = getJogador(idAtual);
-//		
-//		jogador.setPosicaoPino(jogador.getPosicaoPino() + valorDado);
-//		
-//		int posicao = jogador.getPosicaoPino();
-//		
-//		if(posicao == 2) {
-//			jogador.setSaldo(jogador.getSaldo() + 5000);
-//			//
-//		} 
-////		else if() {
-////			
-////		}
-//			
-//		
-//		
-//		return jogador.getId();
-//	}
 	public static void main(String[] args) {
-		JOptionPane.showConfirmDialog(null, "teste");
+		//JOptionPane.showConfirmDialog(null, "teste");
+		System.out.println("AFF");
 		Controller controller = new Controller();
 		Jogador jogador = new Jogador();
-		jogador.setPosicaoPino(3);
-		ArrayList<String> cartinhas = controller.casaCorreio(jogador);
+		jogador.setId(1);
+		int opcao = JOptionPane.showConfirmDialog(null, null, "Selecione os pontos", JOptionPane.OK_CANCEL_OPTION);
+//		System.out.println("Saldo antes: " +jogador.getSaldo());
+//		controller.acaoCompraEntretenimento(false, jogador, controller.getCompraEntretenimento());
+//		System.out.println("Nome da carta: " +jogador.getCartasCompras().get(0).getNomeCarta());
+//		controller.casaAchouComprador(jogador);
+//		System.out.println("Saldo depois: " +jogador.getSaldo());
 		
+		//jogador.setPosicaoPino(3);
+		//ArrayList<String> cartinhas = controller.casaCorreio(jogador);
+		
+	}
+	private static int jogaDado() {
+		Random rand = new Random();
+		return rand.nextInt(6) + 1;
 	}
 	/**
 	 * Método que realiza as ações da casa correio
@@ -137,9 +140,14 @@ public class Controller implements Publisher{
 			
 		}
 	}
-	public void mudaSaldoTeste() {
-		saldoCliente++;
-		notifyObserver();
+//	public void mudaSaldoTeste() {
+//		saldoCliente++;
+//		notifyObserver();
+//	}
+	public void metodoTeste() throws IdNaoEncontradoException {
+		Jogador jogador = getJogador(1);
+		jogador.setSaldo(jogador.getSaldo() + 1000);
+		notifyObserver(2, jogador);
 	}
  	/**
 	 * Método para obter o jogador a partir de um determinado id
@@ -156,6 +164,46 @@ public class Controller implements Publisher{
 		}
 		throw new IdNaoEncontradoException();
 	}
+	/**
+	 * 
+	 * @return CartaCompra criada no controller
+	 */
+	public CartaCompra getCompraEntretenimento() {
+		CartaCompra carta = new CartaCompra();
+		return carta;  
+	}
+	/**
+	 * Método que realiza compra da carta de compras e entretenimento, ou diretamente ou por meio de empréstimo
+	 * @param Sinalização se é empréstimo ou não
+	 * @param Joador
+	 * @param Carta Compra
+	 */
+	public void acaoCompraEntretenimento(boolean eEmprestimo, Jogador jogador, CartaCompra carta) {
+		if(eEmprestimo)
+			jogador.setDivida(jogador.getDivida()+carta.getValorCarta());
+		jogador.addCarta(carta); //adiciona a carta, debitando o valor no saldo internamente
+	}
+	public void casaAchouComprador(Jogador jogador) {
+		CartaCompra carta;
+		if(!jogador.getCartasCompras().isEmpty()) {
+			carta = jogador.getCartasCompras().get(0);
+			jogador.getCartasCompras().remove(0);
+			jogador.setSaldo(jogador.getSaldo()+carta.getValorRevendaCarta());
+		}			
+	}
+	public void casaPrêmio(Jogador jogador) {
+		jogador.setSaldo(jogador.getSaldo() + 5000);
+	}
+	public void vendeseCasa(int valorDado, Jogador jogador) {
+		jogador.setSaldo(jogador.getSaldo() - 100*valorDado);
+		jogador.addCarta(getCompraEntretenimento());
+	} 
+	public boolean eInterna() {
+		if(idAtual == idJogadorMaquina)
+			return true;
+		else
+			return false;
+	}
 	@Override
 	public void register(Observer o) {
 		// TODO Auto-generated method stub
@@ -168,11 +216,36 @@ public class Controller implements Publisher{
 		observers.remove(o);
 	}
 	@Override
-	public void notifyObserver() {
+	public void notifyObserver(int jogadaDado, Jogador jogador) {
 		// TODO Auto-generated method stub
 		for(Observer observer : observers) {
-			observer.update(saldoCliente);
+			observer.update(jogadaDado, jogador);
 		}
 	}
+	public ArrayList<Jogador> getJogadores() {
+		return jogadores;
+	}
+
+	public void setJogadores(ArrayList<Jogador> jogadores) {
+		this.jogadores = jogadores;
+	}
+
+	public int getIdAtual() {
+		return idAtual;
+	}
+
+	public void setIdAtual(int idAtual) {
+		this.idAtual = idAtual;
+	}
+
+	public int getIdJogadorMaquina() {
+		return idJogadorMaquina;
+	}
+
+	public void setIdJogadorMaquina(int idJogadorMaquina) {
+		this.idJogadorMaquina = idJogadorMaquina;
+	}
+	
+	
 	
 }

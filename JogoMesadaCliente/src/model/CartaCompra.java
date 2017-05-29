@@ -36,7 +36,7 @@ public class CartaCompra {
 	}
 	public void criaCartaAleatoria() {
 		Random rand = new Random();
-		int i = rand.nextInt(3);
+		int i = rand.nextInt(2);
 		switch (i) {
 		case 0:
 			this.nomeCarta = "Item1";

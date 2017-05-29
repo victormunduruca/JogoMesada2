@@ -4,6 +4,8 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
 
 import javax.swing.ImageIcon;
@@ -11,18 +13,32 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import controller.Controller;
+import excpeptions.IdNaoEncontradoException;
 
 public class JanelaPrincipal {
-	
-	private Controller controllerTeste;
-	private JFrame frame;
 
+	private Controller controller;
+	private JFrame frame;
+	private ArrayList<Pino> pinos;
+//	private static JanelaPrincipal instanciaJanelaPrincipal;
+	private ObserverJogador observerJogador;
+	
+	public JanelaPrincipal() throws IdNaoEncontradoException {
+		controller = new Controller();
+		initialize();
+	};
+//	public static JanelaPrincipal getInstance(){
+//		if(instanciaJanelaPrincipal == null)
+//			instanciaJanelaPrincipal = new JanelaPrincipal();
+//		return instanciaJanelaPrincipal;
+//	}
 	/**
 	 * Launch the application.
 	 */
@@ -50,27 +66,37 @@ public class JanelaPrincipal {
 		});
 	}
 
-	/**
-	 * Create the application.
-	 */
-	public JanelaPrincipal() {
-		controllerTeste = new Controller();
-		
-		initialize();
-	}
+//	/**
+//	 * Create the application.
+//	 */
+//	public JanelaPrincipal() {
+//		
+//	}
 
 	/**
 	 * Initialize the contents of the frame.
+	 * @throws IdNaoEncontradoException 
 	 */
-	private void initialize() {
-
-		final Pino pinoAmarelo = new Pino("pinoAmarelo.png");
-		final Pino pinoAzul = new Pino("pinoAzul.png");
-		final Pino pinoRosa = new Pino("pinoRosa.png");
-		final Pino pinoRoxo = new Pino("pinoRoxo.png");
-		final Pino pinoVerde = new Pino("pinoVerde.png");
-		final Pino pinoVermelho = new Pino("pinoVermelho.png");
-
+	private void initialize() throws IdNaoEncontradoException {
+		
+		pinos = new ArrayList<Pino>();
+		Pino pinoAmarelo = new Pino("pinoAmarelo.png");
+		Pino pinoAzul = new Pino("pinoAzul.png");
+		Pino pinoRosa = new Pino("pinoRosa.png");
+		Pino pinoRoxo = new Pino("pinoRoxo.png");
+		Pino pinoVerde = new Pino("pinoVerde.png");
+		Pino pinoVermelho = new Pino("pinoVermelho.png");
+		
+		//TESTE
+		pinoVermelho.setIdJogador(1);
+		pinos.add(pinoVermelho);
+		pinos.add(pinoVerde);
+		pinos.add(pinoAmarelo);
+		pinos.add(pinoRoxo);
+		pinos.add(pinoRosa);
+		pinos.add(pinoAzul);
+		//TESTE
+		
 		JPanel panel = new JPanel();
 		JLayeredPane jLay = new JLayeredPane();
 		JLabel imagemTabuleiro = new JLabel(new ImageIcon("Tabuleiro.png"));
@@ -82,8 +108,10 @@ public class JanelaPrincipal {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		panel.setBounds(10, 39, 896, 685);
-		ObserverSaldo observerSaldo = new ObserverSaldo(frame);
-		controllerTeste.register(observerSaldo);
+	
+		ObserverJogador observerJogador = new ObserverJogador(frame, pinos);
+		controller.register(observerJogador);
+		
 		jLay.setPreferredSize(new Dimension(896, 685));
 		jLay.add(imagemTabuleiro, new Integer(10));
 
@@ -97,72 +125,53 @@ public class JanelaPrincipal {
 		imagemTabuleiro.setBounds(0, 0, 896, 685);
 		frame.getContentPane().add(panel);
 		panel.add(jLay);
-		
+
 		JButton btnRodarDado = new JButton("Jogar Dado");
 		btnRodarDado.addActionListener(new ActionListener() {
 			int valorDado = 0;
-			
-			public void actionPerformed(ActionEvent arg0) {
-				
-				valorDado = jogaDado();
-				andaDado(valorDado, pinoAmarelo);
-				andaDado(valorDado, pinoAzul);
-				andaDado(valorDado, pinoRosa);
-				andaDado(valorDado, pinoVerde);
-				andaDado(valorDado, pinoRoxo);
-				andaDado(valorDado, pinoVermelho);
+
+			public void actionPerformed(ActionEvent arg0) {;
+				try {
+					controller.metodoTeste();
+				} catch (IdNaoEncontradoException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				JOptionPane.showMessageDialog(null, "Valor do dado foi de = "
 						+ valorDado);
 				System.out.println("Valor dado: " + valorDado);
 			}
 		});
-		btnRodarDado.setBounds(966, 39, 113, 51);
+		btnRodarDado.setBounds(927, 266, 113, 51);
 		frame.getContentPane().add(btnRodarDado);
-		
+
 		JButton btnConsultarSaldos = new JButton("Mudar Saldo");
 		btnConsultarSaldos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
-				controllerTeste.mudaSaldoTeste();
+				try {
+					controller.metodoTeste();
+				} catch (IdNaoEncontradoException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
-		btnConsultarSaldos.setBounds(966, 132, 113, 23);
+		btnConsultarSaldos.setBounds(927, 216, 113, 23);
 		frame.getContentPane().add(btnConsultarSaldos);
 
 		JButton btnConsultarCartas = new JButton("Consultar Cartas");
-		btnConsultarCartas.setBounds(966, 179, 113, 23);
+		btnConsultarCartas.setBounds(1050, 216, 113, 23);
 		frame.getContentPane().add(btnConsultarCartas);
+
+
+		JList list = new JList(controller.getJogadores().toArray());
+
+		list.setBounds(927, 39, 222, 101);
+		frame.getContentPane().add(list);
+		
+
+		
 	}
 
-	public void andaDado(int numeroDado, Pino pino) {
-		for (int i = numeroDado; i > 0; i--) {
-			System.out.println("\n i = " + i + "\n");
-			System.out.println("X: " + pino.getX() + " Y: " + pino.getY());
-			if (pino.getX() >= 384 && pino.getY() == 137 * 4) { // chega no
-																// final
-				pino.getLabel().setBounds(0, 0, 128, 137);
-				pino.setY(0);
-				pino.setX(0);
-				break;
-			}
-			if (pino.getX() >= 768) { // se for igual ao valor fora da borda ele
-										// desce
-				pino.getLabel().setBounds(0, pino.getY() + 137, 128, 137);
-				pino.setY(pino.getY() + 137);
-				pino.setX(0);
-			} else {
-				System.out.println("Entrou no else");
-				pino.getLabel().setBounds(pino.getX() + 128, pino.getY(), 128,
-						137);
-				pino.setX(pino.getX() + 128);
-				System.out.println("DEPOIS X: " + pino.getX() + " Y: "
-						+ pino.getY());
-			}
-		}
-	}
-
-	private static int jogaDado() {
-		Random rand = new Random();
-		return rand.nextInt(6) + 1;
-	}
+	
 }
