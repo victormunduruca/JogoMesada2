@@ -5,32 +5,36 @@ import java.util.ArrayList;
 public class Jogador {
 	
 	private int id; //Id identificador para cada jogador
-	private int posicaoPino; //Posição no pino no tabuleiro, de 1 a 31
-	private int saldo; //Saldo do jogador
+	private int posicaoPino; //Posiï¿½ï¿½o no pino no tabuleiro, de 1 a 31
+	private float saldo = 3500; //Saldo do jogador
 	private int divida; 
-	private ArrayList<CartaCompra> cartasCompras; //Cartas de compras, obtidas em casas do tipo "compras e entretenimento"
+	private String ip;
+	private ArrayList<CartaCompra> cartasCompras = new ArrayList<CartaCompra>(); //Cartas de compras, obtidas em casas do tipo "compras e entretenimento"
 	
+	public Jogador() { }
 	
-	public Jogador() {
-		this.saldo = 3500; //Inicia o saldo com o valor especificado
-		int posicaoPino = 0; 
-		cartasCompras = new ArrayList<CartaCompra>();
-	}
-	public Jogador(int id, int posicaoPino, int saldo) {
+	public Jogador(int id, int posicaoPino, float saldo) {
 		this.id = id;
 		this.posicaoPino = posicaoPino;
 		this.saldo = saldo;
 	}
+	
+	public Jogador(int id, float saldo, String ip) {
+		this.id = id;
+		this.saldo = saldo;
+		this.ip = ip;
+	}
+	
 	public int getPosicaoPino() {
 		return posicaoPino;
 	}
 	public void setPosicaoPino(int posicaoPino) {
 		this.posicaoPino = posicaoPino;
 	}
-	public int getSaldo() {
+	public float getSaldo() {
 		return saldo;
 	}
-	public void setSaldo(int saldo) {
+	public void setSaldo(float saldo) {
 		this.saldo = saldo;
 	}
 	public int getId() {
@@ -45,7 +49,7 @@ public class Jogador {
 	}
 	@Override
 	public String toString() {
-		return "ID: "+id+" Posição: "+posicaoPino+" Saldo: "+saldo;
+		return "ID: "+id+" Posiï¿½ï¿½o: "+posicaoPino+" Saldo: "+saldo;
 	}
 	public int getDivida() {
 		return divida;
@@ -56,6 +60,4 @@ public class Jogador {
 	public ArrayList<CartaCompra> getCartasCompras() {
 		return cartasCompras;
 	}
-	
-	
 }

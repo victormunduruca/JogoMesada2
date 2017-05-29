@@ -17,7 +17,7 @@ public class Controller implements Publisher{
 	private ArrayList<Observer> observers;
 	
 	private ArrayList<Jogador> jogadores; //Jogadores na partida
-	private int idAtual; //Id do jogador que está em sua vez
+	private int idAtual; //Id do jogador que estï¿½ em sua vez
 	private int idJogadorMaquina; //Id jogador desse computador
 	private ArrayList<String> cartasCorreio; //Cartas referentes a casa correio
 //	private ArrayList<String> bufferCartasCorreio;
@@ -37,8 +37,8 @@ public class Controller implements Publisher{
 		observers = new ArrayList<Observer>();
 		criaCartas();
 	}
-	//Colocar método update para mudar o id do jogador atual com base no controller de rede
-	//Implementar padrão observer com a interface para atualizar quando um jogador muda
+	//Colocar mï¿½todo update para mudar o id do jogador atual com base no controller de rede
+	//Implementar padrï¿½o observer com a interface para atualizar quando um jogador muda
 	
 	/*
 	 * while(nao acaba o jogo){
@@ -72,9 +72,9 @@ public class Controller implements Publisher{
 		return rand.nextInt(6) + 1;
 	}
 	/**
-	 * Método que realiza as ações da casa correio
+	 * Mï¿½todo que realiza as aï¿½ï¿½es da casa correio
 	 * @param JogadorAtual
-	 * @return ArrayList referente às cartas aleatórias geradas
+	 * @return ArrayList referente ï¿½s cartas aleatï¿½rias geradas
 	 */
 	public ArrayList<String> casaCorreio(Jogador jogador) {
 		System.out.println("posicao: " +jogador.getPosicaoPino());
@@ -91,9 +91,9 @@ public class Controller implements Publisher{
 		return cartasCorreios;
 	}
 	/**
-	 * Método que gera cartas correios aleatórias
+	 * Mï¿½todo que gera cartas correios aleatï¿½rias
 	 * @param Quantidade de cartas que se deseja obter
-	 * @return Lista contendo a quantidade de cartas correios aleatórias requisitadas
+	 * @return Lista contendo a quantidade de cartas correios aleatï¿½rias requisitadas
 	 */
 	public ArrayList<String> geraCartasCorreiosAleatorias(int qtdCartas) {
 		ArrayList<String> cartasAleatorias = new ArrayList<String>();
@@ -110,20 +110,20 @@ public class Controller implements Publisher{
 		return cartasAleatorias;
 	}
 	/**
-	 * Método que inicializa as cartas correio
+	 * Mï¿½todo que inicializa as cartas correio
 	 */
 	public void criaCartas() {
 		cartasCorreio = new ArrayList<String>();
 		cartasCorreio.add("contas");
 		cartasCorreio.add("pague a um vizinho agora");
 		cartasCorreio.add("dinheiro extra");
-		cartasCorreio.add("doações");
-		cartasCorreio.add("cobrança monstro");
-		cartasCorreio.add("vá para frente agora");
+		cartasCorreio.add("doaï¿½ï¿½es");
+		cartasCorreio.add("cobranï¿½a monstro");
+		cartasCorreio.add("vï¿½ para frente agora");
 	}
 	/**
-	 * Realiza as açoes da casa correio a partir das cartas aleatórias antes tiradas 
-	 * @param String referente ao tipo de carta que a ação va ser tomada
+	 * Realiza as aï¿½oes da casa correio a partir das cartas aleatï¿½rias antes tiradas 
+	 * @param String referente ao tipo de carta que a aï¿½ï¿½o va ser tomada
 	 */
 	public void acaoCasaCorreio(String acao) {
 		if(acao == "contas") {
@@ -134,9 +134,9 @@ public class Controller implements Publisher{
 			
 		} else if(acao == "doacoes") {
 			
-		} else if(acao == "cobrança monstro") {
+		} else if(acao == "cobranï¿½a monstro") {
 			
-		} else if(acao == "vá para frente agora") {
+		} else if(acao == "vï¿½ para frente agora") {
 			
 		}
 	}
@@ -150,7 +150,7 @@ public class Controller implements Publisher{
 		notifyObserver(2, jogador);
 	}
  	/**
-	 * Método para obter o jogador a partir de um determinado id
+	 * Mï¿½todo para obter o jogador a partir de um determinado id
 	 * @param Id do jogador que se deseja obter
 	 * @return O jogador com o id especificado
 	 * @throws IdNaoEncontradoException
@@ -173,8 +173,8 @@ public class Controller implements Publisher{
 		return carta;  
 	}
 	/**
-	 * Método que realiza compra da carta de compras e entretenimento, ou diretamente ou por meio de empréstimo
-	 * @param Sinalização se é empréstimo ou não
+	 * Mï¿½todo que realiza compra da carta de compras e entretenimento, ou diretamente ou por meio de emprï¿½stimo
+	 * @param Sinalizaï¿½ï¿½o se ï¿½ emprï¿½stimo ou nï¿½o
 	 * @param Joador
 	 * @param Carta Compra
 	 */
@@ -191,7 +191,7 @@ public class Controller implements Publisher{
 			jogador.setSaldo(jogador.getSaldo()+carta.getValorRevendaCarta());
 		}			
 	}
-	public void casaPrêmio(Jogador jogador) {
+	public void casaPremio(Jogador jogador) {
 		jogador.setSaldo(jogador.getSaldo() + 5000);
 	}
 	public void vendeseCasa(int valorDado, Jogador jogador) {

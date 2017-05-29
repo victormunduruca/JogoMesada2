@@ -38,20 +38,7 @@ public class SalaDeEsperaWorker implements Runnable {
             String ip = formatarIp(ipPorta);
             int porta = Integer.valueOf(formatarPorta(ipPorta));
             
-            System.out.println("Cliente conectado: " + ip + ":" + porta + " conectado!");
-
-            // Faz a leitura dos dados passados na requisição do cliente
-            //final StringBuffer request = new StringBuffer();
-            /*List<String> request = new ArrayList<String>();
-            String line = reader.readLine();
-            while (line != null && !line.isEmpty()) {
-                System.out.println(line);
-                request.add(line);
-                line = reader.readLine();
-            }*/
-            
-            //String line = reader.readLine();
-            //System.out.println(">> " + line);
+            System.out.println("Cliente conectado: " + ip + ":" + porta);
             
             // Monta um mecânismo de resposta 
             
@@ -68,7 +55,7 @@ public class SalaDeEsperaWorker implements Runnable {
 					System.out.println("Um novo jogador entrou: " + nome + "\n");
 					
 		            StringBuffer response = new StringBuffer();
-					response.append(formatJogadores(Protocolo.ACAO_NOVO_JOGADOR_ADICIONADO, sala));
+					response.append(formataProtocolo(Protocolo.ACAO_NOVO_JOGADOR_ADICIONADO, sala));
 					try {
 						socket.getOutputStream().write(response.toString().getBytes());
 					} catch (IOException e) {
@@ -83,7 +70,7 @@ public class SalaDeEsperaWorker implements Runnable {
 				public void onJogoComecou(Sala sala) {
 					System.out.println("O jogo começou!");
 		            StringBuffer response = new StringBuffer();
-					response.append(formatJogadores(Protocolo.ACAO_INICIO_JOGO, sala));
+					response.append(formataProtocolo(Protocolo.ACAO_INICIO_JOGO, sala));
 					
 		            // Imprime uma resposta para o cliente e encerra a conexão
 		            try {
@@ -101,17 +88,17 @@ public class SalaDeEsperaWorker implements Runnable {
         }
     }
     
-    private String formatJogadores(String acao, Sala sala) {
+    private String formataProtocolo(String acao, Sala sala) {
     	ArrayList<Jogador> jogadores = sala.getJogadores();
     	StringBuilder sb = new StringBuilder();
-    	sb.append(acao + "\n");
-    	sb.append(correnteJogador.getId() + "," + correnteJogador.getSaldo() + "," + correnteJogador.getIp() + "\n");
+    	sb.append(acao + "#"); // Adiciona ação
+    	sb.append(correnteJogador.getId() + "," + correnteJogador.getSaldo() + "," + correnteJogador.getIp() + " ");
     	for (Jogador j : jogadores) {
     		if (correnteJogador.getId() != j.getId()) {
-    			sb.append(j.getId() + "," + j.getSaldo() + "," + j.getIp() + "\n");
+    			sb.append(j.getId() + "," + j.getSaldo() + "," + j.getIp() + " ");
     		}
     	}
-    	return sb.toString();
+    	return sb.toString().substring(0, sb.toString().length() - 1) + "\n";
     }
     
     private String formatarIp(String str) {

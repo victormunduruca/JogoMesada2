@@ -1,10 +1,18 @@
 package network;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
 public class Cliente {
+	
+	public interface OnRequest {
+		void onUpdate(String data);
+		void onClose();
+	}
 	
 	/**
 	 * Envia mensagem para um servidor
@@ -36,5 +44,27 @@ public class Cliente {
 			}
 	    }
 	    return true;
+	}
+	
+	public void requisitar(final String ip, final int porta, final OnRequest callback) {
+		new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				try {
+					Socket socket = new Socket(ip, porta);
+			        BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			        String line;
+
+			        while((line = reader.readLine()) != null){
+			            callback.onUpdate(line);
+			        }
+			        callback.onClose();
+			        reader.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				};
+			}
+		}).start();
 	}
 }
