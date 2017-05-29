@@ -12,7 +12,7 @@ import model.Jogador;
 import model.Observer;
 import model.Publisher;
 
-public class Controller implements Publisher, Runnable{
+public class Controller implements Publisher{
 	
 	private ArrayList<Observer> observers;
 	
@@ -50,15 +50,6 @@ public class Controller implements Publisher, Runnable{
 	 * Alternativa: while na view
 	 */
 	
-	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-		while(true) {
-			if(eInterna()) {
-				
-			}
-		}
-	}
 	public static void main(String[] args) {
 		//JOptionPane.showConfirmDialog(null, "teste");
 		System.out.println("AFF");
