@@ -6,6 +6,7 @@ import java.util.Random;
 
 import javax.swing.JOptionPane;
 
+import br.uefs.ecomp.fastRoute.controller.Controller;
 import excpeptions.IdNaoEncontradoException;
 import model.CartaCompra;
 import model.Jogador;
@@ -14,6 +15,7 @@ import model.Publisher;
 
 public class Controller implements Publisher{
 	
+	private static Controller instanciaController;
 	private ArrayList<Observer> observers;
 	
 	private ArrayList<Jogador> jogadores; //Jogadores na partida
@@ -26,7 +28,7 @@ public class Controller implements Publisher{
 	
 	
 	
-	public Controller() {
+	private Controller() {
 		//TESTEEEEEEEEE
 		jogadores = new ArrayList<Jogador>();
 		for(int i = 0; i < 7; i++) {
@@ -36,6 +38,11 @@ public class Controller implements Publisher{
 		//TESTEEEEEEEEE
 		observers = new ArrayList<Observer>();
 		criaCartas();
+	}
+	public static Controller getInstance(){
+		if(instanciaController == null)
+			instanciaController = new Controller();
+		return instanciaController;
 	}
 	//Colocar método update para mudar o id do jogador atual com base no controller de rede
 	//Implementar padrão observer com a interface para atualizar quando um jogador muda

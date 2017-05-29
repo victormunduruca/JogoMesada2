@@ -34,11 +34,6 @@ public class JanelaPrincipal {
 		controller = new Controller();
 		initialize();
 	};
-//	public static JanelaPrincipal getInstance(){
-//		if(instanciaJanelaPrincipal == null)
-//			instanciaJanelaPrincipal = new JanelaPrincipal();
-//		return instanciaJanelaPrincipal;
-//	}
 	/**
 	 * Launch the application.
 	 */
@@ -69,9 +64,7 @@ public class JanelaPrincipal {
 //	/**
 //	 * Create the application.
 //	 */
-//	public JanelaPrincipal() {
-//		
-//	}
+
 
 	/**
 	 * Initialize the contents of the frame.
