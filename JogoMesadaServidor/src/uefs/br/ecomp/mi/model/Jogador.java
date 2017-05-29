@@ -4,15 +4,14 @@ import uefs.br.ecomp.mi.OnSalaEspera;
 
 public class Jogador {
 	private int id;
-	private float real;
+	private float saldo = 3000;
 	private String nome;
 	private String ip;
-	private int porta;
+	
 	private OnSalaEspera onEsperaCallback;
 	
-	public Jogador(String ip, int porta) {
+	public Jogador(String ip) {
 		this.ip = ip;
-		this.porta = porta;
 	}
 	public OnSalaEspera getOnEsperaCallback() {
 		return onEsperaCallback;
@@ -26,13 +25,19 @@ public class Jogador {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public float getReal() {
-		return real;
+	public float getSaldo() {
+		return saldo;
 	}
-	public void setReal(float real) {
-		this.real = real;
+	public void setSaldo(float saldo) {
+		this.saldo = saldo;
 	}
 	public String getNome() {
 		return "Jogador" + id;
-	}	
+	}
+	public String getIp() {
+		return ip;
+	}
+	public void setIp(String ip) {
+		this.ip = ip;
+	}
 }

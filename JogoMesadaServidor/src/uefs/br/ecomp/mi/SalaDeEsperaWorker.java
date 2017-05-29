@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import uefs.br.ecomp.mi.controlador.Controlador;
+import uefs.br.ecomp.mi.model.Jogador;
 import uefs.br.ecomp.mi.model.Sala;
 
 
@@ -19,6 +20,7 @@ public class SalaDeEsperaWorker implements Runnable {
 	private boolean emEspera = true;
 	
     private Socket socket;
+    private Jogador correnteJogador; 
 
     public SalaDeEsperaWorker(Socket socket) {
         this.socket = socket;
@@ -49,16 +51,29 @@ public class SalaDeEsperaWorker implements Runnable {
             }*/
             
             //String line = reader.readLine();
+            //System.out.println(">> " + line);
             
-            // Monta um mecânismo de resposta
-            final StringBuffer response = new StringBuffer(); 
+            // Monta um mecânismo de resposta 
             
             Controlador controller = Controlador.getInstance();
-            controller.registrarParaSala(ip, porta, new OnSalaEspera() {
+            controller.registrarParaSala(ip, new OnSalaEspera() {
+				@Override
+				public void onInicioCorrenteJogadorNaSala(Sala sala,
+						Jogador jogador) {
+					correnteJogador = jogador;
+				}
 				
 				@Override
 				public void onNovoJogadorEntrou(Sala sala, String nome) {
-					System.out.println("Novo jogador entrou: " + nome);
+					System.out.println("Um novo jogador entrou: " + nome + "\n");
+					
+		            StringBuffer response = new StringBuffer();
+					response.append(formatJogadores(Protocolo.ACAO_NOVO_JOGADOR_ADICIONADO, sala));
+					try {
+						socket.getOutputStream().write(response.toString().getBytes());
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 				}
 				
 				@Override
@@ -67,9 +82,8 @@ public class SalaDeEsperaWorker implements Runnable {
 				@Override
 				public void onJogoComecou(Sala sala) {
 					System.out.println("O jogo começou!");
-					
-					response.append("O jogo começou!");
-					// Add resposta
+		            StringBuffer response = new StringBuffer();
+					response.append(formatJogadores(Protocolo.ACAO_INICIO_JOGO, sala));
 					
 		            // Imprime uma resposta para o cliente e encerra a conexão
 		            try {
@@ -85,6 +99,19 @@ public class SalaDeEsperaWorker implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    
+    private String formatJogadores(String acao, Sala sala) {
+    	ArrayList<Jogador> jogadores = sala.getJogadores();
+    	StringBuilder sb = new StringBuilder();
+    	sb.append(acao + "\n");
+    	sb.append(correnteJogador.getId() + "," + correnteJogador.getSaldo() + "," + correnteJogador.getIp() + "\n");
+    	for (Jogador j : jogadores) {
+    		if (correnteJogador.getId() != j.getId()) {
+    			sb.append(j.getId() + "," + j.getSaldo() + "," + j.getIp() + "\n");
+    		}
+    	}
+    	return sb.toString();
     }
     
     private String formatarIp(String str) {

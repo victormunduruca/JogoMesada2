@@ -18,6 +18,15 @@ public class Sala {
 	}
 	
 	/**
+	 * Retorna a lista de jogadores na sala
+	 * 
+	 * @return
+	 */
+	public ArrayList<Jogador> getJogadores() {
+		return jogadores;
+	}
+	
+	/**
 	 * Retorna o total de jogadores na sala de espera
 	 * 
 	 * @return
@@ -33,11 +42,16 @@ public class Sala {
 	 */
 	public void addJogador(Jogador jogador) {
 		jogadores.add(jogador);
+		notificarCorrenteJogador(jogador);
 		notificarJogadoresNovoJogador(jogador.getNome());
 		
 		if (getTotalJogadores() == 6) {
 			notificarJogadoresComecoJogo();
 		}
+	}
+	
+	private void notificarCorrenteJogador(Jogador jogador) {
+		jogador.getOnEsperaCallback().onInicioCorrenteJogadorNaSala(this, jogador);
 	}
 	
 	private void notificarJogadoresComecoJogo() {

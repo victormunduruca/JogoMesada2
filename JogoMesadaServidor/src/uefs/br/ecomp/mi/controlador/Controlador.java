@@ -21,9 +21,9 @@ public class Controlador {
 		return selfInstance;
 	}
 	
-	public void registrarParaSala(String ip, int porta, OnSalaEspera onSalaEsperaCallback) {
+	public void registrarParaSala(String ip, OnSalaEspera onSalaEsperaCallback) {
 		Sala ultimaSala;
-		Jogador jogador = new Jogador(ip, porta);
+		Jogador jogador = new Jogador(ip);
 		jogador.setOnEsperaCallback(onSalaEsperaCallback);
 		
 		if (salas.size() != 0) {
