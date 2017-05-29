@@ -71,8 +71,5 @@ public class ObserverJogador implements Observer{
 		}
 		return null;
 	}
-	private static int jogaDado() {
-		Random rand = new Random();
-		return rand.nextInt(6) + 1;
-	}
+	
 } 

@@ -12,7 +12,7 @@ import model.Jogador;
 import model.Observer;
 import model.Publisher;
 
-public class Controller implements Publisher{
+public class Controller implements Publisher, Runnable{
 	
 	private ArrayList<Observer> observers;
 	
@@ -50,36 +50,22 @@ public class Controller implements Publisher{
 	 * Alternativa: while na view
 	 */
 	
-//	public int jogar(int valorDado) throws IdNaoEncontradoException {
-//		
-//		if(idAtual != idJogadorMaquina) {
-//			//
-//		}
-//		Jogador jogador = getJogador(idAtual);
-//		
-//		jogador.setPosicaoPino(jogador.getPosicaoPino() + valorDado);
-//		
-//		int posicao = jogador.getPosicaoPino();
-//		
-//		if(posicao == 2) {
-//			jogador.setSaldo(jogador.getSaldo() + 5000);
-//			//
-//		} 
-////		else if() {
-////			
-////		}
-//			
-//		
-//		
-//		return jogador.getId();
-//	}
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		while(true) {
+			if(eInterna()) {
+				
+			}
+		}
+	}
 	public static void main(String[] args) {
 		//JOptionPane.showConfirmDialog(null, "teste");
 		System.out.println("AFF");
 		Controller controller = new Controller();
 		Jogador jogador = new Jogador();
 		jogador.setId(1);
-		
+		int opcao = JOptionPane.showConfirmDialog(null, null, "Selecione os pontos", JOptionPane.OK_CANCEL_OPTION);
 //		System.out.println("Saldo antes: " +jogador.getSaldo());
 //		controller.acaoCompraEntretenimento(false, jogador, controller.getCompraEntretenimento());
 //		System.out.println("Nome da carta: " +jogador.getCartasCompras().get(0).getNomeCarta());
@@ -89,6 +75,10 @@ public class Controller implements Publisher{
 		//jogador.setPosicaoPino(3);
 		//ArrayList<String> cartinhas = controller.casaCorreio(jogador);
 		
+	}
+	private static int jogaDado() {
+		Random rand = new Random();
+		return rand.nextInt(6) + 1;
 	}
 	/**
 	 * Método que realiza as ações da casa correio
@@ -216,6 +206,12 @@ public class Controller implements Publisher{
 	public void vendeseCasa(int valorDado, Jogador jogador) {
 		jogador.setSaldo(jogador.getSaldo() - 100*valorDado);
 		jogador.addCarta(getCompraEntretenimento());
+	} 
+	public boolean eInterna() {
+		if(idAtual == idJogadorMaquina)
+			return true;
+		else
+			return false;
 	}
 	@Override
 	public void register(Observer o) {
@@ -258,5 +254,7 @@ public class Controller implements Publisher{
 	public void setIdJogadorMaquina(int idJogadorMaquina) {
 		this.idJogadorMaquina = idJogadorMaquina;
 	}
+	
+	
 	
 }
