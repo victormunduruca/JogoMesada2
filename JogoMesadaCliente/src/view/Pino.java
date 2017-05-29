@@ -6,15 +6,22 @@ import javax.swing.JLabel;
 
 public class Pino {
 
+	private static int idClasse = 0;
 	private int idJogador;
 	private JLabel label;
 	private int x;
 	private int y;
+	private String cor;
 	
 	public Pino(String nomeImagem) {
+		idClasse++;
 		label = new JLabel(new ImageIcon(nomeImagem));
 		this.x = 0;
 		this.y = 0;
+		this.cor = nomeImagem.replace(".png", ""); //Atualiza a cor com base no nome do arquivo de diretório
+		if(idClasse <=6) {
+			this.idJogador = idClasse;
+		}		
 	}
 	
 	public JLabel getLabel() {
