@@ -11,13 +11,17 @@ import javax.swing.JLabel;
 import model.Jogador;
 import model.Observer;
 
+/**
+ * Classe que implementa a classe Observer, atualizando os elementos da GUI quando requisitado
+ * @author Victor
+ *
+ */
 public class ObserverJogador implements Observer{
-	private ArrayList<Pino> pinos;
-	private JFrame frame;
-	private JLabel label;
+	private ArrayList<Pino> pinos; //Lista de pinos
+	private JFrame frame; //Frame da janela principal
+	private JLabel label; //Label com o saldo
 	
 	public ObserverJogador(JFrame frame, ArrayList<Pino> pinos) {
-	//	janelaPrincipal = JanelaPrincipal.getInstance();
 		this.frame = frame;
 		this.pinos = pinos;
 		label = new JLabel();
@@ -36,6 +40,11 @@ public class ObserverJogador implements Observer{
 		andaDado(jogadaDado, pino);
 		label.setText("Saldo: " + jogador.getSaldo());
 	}
+	/**
+	 * Método que move os pinos na GUI c
+	 * @param Número retiradao no dado
+	 * @param Pino que se deseja mover
+	 */
 	public void andaDado(int numeroDado, Pino pino) {
 		for (int i = numeroDado; i > 0; i--) {
 			System.out.println("\n i = " + i + "\n");
@@ -43,7 +52,7 @@ public class ObserverJogador implements Observer{
 			if (pino.getX() >= 384 && pino.getY() == 137 * 4) { // chega no
 				// final
 				pino.getLabel().setBounds(0, 0, 128, 137);
-				pino.setY(0);
+				pino.setY(0); //Atualiza valores dos pinos
 				pino.setX(0);
 				break;
 			}
@@ -62,6 +71,11 @@ public class ObserverJogador implements Observer{
 			}
 		}
 	}
+	/**
+	 * 
+	 * @param idJogador
+	 * @return Pino correspondente ao id do jogador
+	 */
 	public Pino getPino(int idJogador){
 		Iterator<Pino> it = (Iterator) pinos.iterator();
 		while(it.hasNext()) {

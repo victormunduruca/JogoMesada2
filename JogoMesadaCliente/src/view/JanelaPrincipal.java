@@ -73,12 +73,12 @@ public class JanelaPrincipal {
 	private void initialize() throws IdNaoEncontradoException {
 		
 		pinos = new ArrayList<Pino>();
-		Pino pinoAmarelo = new Pino("pinoAmarelo.png");
-		Pino pinoAzul = new Pino("pinoAzul.png");
-		Pino pinoRosa = new Pino("pinoRosa.png");
-		Pino pinoRoxo = new Pino("pinoRoxo.png");
-		Pino pinoVerde = new Pino("pinoVerde.png");
-		Pino pinoVermelho = new Pino("pinoVermelho.png");
+		Pino pinoAmarelo = new Pino("Amarelo.png");
+		Pino pinoAzul = new Pino("Azul.png");
+		Pino pinoRosa = new Pino("Rosa.png");
+		Pino pinoRoxo = new Pino("Roxo.png");
+		Pino pinoVerde = new Pino("Verde.png");
+		Pino pinoVermelho = new Pino("Vermelho.png");
 		
 		//TESTE
 		pinoVermelho.setIdJogador(1);

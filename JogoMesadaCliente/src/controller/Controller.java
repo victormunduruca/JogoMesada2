@@ -63,7 +63,7 @@ public class Controller implements Publisher{
 		Controller controller = new Controller();
 		Jogador jogador = new Jogador();
 		jogador.setId(1);
-		int opcao = JOptionPane.showConfirmDialog(null, null, "Selecione os pontos", JOptionPane.OK_CANCEL_OPTION);
+		int opcao = JOptionPane.showConfirmDialog(null, "WOW", "Selecione os pontos", JOptionPane.OK_CANCEL_OPTION);
 //		System.out.println("Saldo antes: " +jogador.getSaldo());
 //		controller.acaoCompraEntretenimento(false, jogador, controller.getCompraEntretenimento());
 //		System.out.println("Nome da carta: " +jogador.getCartasCompras().get(0).getNomeCarta());
@@ -190,6 +190,11 @@ public class Controller implements Publisher{
 			jogador.setDivida(jogador.getDivida()+carta.getValorCarta());
 		jogador.addCarta(carta); //adiciona a carta, debitando o valor no saldo internamente
 	}
+	/**
+	 * Método ação em casa "achou comprador", que retorna ao jogador o valor de revenda na sua primeira carta de compras e 
+	 * entretenimento.
+	 * @param Jogador 
+	 */
 	public void casaAchouComprador(Jogador jogador) {
 		CartaCompra carta;
 		if(!jogador.getCartasCompras().isEmpty()) {
@@ -198,13 +203,26 @@ public class Controller implements Publisher{
 			jogador.setSaldo(jogador.getSaldo()+carta.getValorRevendaCarta());
 		}			
 	}
+	/**
+	 *Método casa prêmio: adiciona 5000 ao saldo do jogador de parâmetro
+	 * @param jogador
+	 */
 	public void casaPrêmio(Jogador jogador) {
 		jogador.setSaldo(jogador.getSaldo() + 5000);
 	}
-	public void vendeseCasa(int valorDado, Jogador jogador) {
+	/**
+	 * Método vende-se que recebe o valor do dado e retira 100 vezes esse valor do saldo do jogador do parâmetro.
+	 * @param valorDado
+	 * @param jogador
+	 */
+	public void casaVendese(int valorDado, Jogador jogador) {
 		jogador.setSaldo(jogador.getSaldo() - 100*valorDado);
 		jogador.addCarta(getCompraEntretenimento());
 	} 
+	/**
+	 * 
+	 * @return True se a jogada for interna
+	 */
 	public boolean eInterna() {
 		if(idAtual == idJogadorMaquina)
 			return true;
