@@ -6,7 +6,7 @@ import java.util.Random;
 
 import javax.swing.JOptionPane;
 
-import br.uefs.ecomp.fastRoute.controller.Controller;
+
 import excpeptions.IdNaoEncontradoException;
 import model.CartaCompra;
 import model.Jogador;

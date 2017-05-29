@@ -31,7 +31,7 @@ public class JanelaPrincipal {
 	private ObserverJogador observerJogador;
 	
 	public JanelaPrincipal() throws IdNaoEncontradoException {
-		controller = new Controller();
+		controller = Controller.getInstance();
 		initialize();
 	};
 	/**
