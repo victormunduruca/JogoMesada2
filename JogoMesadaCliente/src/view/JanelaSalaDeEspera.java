@@ -13,6 +13,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 import model.Jogador;
 import network.Cliente;
@@ -20,6 +21,8 @@ import network.Cliente.OnRequest;
 import network.Protocolo;
 
 import com.sun.security.ntlm.Client;
+
+import controller.Controller;
 
 public class JanelaSalaDeEspera extends JPanel {
 
@@ -58,12 +61,14 @@ public class JanelaSalaDeEspera extends JPanel {
     setListeners();
   }
   
-  private void atualizarListaJogadores(Jogador euJogador, ArrayList<Jogador> adversarios) {
-	  model.clear();
-	  model.addElement("Jogador " + euJogador.getId() + " (Você) [Saldo: " + euJogador.getSaldo() + "]");
-	  for (Jogador adv : adversarios) {
-		  model.addElement("Jogador " + adv.getId() + " / [Saldo: " + adv.getSaldo() + "]");
-	  }
+  private void atualizarListaJogadores(final Jogador euJogador, final ArrayList<Jogador> adversarios) {
+	  SwingUtilities.invokeLater(new Runnable(){public void run(){
+		  model.clear();
+		  model.addElement("Jogador " + euJogador.getId() + " (Você) [Saldo: " + euJogador.getSaldo() + "]");
+		  for (Jogador adv : adversarios) {
+			  model.addElement("Jogador " + adv.getId() + " / [Saldo: " + adv.getSaldo() + "]");
+		  }
+	  }});
   }
   
   private void setListeners() {
@@ -86,9 +91,14 @@ public class JanelaSalaDeEspera extends JPanel {
 
 	@Override
 	public void onUpdate(String data) {
-		System.out.println("Recebido: " + data);
+		Controller controlador = Controller.getInstance();
+		
 		Jogador euJogador = Protocolo.SalaEspera.getEuJogador(data);
 		ArrayList<Jogador> adversarios = Protocolo.SalaEspera.getAdversarios(data);
+		
+		controlador.setEuJogador(euJogador);
+		controlador.setAdversarios(adversarios);
+		
 		atualizarListaJogadores(euJogador, adversarios);
 	}
 

@@ -18,6 +18,9 @@ public class Controller implements Publisher{
 	private static Controller instanciaController;
 	private ArrayList<Observer> observers;
 	
+	private ArrayList<Jogador> adversarios = new ArrayList<>();
+	private Jogador euJogador;
+	
 	private ArrayList<Jogador> jogadores; //Jogadores na partida
 	private int idAtual; //Id do jogador que est� em sua vez
 	private int idJogadorMaquina; //Id jogador desse computador
@@ -39,11 +42,29 @@ public class Controller implements Publisher{
 		observers = new ArrayList<Observer>();
 		criaCartas();
 	}
+	
 	public static Controller getInstance(){
 		if(instanciaController == null)
 			instanciaController = new Controller();
 		return instanciaController;
 	}
+	
+	public ArrayList<Jogador> getAdversarios() {
+		return adversarios;
+	}
+
+	public void setAdversarios(ArrayList<Jogador> adversarios) {
+		this.adversarios = adversarios;
+	}
+
+	public Jogador getEuJogador() {
+		return euJogador;
+	}
+
+	public void setEuJogador(Jogador euJogador) {
+		this.euJogador = euJogador;
+	}
+	
 	//Colocar m�todo update para mudar o id do jogador atual com base no controller de rede
 	//Implementar padr�o observer com a interface para atualizar quando um jogador muda
 	
@@ -151,10 +172,17 @@ public class Controller implements Publisher{
 //		saldoCliente++;
 //		notifyObserver();
 //	}
+	private static int i = 0;
 	public void metodoTeste() throws IdNaoEncontradoException {
 		Jogador jogador = getJogador(1);
 		jogador.setSaldo(jogador.getSaldo() + 1000);
-		notifyObserver(2, jogador);
+		i++;
+		if(i > 31) {
+			i = 0;
+		}
+		notifyObserver(i, jogador);
+
+		
 	}
  	/**
 	 * M�todo para obter o jogador a partir de um determinado id

@@ -130,9 +130,9 @@ public class JanelaPrincipal {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				JOptionPane.showMessageDialog(null, "Valor do dado foi de = "
-						+ valorDado);
-				System.out.println("Valor dado: " + valorDado);
+//				JOptionPane.showMessageDialog(null, "Valor do dado foi de = "
+//						+ valorDado);
+//				System.out.println("Valor dado: " + valorDado);
 			}
 		});
 		btnRodarDado.setBounds(927, 266, 113, 51);

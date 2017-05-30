@@ -37,7 +37,7 @@ public class ObserverJogador implements Observer{
 	public void update(int jogadaDado, Jogador jogador) {
 		// TODO Auto-generated method stub
 		Pino pino = getPino(jogador.getId());
-		andaDado(jogadaDado, pino);
+		anda(jogadaDado, pino);
 		label.setText("Saldo: " + jogador.getSaldo());
 	}
 	/**
@@ -45,8 +45,10 @@ public class ObserverJogador implements Observer{
 	 * @param Número retiradao no dado
 	 * @param Pino que se deseja mover
 	 */
-	public void andaDado(int numeroDado, Pino pino) {
-		for (int i = numeroDado; i > 0; i--) {
+	public void anda(int posicao, Pino pino) {
+		pino.setX(0);
+		pino.setY(0);
+		for (int i = posicao; i > 0; i--) {
 			System.out.println("\n i = " + i + "\n");
 			System.out.println("X: " + pino.getX() + " Y: " + pino.getY());
 			if (pino.getX() >= 384 && pino.getY() == 137 * 4) { // chega no
@@ -71,8 +73,21 @@ public class ObserverJogador implements Observer{
 			}
 		}
 	}
+//	public void anda(int posicao, Pino pino) {
+//		for(int linha = 1; linha <= 5; linha++) {
+//			for(int coluna = 1; coluna <= 7; coluna++) {
+//				if(posicao == coluna + 7*(linha-1)) {
+//					System.out.println("Coluna: " +coluna + " Linha: " +linha );
+//					pino.getLabel().setBounds((coluna)*128, (linha-1)*137, 128, 137);
+//					return;
+//					//colocar set x e y, ou a posição
+//				}
+//			}
+//		}
+//		System.out.println("Nao achou a posicao");
+//	}
 	/**
-	 * 
+ 	 * 
 	 * @param idJogador
 	 * @return Pino correspondente ao id do jogador
 	 */

@@ -12,8 +12,6 @@ public class Protocolo {
 		
 		public static Jogador getEuJogador(String str) {
 			str = str.split("#")[1];
-			System.out.println("Antes: " + str);
-			System.out.println("Size: " + str.split(" ").length);
 
 			if (str.split(" ").length > 1) {
 				return formatarJogador(str.split(" ")[0]);	
