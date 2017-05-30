@@ -60,9 +60,9 @@ public class JanelaSalaDeEspera extends JPanel {
   
   private void atualizarListaJogadores(Jogador euJogador, ArrayList<Jogador> adversarios) {
 	  model.clear();
-	  model.addElement("Jogador " + euJogador.getId() + " (Você) / Saldo: " + euJogador.getSaldo());
+	  model.addElement("Jogador " + euJogador.getId() + " (Você) [Saldo: " + euJogador.getSaldo() + "]");
 	  for (Jogador adv : adversarios) {
-		  model.addElement("Jogador " + adv.getId() + " / Saldo: " + adv.getSaldo());
+		  model.addElement("Jogador " + adv.getId() + " / [Saldo: " + adv.getSaldo() + "]");
 	  }
   }
   
@@ -94,8 +94,7 @@ public class JanelaSalaDeEspera extends JPanel {
 
 	@Override
 	public void onClose() {
-		System.out.println("Início de jogo");
-		// TODO Iniciar JanelaPrincipal e fechar esta janela
+		JanelaPrincipal.iniciar();
 	}
   }
 

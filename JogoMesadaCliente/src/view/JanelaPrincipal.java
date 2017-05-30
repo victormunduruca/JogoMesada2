@@ -38,6 +38,10 @@ public class JanelaPrincipal {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) { 
+		JanelaPrincipal.iniciar();
+	}
+	
+	public static void iniciar() {
 		try {
 			// Set System L&F
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -60,10 +64,6 @@ public class JanelaPrincipal {
 			}
 		});
 	}
-
-//	/**
-//	 * Create the application.
-//	 */
 
 
 	/**
