@@ -1,5 +1,5 @@
 package model;
 
 public interface Observer {
-	public void update(int jogadaDado, Jogador jogador);
+	public void update(int posicao, Jogador jogador);
 }

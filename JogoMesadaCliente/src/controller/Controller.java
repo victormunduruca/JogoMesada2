@@ -151,10 +151,17 @@ public class Controller implements Publisher{
 //		saldoCliente++;
 //		notifyObserver();
 //	}
+	private static int i = 0;
 	public void metodoTeste() throws IdNaoEncontradoException {
 		Jogador jogador = getJogador(1);
 		jogador.setSaldo(jogador.getSaldo() + 1000);
-		notifyObserver(2, jogador);
+		i++;
+		if(i > 31) {
+			i = 0;
+		}
+		notifyObserver(i, jogador);
+
+		
 	}
  	/**
 	 * M�todo para obter o jogador a partir de um determinado id
