@@ -7,7 +7,9 @@ import java.util.Random;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 
+import controller.Controller;
 import model.Jogador;
 import model.Observer;
 
@@ -20,8 +22,12 @@ public class ObserverJogador implements Observer{
 	private ArrayList<Pino> pinos; //Lista de pinos
 	private JFrame frame; //Frame da janela principal
 	private JLabel label; //Label com o saldo
+	private JList listaJogadores;
 	
 	public ObserverJogador(JFrame frame, ArrayList<Pino> pinos) {
+		listaJogadores = new JList(Controller.getInstance().getAdversarios().toArray());
+		listaJogadores.setBounds(927, 39, 222, 138);
+		
 		this.frame = frame;
 		this.pinos = pinos;
 		label = new JLabel();
@@ -30,6 +36,7 @@ public class ObserverJogador implements Observer{
 		label.setText("Saldo: 0");
 		label.setBounds(77, 756, 360, 51);
 		frame.getContentPane().add(label);
+		frame.getContentPane().add(listaJogadores);
 	}
 
 
@@ -39,6 +46,7 @@ public class ObserverJogador implements Observer{
 		Pino pino = getPino(jogador.getId());
 		anda(jogadaDado, pino);
 		label.setText("Saldo: " + jogador.getSaldo());
+		listaJogadores.setListData(Controller.getInstance().getAdversarios().toArray());
 	}
 	/**
 	 * Método que move os pinos na GUI c

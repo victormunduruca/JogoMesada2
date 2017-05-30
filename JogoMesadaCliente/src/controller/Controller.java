@@ -32,13 +32,13 @@ public class Controller implements Publisher{
 	
 	
 	private Controller() {
-		//TESTEEEEEEEEE
-		jogadores = new ArrayList<Jogador>();
-		for(int i = 0; i < 7; i++) {
-			Jogador jogador = new Jogador(i, i+1, i+1000); //tirar esse construtor
-			jogadores.add(jogador);
-		}
-		//TESTEEEEEEEEE
+//		//TESTEEEEEEEEE
+//		adversarios = new ArrayList<Jogador>();
+//		for(int i = 0; i < 7; i++) {
+//			Jogador jogador = new Jogador(i, i*1000, "abc"); //tirar esse construtor
+//			adversarios.add(jogador);
+//		}
+//		//TESTEEEEEEEEE
 		observers = new ArrayList<Observer>();
 		criaCartas();
 	}
@@ -174,13 +174,13 @@ public class Controller implements Publisher{
 //	}
 	private static int i = 0;
 	public void metodoTeste() throws IdNaoEncontradoException {
-		Jogador jogador = getJogador(1);
-		jogador.setSaldo(jogador.getSaldo() + 1000);
-		i++;
-		if(i > 31) {
-			i = 0;
-		}
-		notifyObserver(i, jogador);
+//		//euJogador.setSaldo(euJogador.getSaldo() + 1000);
+//		adversarios.get(3).setSaldo(13);
+//		i++;
+//		if(i > 31) {
+//			i = 0;
+//		}
+//		notifyObserver(i, adversarios.get(3));
 
 		
 	}

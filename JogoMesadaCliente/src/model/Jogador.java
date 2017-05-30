@@ -13,11 +13,7 @@ public class Jogador {
 	
 	public Jogador() { }
 	
-	public Jogador(int id, int posicaoPino, float saldo) {
-		this.id = id;
-		this.posicaoPino = posicaoPino;
-		this.saldo = saldo;
-	}
+	
 	
 	public Jogador(int id, float saldo, String ip) {
 		this.id = id;
@@ -49,7 +45,7 @@ public class Jogador {
 	}
 	@Override
 	public String toString() {
-		return "ID: "+id+" Posiï¿½ï¿½o: "+posicaoPino+" Saldo: "+saldo;
+		return " Posição: "+posicaoPino+" Saldo: "+saldo;
 	}
 	public int getDivida() {
 		return divida;

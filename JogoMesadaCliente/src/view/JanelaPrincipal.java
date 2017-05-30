@@ -155,16 +155,14 @@ public class JanelaPrincipal {
 		JButton btnConsultarCartas = new JButton("Consultar Cartas");
 		btnConsultarCartas.setBounds(1050, 216, 113, 23);
 		frame.getContentPane().add(btnConsultarCartas);
+		
+		
+		JList listaJogadores = new JList(Controller.getInstance().getAdversarios().toArray());
+		listaJogadores.setBounds(927, 39, 222, 101);
 
-
-		JList list = new JList(controller.getJogadores().toArray());
-
-		list.setBounds(927, 39, 222, 101);
-		frame.getContentPane().add(list);
+		
 		
 
 		
 	}
-
-	
 }
