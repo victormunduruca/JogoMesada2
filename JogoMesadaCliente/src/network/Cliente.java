@@ -12,6 +12,7 @@ public class Cliente {
 	public interface OnRequest {
 		void onUpdate(String data);
 		void onClose();
+		void onErro(String erro);
 	}
 	
 	/**
@@ -62,7 +63,7 @@ public class Cliente {
 			        callback.onClose();
 			        reader.close();
 				} catch (IOException e) {
-					e.printStackTrace();
+					callback.onErro("Erro de conexão");
 				};
 			}
 		}).start();

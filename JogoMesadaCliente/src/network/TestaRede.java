@@ -1,11 +1,13 @@
 package network;
 import java.io.IOException;
 
+import network.Servidor.OnServidor;
+
 
 public class TestaRede {
 
     private static Servidor server;
-    private static int porta = 9090;
+    private static int porta = 4040;
 	/**
 	 * @param args
 	 */
@@ -13,14 +15,23 @@ public class TestaRede {
 		
 		try {
 			server = new Servidor(porta);
-			server.run();
+			server.run(new OnServidor() {
+				
+				@Override
+				public void onDadoRecebido(String data) {
+					System.out.println("Callback: " + data);
+				}
+				
+				@Override
+				public void onErro() { }
+			});
 		} catch (IOException e) {
 			System.err.println("Erro ao inciar o servidor");
 		}
-		testarEnviar();
+		testarEnviar(server.getPort());
 	}
 	
-    public static void testarEnviar() {
+    public static void testarEnviar(final int porta) {
         (new Thread() {
             @Override
             public void run() {

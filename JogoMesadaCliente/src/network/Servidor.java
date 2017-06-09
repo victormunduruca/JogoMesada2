@@ -15,6 +15,15 @@ public class Servidor {
 	private ServerSocket serverSocket;
 	private int port;
 	private boolean isRunning = false;
+	
+	/**
+	 * Interface utilizada para comunicação com o módulo de rede
+	 *
+	 */
+	public interface OnServidor {
+		void onDadoRecebido(String data);
+		void onErro();
+	}
 
 	public Servidor(int port) throws IOException {
 		serverSocket = new ServerSocket(port);
@@ -25,7 +34,7 @@ public class Servidor {
 	/**
 	 * Inicia a execução do servidor
 	 */
-	public void run() {
+	public void run(final OnServidor callback) {
 		
 		new Thread(new Runnable() {
 			@Override
@@ -38,7 +47,7 @@ public class Servidor {
 						Socket socket = serverSocket.accept();
 
 						// Lança uma thread para processar a corrente requisição
-						Thread thread = new Thread(new RequestWorker(socket));
+						Thread thread = new Thread(new RequestWorker(socket, callback));
 						thread.start();
 
 					} catch (IOException e) {

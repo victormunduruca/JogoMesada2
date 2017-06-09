@@ -1,10 +1,13 @@
 package controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
 
 import javax.swing.JOptionPane;
+
+import network.Servidor;
 
 
 import excpeptions.IdNaoEncontradoException;
@@ -29,7 +32,7 @@ public class Controller implements Publisher{
 	private int jogadaDado; //Camada de rede retorna a jogada do dado
 	private int saldoCliente;
 	
-	
+	private Servidor servidor;
 	
 	private Controller() {
 		//TESTEEEEEEEEE
@@ -48,6 +51,15 @@ public class Controller implements Publisher{
 			instanciaController = new Controller();
 		return instanciaController;
 	}
+	
+	/*private void iniciarServidor() {
+		try {
+			//servidor = new Servidor(4040 + getEuJogador().getId());
+			//servidor.run();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}*/
 	
 	public ArrayList<Jogador> getAdversarios() {
 		return adversarios;

@@ -10,15 +10,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import network.Servidor.OnServidor;
+
 /**
  * Created by franz on 4/17/17.
  */
 public class RequestWorker implements Runnable {
 
     private Socket socket;
+    private OnServidor callback;
 
-    public RequestWorker(Socket socket) {
+    public RequestWorker(Socket socket, OnServidor callback) {
         this.socket = socket;
+        this.callback = callback;
     }
 
     @Override
@@ -32,15 +36,15 @@ public class RequestWorker implements Runnable {
             System.out.println("Cliente conectado: " + socket.getRemoteSocketAddress().toString() + " conectado!");
 
             // Faz a leitura dos dados passados na requisição do cliente
-            //final StringBuffer request = new StringBuffer();
-            List<String> request = new ArrayList<String>();
             String line = reader.readLine();
+            StringBuilder sb = new StringBuilder();
             while (line != null && !line.isEmpty()) {
-                System.out.println(line);
-                request.add(line);
+            	sb.append(line);
                 line = reader.readLine();
             }
 
+            callback.onDadoRecebido(sb.toString());
+            
             // Monta um mecânismo de resposta
             StringBuffer response = new StringBuffer();
             response.append("");
@@ -52,22 +56,5 @@ public class RequestWorker implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    private Map<String, String> getParams(String params) {
-        Map<String, String> m = null;
-        String[] p = params.split(",");
-        if (p.length == 0) return m;
-        String[] v;
-        try {
-            m = new HashMap<String, String>();
-            for (int i = 0; i < p.length; i++) {
-                v = p[i].split("=");
-                m.put(v[0], v[1]);
-            }
-        } catch (Exception e) {
-           e.printStackTrace();
-        }
-        return m;
     }
 }
