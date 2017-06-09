@@ -19,21 +19,21 @@ import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import network.Servidor;
+import network.Servidor.OnServidor;
+
 import controller.Controller;
 import excpeptions.IdNaoEncontradoException;
 
-public class JanelaPrincipal {
+public class JanelaPrincipal implements OnServidor {
 
 	private Controller controller;
+
 	private JFrame frame;
 	private ArrayList<Pino> pinos;
-//	private static JanelaPrincipal instanciaJanelaPrincipal;
+	//	private static JanelaPrincipal instanciaJanelaPrincipal;
 	private ObserverJogador observerJogador;
-	
-	public JanelaPrincipal() throws IdNaoEncontradoException {
-		controller = Controller.getInstance();
-		initialize();
-	};
+
 	/**
 	 * Launch the application.
 	 */
@@ -41,6 +41,11 @@ public class JanelaPrincipal {
 		JanelaPrincipal.iniciar();
 	}
 	
+	public JanelaPrincipal() throws IdNaoEncontradoException {
+		controller = Controller.getInstance();
+		initialize();
+	};
+
 	public static void iniciar() {
 		try {
 			// Set System L&F
@@ -71,7 +76,7 @@ public class JanelaPrincipal {
 	 * @throws IdNaoEncontradoException 
 	 */
 	private void initialize() throws IdNaoEncontradoException {
-		
+
 		pinos = new ArrayList<Pino>();
 		Pino pinoAmarelo = new Pino("Amarelo.png");
 		Pino pinoAzul = new Pino("Azul.png");
@@ -79,7 +84,7 @@ public class JanelaPrincipal {
 		Pino pinoRoxo = new Pino("Roxo.png");
 		Pino pinoVerde = new Pino("Verde.png");
 		Pino pinoVermelho = new Pino("Vermelho.png");
-		
+
 		//TESTE
 		pinoVermelho.setIdJogador(1);
 		pinos.add(pinoVermelho);
@@ -89,7 +94,7 @@ public class JanelaPrincipal {
 		pinos.add(pinoRosa);
 		pinos.add(pinoAzul);
 		//TESTE
-		
+
 		JPanel panel = new JPanel();
 		JLayeredPane jLay = new JLayeredPane();
 		JLabel imagemTabuleiro = new JLabel(new ImageIcon("Tabuleiro.png"));
@@ -101,10 +106,10 @@ public class JanelaPrincipal {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		panel.setBounds(10, 39, 896, 685);
-	
+
 		ObserverJogador observerJogador = new ObserverJogador(frame, pinos);
 		controller.register(observerJogador);
-		
+
 		jLay.setPreferredSize(new Dimension(896, 685));
 		jLay.add(imagemTabuleiro, new Integer(10));
 
@@ -124,15 +129,15 @@ public class JanelaPrincipal {
 			int valorDado = 0;
 
 			public void actionPerformed(ActionEvent arg0) {;
-				try {
-					controller.metodoTeste();
-				} catch (IdNaoEncontradoException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-//				JOptionPane.showMessageDialog(null, "Valor do dado foi de = "
-//						+ valorDado);
-//				System.out.println("Valor dado: " + valorDado);
+			try {
+				controller.metodoTeste();
+			} catch (IdNaoEncontradoException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			//				JOptionPane.showMessageDialog(null, "Valor do dado foi de = "
+			//						+ valorDado);
+			//				System.out.println("Valor dado: " + valorDado);
 			}
 		});
 		btnRodarDado.setBounds(927, 266, 113, 51);
@@ -157,14 +162,15 @@ public class JanelaPrincipal {
 		frame.getContentPane().add(btnConsultarCartas);
 
 
-		JList list = new JList(controller.getJogadores().toArray());
+		JList listaJogadores = new JList(Controller.getInstance().getAdversarios().toArray());
+		listaJogadores.setBounds(927, 39, 222, 101);
 
-		list.setBounds(927, 39, 222, 101);
-		frame.getContentPane().add(list);
-		
-
+	}
+	
+	@Override
+	public void onDadoRecebido(String data) {
 		
 	}
-
-	
+	@Override
+	public void onErro() { }
 }
