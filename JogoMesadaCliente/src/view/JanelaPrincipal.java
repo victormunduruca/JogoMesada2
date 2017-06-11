@@ -27,10 +27,10 @@ import excpeptions.IdNaoEncontradoException;
 
 public class JanelaPrincipal implements OnServidor {
 
-	private Controller controller;
 
-	private JFrame frame;
-	private ArrayList<Pino> pinos;
+
+	private static JFrame frame;
+	private static ArrayList<Pino> pinos;
 	//	private static JanelaPrincipal instanciaJanelaPrincipal;
 	private ObserverJogador observerJogador;
 
@@ -42,8 +42,8 @@ public class JanelaPrincipal implements OnServidor {
 //	}
 //	
 	public JanelaPrincipal() throws IdNaoEncontradoException {
-		controller = Controller.getInstance();
-		initialize();
+		
+	//	initialize();
 	};
 
 	public static void iniciar() {
@@ -75,8 +75,10 @@ public class JanelaPrincipal implements OnServidor {
 	 * Initialize the contents of the frame.
 	 * @throws IdNaoEncontradoException 
 	 */
-	private void initialize() throws IdNaoEncontradoException {
-
+	public static void initialize() throws IdNaoEncontradoException {
+		
+		Controller controller = Controller.getInstance();
+		
 		pinos = new ArrayList<Pino>();
 		Pino pinoAmarelo = new Pino("Amarelo.png");
 		Pino pinoAzul = new Pino("Azul.png");
@@ -123,12 +125,15 @@ public class JanelaPrincipal implements OnServidor {
 		frame.getContentPane().add(panel);
 		panel.add(jLay);
 
-		JButton btnRodarDado = new JButton("Jogar Dado");
+				
+		
+		
+		JButton btnRodarDado = new JButton("Jogars Dado");
 		btnRodarDado.addActionListener(new ActionListener() {
 			int valorDado = 0;
 
 			public void actionPerformed(ActionEvent arg0) {;
-				controller.metodoTeste();
+				Controller.getInstance().metodoTeste();
 			}
 		});
 		btnRodarDado.setBounds(927, 266, 113, 51);
@@ -137,7 +142,7 @@ public class JanelaPrincipal implements OnServidor {
 		JButton btnConsultarSaldos = new JButton("Mudar Saldo");
 		btnConsultarSaldos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				controller.metodoTeste();
+				Controller.getInstance().metodoTeste();
 			}
 		});
 		btnConsultarSaldos.setBounds(927, 216, 113, 23);

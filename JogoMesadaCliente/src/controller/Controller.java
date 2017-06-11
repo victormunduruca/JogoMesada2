@@ -14,6 +14,7 @@ import model.CartaCompra;
 import model.Jogador;
 import model.Observer;
 import model.Publisher;
+import model.onController;
 
 public class Controller implements Publisher{
 	
@@ -198,6 +199,7 @@ public class Controller implements Publisher{
 	private static int i = 0;
 	public void metodoTeste() {
 		System.out.println("metodo teste rodou");
+		//callback.onUpdate(euJogador);
 		notifyObserver(euJogador);
 //		//euJogador.setSaldo(euJogador.getSaldo() + 1000);
 //		adversarios.get(3).setSaldo(13);

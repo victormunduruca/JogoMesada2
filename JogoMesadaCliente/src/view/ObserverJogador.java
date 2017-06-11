@@ -25,6 +25,7 @@ public class ObserverJogador implements Observer{
 	private JLabel label; //Label com o saldo
 	private JList listaJogadores;
 	
+	
 	public ObserverJogador(JFrame frame, ArrayList<Pino> pinos) {
 		System.out.println("Inicializou ObserverJogador");
 		listaJogadores = new JList(Controller.getInstance().getAdversarios().toArray());

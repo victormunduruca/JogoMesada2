@@ -22,15 +22,10 @@ public class TesteAndaDado {
 //    	
 //    }
 //    
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IdNaoEncontradoException {
   
     
-    	try {
-			janelaPrincipal = new JanelaPrincipal();
-		} catch (IdNaoEncontradoException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+    	JanelaPrincipal.initialize();
     	janelaEspera = new JanelaSalaDeEspera();
     	janelaEspera.iniciar(new RequestCallback());
     	
@@ -55,9 +50,6 @@ public class TesteAndaDado {
 //    		System.err.println("Erro ao inciar o servidor");
 //    	}
 	}
-    public void decodificaMensagem(String data) {
-    	
-    }
     private static class RequestCallback implements OnRequest {
 
 		@Override
