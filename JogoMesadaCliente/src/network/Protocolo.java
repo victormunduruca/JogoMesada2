@@ -33,7 +33,9 @@ public class Protocolo {
 		
 		private static Jogador formatarJogador(String str) {
 			String[] attrs = str.split(",");
-			return new Jogador(Integer.valueOf(attrs[0]), Float.valueOf(attrs[1]), attrs[2]);
+			Jogador novoJogador = new Jogador(Integer.valueOf(attrs[0]), Float.valueOf(attrs[1]), attrs[2]);
+			novoJogador.setPosicaoPino(0);
+			return novoJogador;
 		}
 	}
 }

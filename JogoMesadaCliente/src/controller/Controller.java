@@ -8,8 +8,7 @@ import java.util.Random;
 import javax.swing.JOptionPane;
 
 import network.Servidor;
-
-
+import network.Servidor.OnServidor;
 import excpeptions.IdNaoEncontradoException;
 import model.CartaCompra;
 import model.Jogador;
@@ -29,7 +28,6 @@ public class Controller implements Publisher{
 	private int idJogadorMaquina; //Id jogador desse computador
 	private ArrayList<String> cartasCorreio; //Cartas referentes a casa correio
 //	private ArrayList<String> bufferCartasCorreio;
-	private int jogadaDado; //Camada de rede retorna a jogada do dado
 	private int saldoCliente;
 	
 	private Servidor servidor;
@@ -42,24 +40,47 @@ public class Controller implements Publisher{
 //			adversarios.add(jogador);
 //		}
 //		//TESTEEEEEEEEE
+	//	iniciarServidor();
 		observers = new ArrayList<Observer>();
 		criaCartas();
 	}
-	
+	/**
+	 * M�todo que notfica o come�o da partida, no momento que sai da sala de espera
+	 */
+//	public void notificarComeco() {
+//		notifyObserver(0, euJogador);
+//		for(Jogador j : jogadores) {
+//			notifyObserver(0, j);
+//		}
+//	}
 	public static Controller getInstance(){
-		if(instanciaController == null)
+		if(instanciaController == null) 
 			instanciaController = new Controller();
 		return instanciaController;
 	}
 	
-	/*private void iniciarServidor() {
+	private void iniciarServidor() {
 		try {
-			//servidor = new Servidor(4040 + getEuJogador().getId());
-			//servidor.run();
+			servidor = new Servidor(4040 + getEuJogador().getId());
+			servidor.run(new OnServidor() {
+				
+				@Override
+				public void onDadoRecebido(String data) {
+					// XXX Apagar quando você ler, Victor
+					// É aqui onde começa a lógica do jogo.
+					// Falta apenas formatar esse "data" bruto que representa o protocolo 
+					// para as informações de jogo (semelhante o que eu fiz em network.Protocolo
+					// para implementar a sala de espera
+					
+					System.out.println("Eco recbedido: " + data);
+				}
+				@Override
+				public void onErro() { }
+			});
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}*/
+	}
 	
 	public ArrayList<Jogador> getAdversarios() {
 		return adversarios;
@@ -74,39 +95,29 @@ public class Controller implements Publisher{
 	}
 
 	public void setEuJogador(Jogador euJogador) {
+	//	System.out.println("Atualizou eu jogador com o id: " +euJogador.getId());
 		this.euJogador = euJogador;
+		//notifyObserver(euJogador);
 	}
 	
-	//Colocar m�todo update para mudar o id do jogador atual com base no controller de rede
-	//Implementar padr�o observer com a interface para atualizar quando um jogador muda
+//	public static void main(String[] args) {
+//		//JOptionPane.showConfirmDialog(null, "teste");
+//		System.out.println("AFF");
+//		Controller controller = new Controller();
+//		Jogador jogador = new Jogador();
+//		jogador.setId(1);
+//		int opcao = JOptionPane.showConfirmDialog(null, "WOW", "Selecione os pontos", JOptionPane.OK_CANCEL_OPTION);
+////		System.out.println("Saldo antes: " +jogador.getSaldo());
+////		controller.acaoCompraEntretenimento(false, jogador, controller.getCompraEntretenimento());
+////		System.out.println("Nome da carta: " +jogador.getCartasCompras().get(0).getNomeCarta());
+////		controller.casaAchouComprador(jogador);
+////		System.out.println("Saldo depois: " +jogador.getSaldo());
+//		
+//		//jogador.setPosicaoPino(3);
+//		//ArrayList<String> cartinhas = controller.casaCorreio(jogador);
+//		
+//	}
 	
-	/*
-	 * while(nao acaba o jogo){
-	 * 		if(idAtual == idJogadorMaquina) 
-	 * 				jogadaInterna();
-	 * 		else 
-	 * 				jogadaExterna();	
-	 * }
-	 * Alternativa: while na view
-	 */
-	
-	public static void main(String[] args) {
-		//JOptionPane.showConfirmDialog(null, "teste");
-		System.out.println("AFF");
-		Controller controller = new Controller();
-		Jogador jogador = new Jogador();
-		jogador.setId(1);
-		int opcao = JOptionPane.showConfirmDialog(null, "WOW", "Selecione os pontos", JOptionPane.OK_CANCEL_OPTION);
-//		System.out.println("Saldo antes: " +jogador.getSaldo());
-//		controller.acaoCompraEntretenimento(false, jogador, controller.getCompraEntretenimento());
-//		System.out.println("Nome da carta: " +jogador.getCartasCompras().get(0).getNomeCarta());
-//		controller.casaAchouComprador(jogador);
-//		System.out.println("Saldo depois: " +jogador.getSaldo());
-		
-		//jogador.setPosicaoPino(3);
-		//ArrayList<String> cartinhas = controller.casaCorreio(jogador);
-		
-	}
 	private static int jogaDado() {
 		Random rand = new Random();
 		return rand.nextInt(6) + 1;
@@ -185,7 +196,9 @@ public class Controller implements Publisher{
 //		notifyObserver();
 //	}
 	private static int i = 0;
-	public void metodoTeste() throws IdNaoEncontradoException {
+	public void metodoTeste() {
+		System.out.println("metodo teste rodou");
+		notifyObserver(euJogador);
 //		//euJogador.setSaldo(euJogador.getSaldo() + 1000);
 //		adversarios.get(3).setSaldo(13);
 //		i++;
@@ -272,6 +285,7 @@ public class Controller implements Publisher{
 	@Override
 	public void register(Observer o) {
 		// TODO Auto-generated method stub
+		System.out.println("Registrou");
 		observers.add(o);
 		
 	}
@@ -281,10 +295,11 @@ public class Controller implements Publisher{
 		observers.remove(o);
 	}
 	@Override
-	public void notifyObserver(int jogadaDado, Jogador jogador) {
+	public void notifyObserver(Jogador jogador) {
 		// TODO Auto-generated method stub
 		for(Observer observer : observers) {
-			observer.update(jogadaDado, jogador);
+			System.out.println("Dentro do notify observer atualizando");
+			observer.update(jogador);
 		}
 	}
 	public ArrayList<Jogador> getJogadores() {

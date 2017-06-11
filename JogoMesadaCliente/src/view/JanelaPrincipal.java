@@ -34,13 +34,13 @@ public class JanelaPrincipal implements OnServidor {
 	//	private static JanelaPrincipal instanciaJanelaPrincipal;
 	private ObserverJogador observerJogador;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) { 
-		JanelaPrincipal.iniciar();
-	}
-	
+//	/**
+//	 * Launch the application.
+//	 */
+//	public static void main(String[] args) { 
+//		JanelaPrincipal.iniciar();
+//	}
+//	
 	public JanelaPrincipal() throws IdNaoEncontradoException {
 		controller = Controller.getInstance();
 		initialize();
@@ -86,7 +86,6 @@ public class JanelaPrincipal implements OnServidor {
 		Pino pinoVermelho = new Pino("Vermelho.png");
 
 		//TESTE
-		pinoVermelho.setIdJogador(1);
 		pinos.add(pinoVermelho);
 		pinos.add(pinoVerde);
 		pinos.add(pinoAmarelo);
@@ -129,15 +128,7 @@ public class JanelaPrincipal implements OnServidor {
 			int valorDado = 0;
 
 			public void actionPerformed(ActionEvent arg0) {;
-			try {
 				controller.metodoTeste();
-			} catch (IdNaoEncontradoException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			//				JOptionPane.showMessageDialog(null, "Valor do dado foi de = "
-			//						+ valorDado);
-			//				System.out.println("Valor dado: " + valorDado);
 			}
 		});
 		btnRodarDado.setBounds(927, 266, 113, 51);
@@ -146,12 +137,7 @@ public class JanelaPrincipal implements OnServidor {
 		JButton btnConsultarSaldos = new JButton("Mudar Saldo");
 		btnConsultarSaldos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				try {
-					controller.metodoTeste();
-				} catch (IdNaoEncontradoException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				controller.metodoTeste();
 			}
 		});
 		btnConsultarSaldos.setBounds(927, 216, 113, 23);

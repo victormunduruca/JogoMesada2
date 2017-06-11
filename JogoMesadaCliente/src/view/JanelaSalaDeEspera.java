@@ -15,16 +15,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
-import javax.swing.WindowConstants;
 
 import model.Jogador;
 import network.Cliente;
 import network.Cliente.OnRequest;
-import network.Protocolo;
-
-import com.sun.security.ntlm.Client;
-
-import controller.Controller;
 
 public class JanelaSalaDeEspera extends JPanel {
 
@@ -39,8 +33,12 @@ public class JanelaSalaDeEspera extends JPanel {
 	private JLabel info;
 
 	private boolean conectado = false;
-
+	
+	private OnRequest requestCallback;
+	
 	public JanelaSalaDeEspera() {
+		
+	
 		setLayout(new BorderLayout());
 		model = new DefaultListModel();
 		list = new JList(model);
@@ -69,7 +67,7 @@ public class JanelaSalaDeEspera extends JPanel {
 		setListeners();
 	}
 
-	private void atualizarListaJogadores(final Jogador euJogador, final ArrayList<Jogador> adversarios) {
+	public void atualizarListaJogadores(final Jogador euJogador, final ArrayList<Jogador> adversarios) {
 		SwingUtilities.invokeLater(new Runnable(){
 			public void run(){
 				model.clear();
@@ -80,7 +78,7 @@ public class JanelaSalaDeEspera extends JPanel {
 			}});
 	}
 
-	private void setInfo(final String msg) {
+	public void setInfo(final String msg) {
 		SwingUtilities.invokeLater(new Runnable() {
 
 			@Override
@@ -95,7 +93,7 @@ public class JanelaSalaDeEspera extends JPanel {
 		System.out.println("CONECTANDO PARA " + ip + ":" + porta);
 		if (!conectado) {
 			Cliente cliente = new Cliente();
-			cliente.requisitar(ip, Integer.valueOf(porta), new RequestCallback());
+			cliente.requisitar(ip, Integer.valueOf(porta), requestCallback);
 			conButton.setText("Desconectar");
 		}
 		conectado = true;  
@@ -109,49 +107,28 @@ public class JanelaSalaDeEspera extends JPanel {
 		});
 	}
 
-	private class RequestCallback implements OnRequest {
+	
 
-		@Override
-		public void onUpdate(String data) {
-			System.out.println("RECEBIDO: " + data);
-			Controller controlador = Controller.getInstance();
-
-			Jogador euJogador = Protocolo.SalaEspera.getEuJogador(data);
-			ArrayList<Jogador> adversarios = Protocolo.SalaEspera.getAdversarios(data);
-
-			controlador.setEuJogador(euJogador);
-			controlador.setAdversarios(adversarios);
-
-			atualizarListaJogadores(euJogador, adversarios);
-		}
-
-		@Override
-		public void onClose() {
-			JanelaPrincipal.iniciar();
-			fechar();
-		}
-
-		@Override
-		public void onErro(String erro) {
-			setInfo("Erro de conex√£o");
-		}
-	}
-
-	public void iniciar() {
+	public void iniciar(OnRequest requestCallback) {
+		this.requestCallback = requestCallback;
 		frame = new JFrame("Jogo da Mesada - Sala de Espera");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setContentPane(new JanelaSalaDeEspera());
+	//	frame.setContentPane(new JanelaSalaDeEspera());
+		frame.setContentPane(this);
 		frame.setSize(300, 220);
-		frame.setVisible(true);	  
+		frame.setVisible(true);	 
 	}
 
 	public void fechar() {
+		if(frame == null) {
+			System.out.println("o frame È nulo");
+		}
 		frame.setVisible(false);
 		frame.dispose();
 	}
 
-	public static void main(String s[]) {
-		JanelaSalaDeEspera j = new JanelaSalaDeEspera();
-		j.iniciar();
-	}
+//	public static void main(String s[]) {
+//		JanelaSalaDeEspera j = new JanelaSalaDeEspera();
+//		j.iniciar();
+//	}
 }

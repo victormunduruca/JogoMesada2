@@ -19,12 +19,14 @@ import model.Observer;
  *
  */
 public class ObserverJogador implements Observer{
+	
 	private ArrayList<Pino> pinos; //Lista de pinos
 	private JFrame frame; //Frame da janela principal
 	private JLabel label; //Label com o saldo
 	private JList listaJogadores;
 	
 	public ObserverJogador(JFrame frame, ArrayList<Pino> pinos) {
+		System.out.println("Inicializou ObserverJogador");
 		listaJogadores = new JList(Controller.getInstance().getAdversarios().toArray());
 		listaJogadores.setBounds(927, 39, 222, 138);
 		
@@ -41,10 +43,12 @@ public class ObserverJogador implements Observer{
 
 
 	@Override
-	public void update(int jogadaDado, Jogador jogador) {
+	public void update(Jogador jogador) {
 		// TODO Auto-generated method stub
+		System.out.println("Deu update jogador: " +jogador.getId());
 		Pino pino = getPino(jogador.getId());
-		anda(jogadaDado, pino);
+		System.out.println("Achou o pino: " +pino.getIdJogador());
+		anda(jogador.getPosicaoPino(), pino);
 		label.setText("Saldo: " + jogador.getSaldo());
 		listaJogadores.setListData(Controller.getInstance().getAdversarios().toArray());
 	}
@@ -56,6 +60,12 @@ public class ObserverJogador implements Observer{
 	public void anda(int posicao, Pino pino) {
 		pino.setX(0);
 		pino.setY(0);
+		System.out.println("Entrou metodo anda");
+		System.out.println("Posicao que ele pegou: " +posicao);
+		if(posicao == 0) {
+			pino.getLabel().setBounds(0, 0, 128, 137);
+			return;
+		}
 		for (int i = posicao; i > 0; i--) {
 			System.out.println("\n i = " + i + "\n");
 			System.out.println("X: " + pino.getX() + " Y: " + pino.getY());
