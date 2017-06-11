@@ -5,8 +5,6 @@ import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Random;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -19,16 +17,14 @@ import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import network.Servidor;
-import network.Servidor.OnServidor;
-
 import controller.Controller;
 import excpeptions.IdNaoEncontradoException;
+import network.Servidor.OnServidor;
 
 public class JanelaPrincipal implements OnServidor {
 
 
-
+	private static JButton btnRodarDado;
 	private static JFrame frame;
 	private static ArrayList<Pino> pinos;
 	//	private static JanelaPrincipal instanciaJanelaPrincipal;
@@ -128,14 +124,8 @@ public class JanelaPrincipal implements OnServidor {
 				
 		
 		
-		JButton btnRodarDado = new JButton("Jogars Dado");
-		btnRodarDado.addActionListener(new ActionListener() {
-			int valorDado = 0;
-
-			public void actionPerformed(ActionEvent arg0) {;
-				Controller.getInstance().metodoTeste();
-			}
-		});
+		btnRodarDado = new JButton("Jogars Dado");
+		
 		btnRodarDado.setBounds(927, 266, 113, 51);
 		frame.getContentPane().add(btnRodarDado);
 
@@ -158,7 +148,19 @@ public class JanelaPrincipal implements OnServidor {
 
 	}
 	
-	@Override
+	public static void jogarDado(ActionListener aListener) {
+		btnRodarDado.addActionListener(aListener);
+	}
+	public static void desabilitarBtnRodarDado() {
+		btnRodarDado.setEnabled(false);
+	}
+	public static void habilitarBtnRodarDado() {
+		btnRodarDado.setEnabled(true);
+	}
+	public static void eSuaVez() {
+		JOptionPane.showMessageDialog(null, "Sua vez!", "Sua vez!", JOptionPane.INFORMATION_MESSAGE);
+	}
+  	@Override
 	public void onDadoRecebido(String data) {
 		
 	}

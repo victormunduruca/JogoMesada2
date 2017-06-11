@@ -18,7 +18,7 @@ public class Jogador {
 	public Jogador(int id, float saldo, String ip) {
 		this.id = id;
 		this.saldo = saldo;
-		this.ip = ip;
+		this.setIp(ip);
 	}
 	
 	public int getPosicaoPino() {
@@ -45,7 +45,7 @@ public class Jogador {
 	}
 	@Override
 	public String toString() {
-		return " Posição: "+posicaoPino+" Saldo: "+saldo;
+		return "ID: "+id+" Posição: "+posicaoPino+" Saldo: "+saldo;
 	}
 	public int getDivida() {
 		return divida;
@@ -55,5 +55,11 @@ public class Jogador {
 	}
 	public ArrayList<CartaCompra> getCartasCompras() {
 		return cartasCompras;
+	}
+	public String getIp() {
+		return ip;
+	}
+	public void setIp(String ip) {
+		this.ip = ip;
 	}
 }

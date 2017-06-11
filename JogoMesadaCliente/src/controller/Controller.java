@@ -60,33 +60,40 @@ public class Controller implements Publisher{
 		return instanciaController;
 	}
 	
-	private void iniciarServidor() {
-		try {
-			servidor = new Servidor(4040 + getEuJogador().getId());
-			servidor.run(new OnServidor() {
-				
-				@Override
-				public void onDadoRecebido(String data) {
-					// XXX Apagar quando você ler, Victor
-					// É aqui onde começa a lógica do jogo.
-					// Falta apenas formatar esse "data" bruto que representa o protocolo 
-					// para as informações de jogo (semelhante o que eu fiz em network.Protocolo
-					// para implementar a sala de espera
-					
-					System.out.println("Eco recbedido: " + data);
-				}
-				@Override
-				public void onErro() { }
-			});
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+//	private void iniciarServidor() {
+//		try {
+//			servidor = new Servidor(4040 + getEuJogador().getId());
+//			servidor.run(new OnServidor() {
+//				
+//				@Override
+//				public void onDadoRecebido(String data) {
+//					// XXX Apagar quando você ler, Victor
+//					// É aqui onde começa a lógica do jogo.
+//					// Falta apenas formatar esse "data" bruto que representa o protocolo 
+//					// para as informações de jogo (semelhante o que eu fiz em network.Protocolo
+//					// para implementar a sala de espera
+//					
+//					System.out.println("Eco recbedido: " + data);
+//				}
+//				@Override
+//				public void onErro() { }
+//			});
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//	}
 	
 	public ArrayList<Jogador> getAdversarios() {
 		return adversarios;
 	}
-
+	public Jogador getAdversario(int id) {
+		for(Jogador jogador : adversarios) {
+			if(jogador.getId() == id) {
+				return jogador;
+			}
+		}
+		return null;
+	}
 	public void setAdversarios(ArrayList<Jogador> adversarios) {
 		this.adversarios = adversarios;
 	}
@@ -200,6 +207,7 @@ public class Controller implements Publisher{
 	public void metodoTeste() {
 		System.out.println("metodo teste rodou");
 		//callback.onUpdate(euJogador);
+		System.out.println("ip do euJogador: " +euJogador.getIp());
 		notifyObserver(euJogador);
 //		//euJogador.setSaldo(euJogador.getSaldo() + 1000);
 //		adversarios.get(3).setSaldo(13);
@@ -326,6 +334,11 @@ public class Controller implements Publisher{
 
 	public void setIdJogadorMaquina(int idJogadorMaquina) {
 		this.idJogadorMaquina = idJogadorMaquina;
+	}
+	public Jogador jogarDado() {
+		// TODO Auto-generated method stub
+		euJogador.setPosicaoPino(euJogador.getPosicaoPino()+jogaDado());
+		return euJogador;
 	}
 	
 	
