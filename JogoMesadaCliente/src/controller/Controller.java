@@ -46,7 +46,7 @@ public class Controller implements Publisher{
 		criaCartas();
 	}
 	/**
-	 * Método que notfica o começo da partida, no momento que sai da sala de espera
+	 * Mï¿½todo que notfica o comeï¿½o da partida, no momento que sai da sala de espera
 	 */
 //	public void notificarComeco() {
 //		notifyObserver(0, euJogador);
@@ -343,6 +343,26 @@ public class Controller implements Publisher{
 		return euJogador;
 	}
 	
+	public void atualizarAdversario(int id, int posicao, float saldo) {
+		for (Jogador adv : adversarios) {
+			if (adv.getId() == id) {
+				System.out.println("Adversario " + id + " modificado");
+				adv.setPosicaoPino(posicao);
+				adv.setSaldo(saldo);
+				return;
+			}
+		}
+		System.out.println("atualizarAdversario(): Adversario nao encontrado");
+	}
 	
+	public int lancarDado() {
+		int posicao = ((euJogador.getPosicaoPino() + 1) % 32); // Se igual a 32, zera a posicao
+		euJogador.setPosicaoPino(posicao);
+		return posicao;
+	}
 	
+	private int randInt(int min, int max) {
+	    Random rand = new Random();
+	    return rand.nextInt((max - min) + 1) + min;
+	}
 }

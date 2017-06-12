@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Jogador {
 	
 	private int id; //Id identificador para cada jogador
-	private int posicaoPino; //Posiï¿½ï¿½o no pino no tabuleiro, de 1 a 31
+	private int posicaoPino = 0; //Posiï¿½ï¿½o no pino no tabuleiro, de 1 a 31
 	private float saldo = 3500; //Saldo do jogador
 	private int divida; 
 	private String ip;
@@ -45,7 +45,7 @@ public class Jogador {
 	}
 	@Override
 	public String toString() {
-		return "ID: "+id+" Posição: "+posicaoPino+" Saldo: "+saldo;
+		return "ID: "+id+" Pos: "+posicaoPino+" Saldo: "+saldo;
 	}
 	public int getDivida() {
 		return divida;

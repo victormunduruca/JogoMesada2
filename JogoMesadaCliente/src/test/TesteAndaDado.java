@@ -31,7 +31,7 @@ public class TesteAndaDado {
     public static void main(String[] args) throws IdNaoEncontradoException {
   
     
-    	JanelaPrincipal.initialize();
+    	//JanelaPrincipal.initialize();
     	janelaEspera = new JanelaSalaDeEspera();
     	janelaEspera.iniciar(new RequestCallback());
 	}
@@ -56,9 +56,9 @@ public class TesteAndaDado {
 			inicializaJogo();
 		}
 		public void inicializaJogo() {
-			JanelaPrincipal.iniciar();
+			//JanelaPrincipal.iniciar();
 			if(Controller.getInstance().getEuJogador().getId() == 1) {
-				JanelaPrincipal.habilitaJogar();
+				//JanelaPrincipal.habilitaJogar();
 			}
 			inicializaServidor();
 		}
@@ -81,7 +81,7 @@ public class TesteAndaDado {
 						Controller.getInstance().notifyObserver(jogadorUpdate);
 						
 						if(ProtocoloJogadores.getId(data)+1 == Controller.getInstance().getEuJogador().getId() ||  daVolta(data)) {
-							JanelaPrincipal.habilitaJogar();
+							//JanelaPrincipal.habilitaJogar();
 						}
 					}
 					@Override

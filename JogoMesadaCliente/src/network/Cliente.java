@@ -34,14 +34,15 @@ public class Cliente {
 	        out.newLine();
 	        out.flush();
 	    } catch (IOException e) {
-	    	e.printStackTrace();
+	    	//e.printStackTrace();
 	        return false;
 	        
 	    } finally {
 	        try {
 				socket.close();
 			} catch (IOException e) {
-				e.printStackTrace();
+				return false;
+				//e.printStackTrace();
 			}
 	    }
 	    return true;
@@ -60,6 +61,7 @@ public class Cliente {
 			        while((line = reader.readLine()) != null){
 			            callback.onUpdate(line);
 			        }
+			        
 			        callback.onClose();
 			        reader.close();
 				} catch (IOException e) {

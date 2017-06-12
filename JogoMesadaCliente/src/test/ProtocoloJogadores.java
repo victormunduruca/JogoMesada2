@@ -2,6 +2,9 @@ package test;
 
 import model.Jogador;
 
+/**
+ * Protocolo: NUMERO_ACAO(int)#ID(int),POSICAO(int),SALDO(float)
+ */
 public class ProtocoloJogadores {
 	public static int getAcao(String str) {
 		return Integer.valueOf(str.split("#")[0]);
