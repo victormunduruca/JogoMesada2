@@ -52,4 +52,8 @@ public class CartaCompra {
 			break;
 		}
 	}
+	@Override
+	public String toString() {
+		return nomeCarta+"\n"+"Valor Carta: " +valorCarta+" Valor Revenda: "+valorRevendaCarta;
+	}
 }

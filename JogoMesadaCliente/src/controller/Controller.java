@@ -251,6 +251,12 @@ public class Controller implements Publisher{
 			jogador.setDivida(jogador.getDivida()+carta.getValorCarta());
 		jogador.addCarta(carta); //adiciona a carta, debitando o valor no saldo internamente
 	}
+	public boolean necessitaEmprestimo(CartaCompra cartaCompra, Jogador jogador) {
+		if(jogador.getSaldo() - cartaCompra.getValorCarta() < 0) {
+			return true;
+		}
+		return false;
+	}
 	/**
 	 * M�todo a��o em casa "achou comprador", que retorna ao jogador o valor de revenda na sua primeira carta de compras e 
 	 * entretenimento.

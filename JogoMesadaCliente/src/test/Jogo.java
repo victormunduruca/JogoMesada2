@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import controller.Controller;
+import model.CartaCompra;
 import model.Jogador;
 import network.Cliente.OnRequest;
 import network.Servidor.OnServidor;
@@ -113,7 +114,17 @@ public class Jogo implements OnJogo {
 		Controller controller = Controller.getInstance();
 		
 		controller.lancarDado(); // Lanca o dado
-		
+		int posicao = controller.getEuJogador().getPosicaoPino();
+		if(posicao == 2) {
+			controller.casaPremio(controller.getEuJogador());
+			janelaTabuleiro.casaPremio();
+		} else if(posicao == 4 || posicao == 12 || posicao == 15 || posicao == 25) {
+			CartaCompra cartaCompra = controller.getCompraEntretenimento();
+			boolean eEmprestimo =  controller.necessitaEmprestimo(cartaCompra, controller.getEuJogador());
+			if(janelaTabuleiro.casaCompraEntretenimento(cartaCompra.toString(), eEmprestimo)) {
+				controller.acaoCompraEntretenimento(eEmprestimo, controller.getEuJogador(), cartaCompra);
+			}
+		}
 		System.out.println("%%%%%%%%%%%% APERTOU O BOTAO DE JOGAR O DADO");
 
 		// Envia a minha posicao para os outros jogadores

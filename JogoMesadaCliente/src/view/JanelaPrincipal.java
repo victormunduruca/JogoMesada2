@@ -37,6 +37,8 @@ public class JanelaPrincipal {
 	 */
 	public interface OnJogo { // TODO Impelementar metodos para o jogo
 		void onDadoLancado();
+
+		//void onAcaoCasaEntretenimento();
 	}
 	
 	public JanelaPrincipal(OnJogo listener) {
@@ -228,5 +230,25 @@ public class JanelaPrincipal {
 	
 	public void eSuaVez() {
 		JOptionPane.showMessageDialog(null, "Sua vez!", "Sua vez!", JOptionPane.INFORMATION_MESSAGE);
+	}
+
+	public void casaPremio() {
+		JOptionPane.showMessageDialog(null, "Voce ganhou 5.000$", "Premio!", JOptionPane.INFORMATION_MESSAGE);
+	}
+
+	public boolean casaCompraEntretenimento(String cartaCompra, boolean eEmprestimo) {
+		int opcao = JOptionPane.showConfirmDialog(null, "Voce retirou a carta: " + cartaCompra + "\n Deseja compra-la?", "Carta Compra!", JOptionPane.OK_CANCEL_OPTION);
+		if(opcao == JOptionPane.OK_OPTION) {
+			if(eEmprestimo) {
+				switch (JOptionPane.showConfirmDialog(null, "Voce nao tem saldo suficiente, deseja realizar um emprestimo?", "Ops!", JOptionPane.OK_CANCEL_OPTION)) {
+				case JOptionPane.OK_OPTION:
+					break;
+				default:
+					return false;
+				}
+			} 
+			return true;
+		}
+		return false;
 	}
 }
