@@ -19,7 +19,10 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import controller.Controller;
 import excpeptions.IdNaoEncontradoException;
+import model.Jogador;
+import network.Cliente;
 import network.Servidor.OnServidor;
+import test.ProtocoloJogadores;
 
 public class JanelaPrincipal implements OnServidor {
 
@@ -124,17 +127,42 @@ public class JanelaPrincipal implements OnServidor {
 				
 		
 		
-		btnRodarDado = new JButton("Jogars Dado");
-		
+		btnRodarDado = new JButton("Jogar Dado");
+		btnRodarDado.addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				System.out.println("%%%%%%%%%%%% APERTOU O BOTAO DE JOGAR O DADO");
+				Jogador euJogador = Controller.getInstance().jogarDado();
+//				Controller.getInstance().notifyObserver(euJogador);
+				 (new Thread() {
+			            @Override
+			            public void run() {
+			            	System.out.println("----------------------ENVIOU PRA OS OUTROS ---------- do " +Controller.getInstance().getEuJogador().getId());
+			            	Cliente cliente = new Cliente();
+			            	//Thread.sleep(500);
+			            	System.out.println("####################TAMANHO LISTA DE ADVERSARIOS: " +Controller.getInstance().getAdversarios().size());
+			            	for(Jogador jogador : Controller.getInstance().getAdversarios()) {
+			            		System.out.println("####################ENVIOU PARA O: " +jogador.getId());
+			            		System.out.println("Resposta: " + 
+										cliente.enviar(jogador.getIp(), 4040+jogador.getId(), ProtocoloJogadores.enviarJogador(1, Controller.getInstance().getEuJogador()))); //mudar pra jogador.getIP()
+			            	}
+							
+			            }
+			        }).start();
+				 btnRodarDado.setEnabled(false);
+			}
+			
+		});
 		btnRodarDado.setBounds(927, 266, 113, 51);
 		frame.getContentPane().add(btnRodarDado);
 
 		JButton btnConsultarSaldos = new JButton("Mudar Saldo");
-		btnConsultarSaldos.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				Controller.getInstance().metodoTeste();
-			}
-		});
+//		btnConsultarSaldos.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent arg0) {
+//				Controller.getInstance().metodoTeste();
+//			}
+//		});
 		btnConsultarSaldos.setBounds(927, 216, 113, 23);
 		frame.getContentPane().add(btnConsultarSaldos);
 
@@ -148,15 +176,15 @@ public class JanelaPrincipal implements OnServidor {
 
 	}
 	
-	public static void jogarDado(ActionListener aListener) {
-		btnRodarDado.addActionListener(aListener);
-	}
-	public static void desabilitarBtnRodarDado() {
-		btnRodarDado.setEnabled(false);
-	}
-	public static void habilitarBtnRodarDado() {
+	public static void habilitaJogar() {
 		btnRodarDado.setEnabled(true);
 	}
+//	public static void desabilitarBtnRodarDado() {
+//		btnRodarDado.setEnabled(false);
+//	}
+//	public static void habilitarBtnRodarDado() {
+//		btnRodarDado.setEnabled(true);
+//	}
 	public static void eSuaVez() {
 		JOptionPane.showMessageDialog(null, "Sua vez!", "Sua vez!", JOptionPane.INFORMATION_MESSAGE);
 	}

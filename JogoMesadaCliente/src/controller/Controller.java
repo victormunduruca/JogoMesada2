@@ -203,22 +203,22 @@ public class Controller implements Publisher{
 //		saldoCliente++;
 //		notifyObserver();
 //	}
-	private static int i = 0;
-	public void metodoTeste() {
-		System.out.println("metodo teste rodou");
-		//callback.onUpdate(euJogador);
-		System.out.println("ip do euJogador: " +euJogador.getIp());
-		notifyObserver(euJogador);
-//		//euJogador.setSaldo(euJogador.getSaldo() + 1000);
-//		adversarios.get(3).setSaldo(13);
-//		i++;
-//		if(i > 31) {
-//			i = 0;
-//		}
-//		notifyObserver(i, adversarios.get(3));
-
-		
-	}
+//	private static int i = 0;
+//	public void metodoTeste() {
+//		System.out.println("metodo teste rodou");
+//		//callback.onUpdate(euJogador);
+//		System.out.println("ip do euJogador: " +euJogador.getIp());
+//		notifyObserver(euJogador);
+////		//euJogador.setSaldo(euJogador.getSaldo() + 1000);
+////		adversarios.get(3).setSaldo(13);
+////		i++;
+////		if(i > 31) {
+////			i = 0;
+////		}
+////		notifyObserver(i, adversarios.get(3));
+//
+//		
+//	}
  	/**
 	 * M�todo para obter o jogador a partir de um determinado id
 	 * @param Id do jogador que se deseja obter
@@ -337,7 +337,9 @@ public class Controller implements Publisher{
 	}
 	public Jogador jogarDado() {
 		// TODO Auto-generated method stub
-		euJogador.setPosicaoPino(euJogador.getPosicaoPino()+jogaDado());
+		System.out.println("\\\\\\\\\\\\\\\\\\\\\\\\JOGOU NO CONTROLLER");
+		euJogador.setPosicaoPino(euJogador.getPosicaoPino()+1);
+		notifyObserver(euJogador);
 		return euJogador;
 	}
 	

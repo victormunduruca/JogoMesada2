@@ -3,20 +3,20 @@ package test;
 import model.Jogador;
 
 public class ProtocoloJogadores {
-	public static String getAcao(String str) {
-		return str.split("#")[0];
+	public static int getAcao(String str) {
+		return Integer.valueOf(str.split("#")[0]);
 	}
-	public static String getId(String str) {
+	public static int getId(String str) {
 		str = str.split("#")[1];
-		return str.split(",")[0];
+		return Integer.valueOf(str.split(",")[0]);
 	}
-	public static String getPosicao(String str) {
+	public static int getPosicao(String str) {
 		str = str.split("#")[1];
-		return str.split(",")[1];
+		return Integer.valueOf(str.split(",")[1]);
 	}
-	public static String getSaldo(String str) {
+	public static float getSaldo(String str) {
 		str = str.split("#")[1];
-		return str.split(",")[2];
+		return Float.valueOf(str.split(",")[2]);
 	}
 	public static String enviarJogador(int acao, Jogador jogador) {
 		return acao+"#"+jogador.getId()+","+jogador.getPosicaoPino()+","+jogador.getSaldo();

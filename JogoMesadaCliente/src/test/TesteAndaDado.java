@@ -77,11 +77,15 @@ public class TesteAndaDado {
 
 		@Override
 		public void onClose() {	
+			System.out.println("DEU CLOOSSEEEE +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+			System.out.println("Meu ip: " +Controller.getInstance().getEuJogador().getIp());
 			JanelaPrincipal.iniciar();
-			Controller.getInstance().metodoTeste();
+			//Controller.getInstance().metodoTeste();
 			if(Controller.getInstance().getEuJogador().getId() == 1) {
-				JanelaPrincipal.eSuaVez();
-				jogar();
+				System.out.println("PRIMEIRA VEZZZZ +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+				//JanelaPrincipal.eSuaVez();
+				System.out.println("-------------------------------- SUA VEZ ---------------------------------------:::: " +Controller.getInstance().getEuJogador().getId());
+				JanelaPrincipal.habilitaJogar();
 			}
 			try {
 				server = new Servidor(4040 + Controller.getInstance().getEuJogador().getId());
@@ -89,25 +93,26 @@ public class TesteAndaDado {
 					
 					@Override
 					public void onDadoRecebido(String data) {
-						System.out.println("Recebeuu dadosss");
+						System.out.println("_________ RECEBEU DADOS DO__________"+ProtocoloJogadores.getId(data));
 						System.out.println("Eco recbedido: " + data);
-						Jogador jogadorUpdate = Controller.getInstance().getAdversario(Integer.valueOf(ProtocoloJogadores.getId(data)));
+						Jogador jogadorUpdate = Controller.getInstance().getAdversario(ProtocoloJogadores.getId(data));
 						if(jogadorUpdate == null) {
 							System.out.println("Erro, jogador nulo");
 							return;
 						}
 						
-						System.out.println("id recebido: " +ProtocoloJogadores.getId(data));
-						System.out.println("posicao recebida: "+ProtocoloJogadores.getPosicao(data));
-						System.out.println("saldoRecebido: " +ProtocoloJogadores.getSaldo(data));
-						
-						jogadorUpdate.setPosicaoPino(Integer.valueOf(ProtocoloJogadores.getPosicao(data)));
-						jogadorUpdate.setSaldo(Float.valueOf(ProtocoloJogadores.getSaldo(data)));
+////						System.out.println("id recebido: " +ProtocoloJogadores.getId(data));
+//						System.out.println("posicao recebida: "+ProtocoloJogadores.getPosicao(data));
+//						System.out.println("saldoRecebido: " +ProtocoloJogadores.getSaldo(data));
+//						
+						jogadorUpdate.setPosicaoPino(ProtocoloJogadores.getPosicao(data));
+						jogadorUpdate.setSaldo(ProtocoloJogadores.getSaldo(data));
 						Controller.getInstance().notifyObserver(jogadorUpdate);
 						
-						if(Integer.valueOf(ProtocoloJogadores.getId(data))+1 == Controller.getInstance().getEuJogador().getId() || Integer.valueOf(ProtocoloJogadores.getId(data))-4 == Controller.getInstance().getEuJogador().getId() ) {
-							JanelaPrincipal.eSuaVez();
-							jogar();
+						if(ProtocoloJogadores.getId(data)+1 == Controller.getInstance().getEuJogador().getId() ||  daVolta(data)) {
+//							JanelaPrincipal.eSuaVez();
+							System.out.println("-------------------------------- SUA VEZ ---------------------------------------:::: " +Controller.getInstance().getEuJogador().getId());
+							JanelaPrincipal.habilitaJogar();
 						}
 					}
 					@Override
@@ -119,32 +124,17 @@ public class TesteAndaDado {
 			}
 			//fechar();
 		}
-		public void jogar() {
-			JanelaPrincipal.habilitarBtnRodarDado();
-			JanelaPrincipal.jogarDado(new ActionListener() {			
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					// TODO Auto-generated method stub
-					
-					Jogador euJogador = Controller.getInstance().jogarDado();
-					Controller.getInstance().notifyObserver(euJogador);
-					 (new Thread() {
-				            @Override
-				            public void run() {
-				            	Cliente cliente = new Cliente();
-				            	//Thread.sleep(500);
-				            	for(Jogador jogador : Controller.getInstance().getAdversarios()) {
-				            		System.out.println("Resposta: " + 
-											cliente.enviar("127.0.0.1", 4040+jogador.getId(), ProtocoloJogadores.enviarJogador(1, Controller.getInstance().getEuJogador())));
-				            	}
-								
-				            }
-				        }).start();
-					 JanelaPrincipal.desabilitarBtnRodarDado();
-				}
-				
-			});
+		public boolean daVolta(String data) {
+			if(ProtocoloJogadores.getId(data) == 6 && Controller.getInstance().getEuJogador().getId() == 1) {
+				System.out.println("DEU A VOLTA \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\");
+				return true;
+			}
+			return false;
 		}
+//		public void jogar() {
+//			//JanelaPrincipal.habilitarBtnRodarDado();
+//			
+//		}
 		@Override
 		public void onErro(String erro) {
 			janelaEspera.setInfo("Erro de conexão");
