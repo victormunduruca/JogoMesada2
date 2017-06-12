@@ -7,7 +7,7 @@ public class Jogador {
 	private int id; //Id identificador para cada jogador
 	private int posicaoPino = 0; //Posi��o no pino no tabuleiro, de 1 a 31
 	private float saldo = 3500; //Saldo do jogador
-	private int divida; 
+	private float divida; 
 	private String ip;
 	private ArrayList<CartaCompra> cartasCompras = new ArrayList<CartaCompra>(); //Cartas de compras, obtidas em casas do tipo "compras e entretenimento"
 	
@@ -47,10 +47,10 @@ public class Jogador {
 	public String toString() {
 		return "ID: "+id+" Pos: "+posicaoPino+" Saldo: "+saldo;
 	}
-	public int getDivida() {
+	public float getDivida() {
 		return divida;
 	}
-	public void setDivida(int divida) {
+	public void setDivida(float divida) {
 		this.divida = divida;
 	}
 	public ArrayList<CartaCompra> getCartasCompras() {

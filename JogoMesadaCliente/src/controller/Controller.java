@@ -282,8 +282,15 @@ public class Controller implements Publisher{
 	 * @param jogador
 	 */
 	public void casaVendese(int valorDado, Jogador jogador) {
-		jogador.setSaldo(jogador.getSaldo() - 100*valorDado);
-		jogador.addCarta(getCompraEntretenimento());
+		float divida = 0;
+		float valorEmprestimo = 0;
+		if(jogador.getSaldo() - 100*valorDado < 0) { //se precisa de emprestimo 
+			valorEmprestimo = -1*(jogador.getSaldo() - 100*valorDado);
+			divida = jogador.getDivida()+valorEmprestimo;
+			jogador.setDivida(divida);
+		}
+		jogador.setSaldo(jogador.getSaldo() - 100*valorDado + valorEmprestimo);
+	//	jogador.addCarta(getCompraEntretenimento());
 	} 
 	@Override
 	public void register(Observer o) {
@@ -342,11 +349,11 @@ public class Controller implements Publisher{
 		return rand.nextInt(6) + 1;
 	}
 	public int lancarDado() {
-	//int valorDado = valorDado();
-	int valorDado = 1;
-	int posicao = ((euJogador.getPosicaoPino() + valorDado) % 32); // Se igual a 32, zera a posicao
-	euJogador.setPosicaoPino(posicao);
-	return valorDado;
+		//int valorDado = valorDado();
+		int valorDado = 21;
+		int posicao = ((euJogador.getPosicaoPino() + valorDado) % 32); // Se igual a 32, zera a posicao
+		euJogador.setPosicaoPino(posicao);
+		return valorDado;
 	}
 	private int randInt(int min, int max) {
 	    Random rand = new Random();

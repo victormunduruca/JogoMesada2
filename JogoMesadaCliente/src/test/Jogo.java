@@ -126,6 +126,8 @@ public class Jogo implements OnJogo {
 			}
 		} else if(posicao == 9 || posicao == 17 || posicao == 23 || posicao == 26 || posicao == 29) {
 			janelaTabuleiro.casaAchouComprador(controller.casaAchouComprador(controller.getEuJogador()));
+		} else if(posicao == 21) {
+			controller.casaVendese(valorDado, controller.getEuJogador());
 		}
 		
 		System.out.println("%%%%%%%%%%%% APERTOU O BOTAO DE JOGAR O DADO");
