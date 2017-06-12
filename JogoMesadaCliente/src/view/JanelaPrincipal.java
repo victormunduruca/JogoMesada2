@@ -256,7 +256,7 @@ public class JanelaPrincipal {
 		if(achouComprador == null) {
 			JOptionPane.showMessageDialog(null, "Voce nao tem nenhuma carta Compra e Entretenimento", "Poxa :(", JOptionPane.INFORMATION_MESSAGE);
 		} else {
-			JOptionPane.showMessageDialog(null, "Voce achou o comprador pra a carta:\n" +achouComprador, "Parabéns!", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Voce achou o comprador pra a carta:\n" +achouComprador, "Parabï¿½ns!", JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
 	
@@ -265,6 +265,13 @@ public class JanelaPrincipal {
 	}
 
 	public void aniversario() {
-		JOptionPane.showMessageDialog(null, "Feliz aniversário! Voce recebera 100$ de cada jogador!", "Eba!", JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(null, "Feliz aniversario! Voce recebera 100$ de cada jogador!", "Eba!", JOptionPane.INFORMATION_MESSAGE);
+	}
+	
+	public void sorteGrande(String nomeCasa, float quantia) {
+		JOptionPane.showMessageDialog(null, 
+				"Voce caiu na casa " + "\"" + nomeCasa + "\"!. Um valor de R$" + quantia + " sera descontado.", 
+				"Acao", 
+				JOptionPane.INFORMATION_MESSAGE);
 	}
 }

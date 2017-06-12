@@ -36,8 +36,8 @@ public class JanelaSalaDeEspera extends JPanel {
 	
 	private OnRequest requestCallback;
 	
-	public JanelaSalaDeEspera() {
-		
+	public JanelaSalaDeEspera(OnRequest requestCallback) {
+		this.requestCallback = requestCallback;
 	
 		setLayout(new BorderLayout());
 		model = new DefaultListModel();
@@ -108,10 +108,7 @@ public class JanelaSalaDeEspera extends JPanel {
 		});
 	}
 
-	
-
-	public void iniciar(OnRequest requestCallback) {
-		this.requestCallback = requestCallback;
+	public void iniciar() {
 		frame = new JFrame("Jogo da Mesada - Sala de Espera");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	//	frame.setContentPane(new JanelaSalaDeEspera());
@@ -122,7 +119,7 @@ public class JanelaSalaDeEspera extends JPanel {
 
 	public void fechar() {
 		if(frame == null) {
-			System.out.println("o frame é nulo");
+			System.out.println("o frame ï¿½ nulo");
 		}
 		frame.setVisible(false);
 		frame.dispose();

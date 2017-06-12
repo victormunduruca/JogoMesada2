@@ -32,8 +32,8 @@ public class TesteAndaDado {
   
     
     	//JanelaPrincipal.initialize();
-    	janelaEspera = new JanelaSalaDeEspera();
-    	janelaEspera.iniciar(new RequestCallback());
+    	//janelaEspera = new JanelaSalaDeEspera();
+    	//janelaEspera.iniciar(new RequestCallback());
 	}
     private static class RequestCallback implements OnRequest {
 

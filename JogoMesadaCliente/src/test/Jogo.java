@@ -28,8 +28,8 @@ public class Jogo implements OnJogo {
 	}
     
     public Jogo() {
-    	janelaEspera = new JanelaSalaDeEspera();
-    	janelaEspera.iniciar(new SalaDeEsperaRequestCallback());
+    	janelaEspera = new JanelaSalaDeEspera(new SalaDeEsperaRequestCallback());
+    	janelaEspera.iniciar();
 	}
     
 	public void inicializaServidor() {
@@ -148,20 +148,34 @@ public class Jogo implements OnJogo {
 		
 		int valorDado = controller.lancarDado(); // Lanca o dado
 		int posicao = controller.getEuJogador().getPosicaoPino();
-		if(posicao == 2) { //Acao casa premio
+		
+		if (posicao == 2) { //Acao casa premio
 			controller.casaPremio(controller.getEuJogador());
 			janelaTabuleiro.casaPremio();
+			
 		} else if(posicao == 4 || posicao == 12 || posicao == 15 || posicao == 25) { //Acao casa Compra e Entetenimento
 			pegaCartaCompraEntretenimento();
+			
 		} else if(posicao == 9 || posicao == 17 || posicao == 23 || posicao == 26 || posicao == 29) { //Acao casa Achou um Comprador
 			janelaTabuleiro.casaAchouComprador(controller.casaAchouComprador(controller.getEuJogador()));
+			
 		} else if(posicao == 21) {
 			controller.casaVendese(valorDado, controller.getEuJogador());
 			janelaTabuleiro.casaVendese();
 			pegaCartaCompraEntretenimento();
+			
 		} else if(posicao == 10) {
 			janelaTabuleiro.aniversario();
 			multiCastAdversarios(ProtocoloJogadores.requisitar(Acao.REQUISICAO_ANIVERSARIO, Controller.getInstance().getEuJogador().getId()));
+			
+		} else if (posicao == 7 || posicao == 14 || posicao == 18 || posicao == 28) {
+			// Praia de domingo, ajude a amazonia, lanchonete, compras no shopping
+			float quantia = 100;
+			if ((controller.getEuJogador().getSaldo() - quantia) > 0) {
+				// Descontar quantia
+			} else { // Sem saldo, e preciso fazer um emprestimo
+				
+			}
 		}
 		
 		System.out.println("%%%%%%%%%%%% APERTOU O BOTAO DE JOGAR O DADO");
@@ -173,6 +187,7 @@ public class Jogo implements OnJogo {
     			Controller.getInstance().getEuJogador(), 
 				Controller.getInstance().getAdversarios());
 	}
+	
 	private void multiCastAdversarios(final String msg) {
 		(new Thread() {
 			@Override
@@ -187,6 +202,7 @@ public class Jogo implements OnJogo {
 			}
 		}).start();
 	}
+	
 //	private void enviaMeuEstado() {
 //		(new Thread() {
 //			@Override
