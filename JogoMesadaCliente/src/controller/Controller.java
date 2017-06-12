@@ -25,8 +25,6 @@ public class Controller implements Publisher{
 	private Jogador euJogador;
 	
 	private ArrayList<Jogador> jogadores; //Jogadores na partida
-	private int idAtual; //Id do jogador que esta em sua vez
-	private int idJogadorMaquina; //Id jogador desse computador
 	private ArrayList<String> cartasCorreio; //Cartas referentes a casa correio
 //	private ArrayList<String> bufferCartasCorreio;
 	private int saldoCliente;
@@ -282,16 +280,6 @@ public class Controller implements Publisher{
 		jogador.setSaldo(jogador.getSaldo() - 100*valorDado);
 		jogador.addCarta(getCompraEntretenimento());
 	} 
-	/**
-	 * 
-	 * @return True se a jogada for interna
-	 */
-	public boolean eInterna() {
-		if(idAtual == idJogadorMaquina)
-			return true;
-		else
-			return false;
-	}
 	@Override
 	public void register(Observer o) {
 		// TODO Auto-generated method stub
@@ -320,26 +308,10 @@ public class Controller implements Publisher{
 		this.jogadores = jogadores;
 	}
 
-	public int getIdAtual() {
-		return idAtual;
-	}
-
-	public void setIdAtual(int idAtual) {
-		this.idAtual = idAtual;
-	}
-
-	public int getIdJogadorMaquina() {
-		return idJogadorMaquina;
-	}
-
-	public void setIdJogadorMaquina(int idJogadorMaquina) {
-		this.idJogadorMaquina = idJogadorMaquina;
-	}
 	public Jogador jogarDado() {
 		// TODO Auto-generated method stub
-		System.out.println("\\\\\\\\\\\\\\\\\\\\\\\\JOGOU NO CONTROLLER");
 		euJogador.setPosicaoPino(euJogador.getPosicaoPino()+1);
-		notifyObserver(euJogador);
+		//notifyObserver(euJogador);
 		return euJogador;
 	}
 	

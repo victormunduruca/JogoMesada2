@@ -83,16 +83,16 @@ public class JanelaPrincipal implements OnServidor {
 		
 		//----------------------------------------------------------
 		
-		
-		listaJogadores = new JList(Controller.getInstance().getAdversarios().toArray());
-		listaJogadores.setBounds(927, 39, 222, 138);
-		label = new JLabel();
-
-		label.setFont(new Font("Lucida Sans Typewriter", Font.BOLD, 22));
-		label.setText("Saldo: 0");
-		label.setBounds(77, 756, 360, 51);
-		frame.getContentPane().add(label);
-		frame.getContentPane().add(listaJogadores);
+//		
+//		listaJogadores = new JList(Controller.getInstance().getAdversarios().toArray());
+//		listaJogadores.setBounds(927, 39, 222, 138);
+//		label = new JLabel();
+//
+//		label.setFont(new Font("Lucida Sans Typewriter", Font.BOLD, 22));
+//		label.setText("Saldo: 0");
+//		label.setBounds(77, 756, 360, 51);
+//		frame.getContentPane().add(label);
+//		frame.getContentPane().add(listaJogadores);
 		
 		
 		//----------------------------------------------------------
@@ -158,8 +158,12 @@ public class JanelaPrincipal implements OnServidor {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				System.out.println("%%%%%%%%%%%% APERTOU O BOTAO DE JOGAR O DADO");
 				Jogador euJogador = Controller.getInstance().jogarDado();
+				if(euJogador.getPosicaoPino() == 2) { //Exemplo de como poderia ser a interação 
+					Controller.getInstance().casaPremio(euJogador);
+					JOptionPane.showMessageDialog(null,"Vc ganhou o prêmio!" , "Eba!", JOptionPane.INFORMATION_MESSAGE);
+				}
+				Controller.getInstance().notifyObserver(euJogador);
 //				Controller.getInstance().notifyObserver(euJogador);
 				 (new Thread() {
 			            @Override
@@ -204,57 +208,57 @@ public class JanelaPrincipal implements OnServidor {
 	
 	//----------------------------------------------------------
 	
-	public void update(Jogador jogador) {
-		// TODO Auto-generated method stub
-		System.out.println("Deu update jogador: " +jogador.getId());
-		Pino pino = getPino(jogador.getId());
-	//	System.out.println("Achou o pino: " +pino.getIdJogador());
-		anda(jogador.getPosicaoPino(), pino);
-		label.setText("Saldo: " + jogador.getSaldo());
-		listaJogadores.setListData(Controller.getInstance().getAdversarios().toArray());
-	}
-	public void anda(int posicao, Pino pino) {
-		pino.setX(0);
-		pino.setY(0);
-		if(posicao == 0) {
-			pino.getLabel().setBounds(0, 0, 128, 137);
-			return;
-		}
-		for (int i = posicao; i > 0; i--) {
-			if (pino.getX() >= 384 && pino.getY() == 137 * 4) { // chega no
-				// final
-				pino.getLabel().setBounds(0, 0, 128, 137);
-				pino.setY(0); //Atualiza valores dos pinos
-				pino.setX(0);
-				break;
-			}
-			if (pino.getX() >= 768) { // se for igual ao valor fora da borda ele
-				// desce
-				pino.getLabel().setBounds(0, pino.getY() + 137, 128, 137);
-				pino.setY(pino.getY() + 137);
-				pino.setX(0);
-			} else {
-				pino.getLabel().setBounds(pino.getX() + 128, pino.getY(), 128,
-						137);
-				pino.setX(pino.getX() + 128);
-			}
-		}
-	}
-	/**
- 	 * 
-	 * @param idJogador
-	 * @return Pino correspondente ao id do jogador
-	 */
-	public Pino getPino(int idJogador){
-		Iterator<Pino> it = (Iterator) pinos.iterator();
-		while(it.hasNext()) {
-			Pino pino = (Pino) it.next();
-			if(pino.getIdJogador() == idJogador)
-				return pino;
-		}
-		return null;
-	}
-	
+//	public void update(Jogador jogador) {
+//		// TODO Auto-generated method stub
+//		System.out.println("Deu update jogador: " +jogador.getId());
+//		Pino pino = getPino(jogador.getId());
+//	//	System.out.println("Achou o pino: " +pino.getIdJogador());
+//		anda(jogador.getPosicaoPino(), pino);
+//		label.setText("Saldo: " + jogador.getSaldo());
+//		listaJogadores.setListData(Controller.getInstance().getAdversarios().toArray());
+//	}
+//	public void anda(int posicao, Pino pino) {
+//		pino.setX(0);
+//		pino.setY(0);
+//		if(posicao == 0) {
+//			pino.getLabel().setBounds(0, 0, 128, 137);
+//			return;
+//		}
+//		for (int i = posicao; i > 0; i--) {
+//			if (pino.getX() >= 384 && pino.getY() == 137 * 4) { // chega no
+//				// final
+//				pino.getLabel().setBounds(0, 0, 128, 137);
+//				pino.setY(0); //Atualiza valores dos pinos
+//				pino.setX(0);
+//				break;
+//			}
+//			if (pino.getX() >= 768) { // se for igual ao valor fora da borda ele
+//				// desce
+//				pino.getLabel().setBounds(0, pino.getY() + 137, 128, 137);
+//				pino.setY(pino.getY() + 137);
+//				pino.setX(0);
+//			} else {
+//				pino.getLabel().setBounds(pino.getX() + 128, pino.getY(), 128,
+//						137);
+//				pino.setX(pino.getX() + 128);
+//			}
+//		}
+//	}
+//	/**
+// 	 * 
+//	 * @param idJogador
+//	 * @return Pino correspondente ao id do jogador
+//	 */
+//	public Pino getPino(int idJogador){
+//		Iterator<Pino> it = (Iterator) pinos.iterator();
+//		while(it.hasNext()) {
+//			Pino pino = (Pino) it.next();
+//			if(pino.getIdJogador() == idJogador)
+//				return pino;
+//		}
+//		return null;
+//	}
+//	
 	//----------------------------------------------------------
 	
 	
