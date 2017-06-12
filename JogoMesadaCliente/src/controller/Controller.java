@@ -171,9 +171,9 @@ public class Controller implements Publisher{
 		cartasCorreio.add("contas");
 		cartasCorreio.add("pague a um vizinho agora");
 		cartasCorreio.add("dinheiro extra");
-		cartasCorreio.add("doa��es");
-		cartasCorreio.add("cobran�a monstro");
-		cartasCorreio.add("v� para frente agora");
+		cartasCorreio.add("doacoes");
+		cartasCorreio.add("cobranca monstro");
+		cartasCorreio.add("va para frente agora");
 	}
 	/**
 	 * Realiza as a�oes da casa correio a partir das cartas aleat�rias antes tiradas 
@@ -188,7 +188,7 @@ public class Controller implements Publisher{
 			
 		} else if(acao == "doacoes") {
 			
-		} else if(acao == "cobran�a monstro") {
+		} else if(acao == "cobranca monstro") {
 			
 		} else if(acao == "v� para frente agora") {
 			
@@ -350,7 +350,7 @@ public class Controller implements Publisher{
 	}
 	public int lancarDado() {
 		//int valorDado = valorDado();
-		int valorDado = 21;
+		int valorDado = 10;
 		int posicao = ((euJogador.getPosicaoPino() + valorDado) % 32); // Se igual a 32, zera a posicao
 		euJogador.setPosicaoPino(posicao);
 		return valorDado;
@@ -358,5 +358,8 @@ public class Controller implements Publisher{
 	private int randInt(int min, int max) {
 	    Random rand = new Random();
 	    return rand.nextInt((max - min) + 1) + min;
+	}
+	public void requisicaoAniversario() {
+		euJogador.setSaldo(euJogador.getSaldo()-100); //TODO olhar pra nao ficar negativo
 	}
 }

@@ -263,4 +263,8 @@ public class JanelaPrincipal {
 	public void casaVendese() {
 		JOptionPane.showMessageDialog(null, "Opa, Negocio de ocasiao, foi seu por 100X O numero do dado. A seguir, pegue uma carta Compra e Entretenimento!", "Acao", JOptionPane.INFORMATION_MESSAGE);
 	}
+
+	public void aniversario() {
+		JOptionPane.showMessageDialog(null, "Feliz aniversário! Voce recebera 100$ de cada jogador!", "Eba!", JOptionPane.INFORMATION_MESSAGE);
+	}
 }

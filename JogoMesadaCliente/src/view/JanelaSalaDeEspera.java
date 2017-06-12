@@ -65,6 +65,7 @@ public class JanelaSalaDeEspera extends JPanel {
 		add(info, BorderLayout.SOUTH);
 
 		setListeners();
+//		conectar();
 	}
 
 	public void atualizarListaJogadores(final Jogador euJogador, final ArrayList<Jogador> adversarios) {

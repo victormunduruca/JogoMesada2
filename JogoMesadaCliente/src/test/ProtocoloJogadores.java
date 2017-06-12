@@ -1,5 +1,6 @@
 package test;
 
+import model.Acao;
 import model.Jogador;
 
 /**
@@ -23,5 +24,15 @@ public class ProtocoloJogadores {
 	}
 	public static String enviarJogador(int acao, Jogador jogador) {
 		return acao+"#"+jogador.getId()+","+jogador.getPosicaoPino()+","+jogador.getSaldo();
+	}
+	public static String requisitar(int acao, int id) {
+		return acao+"#"+id;
+	}
+	public static String responderAniversariante(int idEuJogador, int idAniversariante) {
+		return Acao.RESPOSTA_PARA_O_ANIVERSARIANTE+"#"+idEuJogador+","+idAniversariante;
+	}
+	public static int getIdResponderAniversariante(String str) {
+		str = str.split("#")[1];
+		return Integer.valueOf(str.split(",")[1]);
 	}
  }
