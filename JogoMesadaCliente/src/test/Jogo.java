@@ -119,15 +119,13 @@ public class Jogo implements OnJogo {
 			controller.casaPremio(controller.getEuJogador());
 			janelaTabuleiro.casaPremio();
 		} else if(posicao == 4 || posicao == 12 || posicao == 15 || posicao == 25) {
-			CartaCompra cartaCompra = controller.getCompraEntretenimento();
-			boolean eEmprestimo =  controller.necessitaEmprestimo(cartaCompra, controller.getEuJogador());
-			if(janelaTabuleiro.casaCompraEntretenimento(cartaCompra.toString(), eEmprestimo)) {
-				controller.acaoCompraEntretenimento(eEmprestimo, controller.getEuJogador(), cartaCompra);
-			}
+			pegaCartaCompraEntretenimento();
 		} else if(posicao == 9 || posicao == 17 || posicao == 23 || posicao == 26 || posicao == 29) {
 			janelaTabuleiro.casaAchouComprador(controller.casaAchouComprador(controller.getEuJogador()));
 		} else if(posicao == 21) {
 			controller.casaVendese(valorDado, controller.getEuJogador());
+			janelaTabuleiro.casaVendese();
+			pegaCartaCompraEntretenimento();
 		}
 		
 		System.out.println("%%%%%%%%%%%% APERTOU O BOTAO DE JOGAR O DADO");
@@ -149,5 +147,13 @@ public class Jogo implements OnJogo {
 		janelaTabuleiro.atualizaJogadores(
     			Controller.getInstance().getEuJogador(), 
 				Controller.getInstance().getAdversarios());
+	}
+	public void pegaCartaCompraEntretenimento() {
+		Controller controller = Controller.getInstance();
+		CartaCompra cartaCompra = controller.getCompraEntretenimento();
+		boolean eEmprestimo =  controller.necessitaEmprestimo(cartaCompra, controller.getEuJogador());
+		if(janelaTabuleiro.casaCompraEntretenimento(cartaCompra.toString(), eEmprestimo)) {
+			controller.acaoCompraEntretenimento(eEmprestimo, controller.getEuJogador(), cartaCompra);
+		}
 	}
 }

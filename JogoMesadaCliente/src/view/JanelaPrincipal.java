@@ -259,4 +259,8 @@ public class JanelaPrincipal {
 			JOptionPane.showMessageDialog(null, "Voce achou o comprador pra a carta:\n" +achouComprador, "Parabéns!", JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
+	
+	public void casaVendese() {
+		JOptionPane.showMessageDialog(null, "Opa, Negocio de ocasiao, foi seu por 100X O numero do dado. A seguir, pegue uma carta Compra e Entretenimento!", "Acao", JOptionPane.INFORMATION_MESSAGE);
+	}
 }
