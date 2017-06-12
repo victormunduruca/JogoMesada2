@@ -95,7 +95,8 @@ public class Jogo implements OnJogo {
 				System.out.println("----------------EU SOU O ANIVERSARIANTE -------------------");
 				System.out.println("++++++++++++++++++++++++=RECEBEU 100 reais de " +ProtocoloJogadores.getId(data));
 				controller.getEuJogador().setSaldo(controller.getEuJogador().getSaldo()+100);
-				enviaMeuEstado();
+				// Envia meu estado para os outros jogadores
+				multiCastAdversarios(ProtocoloJogadores.enviarJogador(1, Controller.getInstance().getEuJogador()));
 				janelaTabuleiro.atualizaJogadores(
 		    			Controller.getInstance().getEuJogador(), 
 						Controller.getInstance().getAdversarios());
@@ -160,47 +161,61 @@ public class Jogo implements OnJogo {
 			pegaCartaCompraEntretenimento();
 		} else if(posicao == 10) {
 			janelaTabuleiro.aniversario();
-			requisitarAniversario();
+			multiCastAdversarios(ProtocoloJogadores.requisitar(Acao.REQUISICAO_ANIVERSARIO, Controller.getInstance().getEuJogador().getId()));
 		}
 		
 		System.out.println("%%%%%%%%%%%% APERTOU O BOTAO DE JOGAR O DADO");
 
-		// Envia a minha posicao para os outros jogadores
-		enviaMeuEstado();
+		// Envia meu estado para os outros jogadores
+		multiCastAdversarios(ProtocoloJogadores.enviarJogador(1, Controller.getInstance().getEuJogador()));
 		
 		janelaTabuleiro.atualizaJogadores(
     			Controller.getInstance().getEuJogador(), 
 				Controller.getInstance().getAdversarios());
 	}
-	private void enviaMeuEstado() {
+	private void multiCastAdversarios(final String msg) {
 		(new Thread() {
 			@Override
 			public void run() {
 				Cliente cliente = new Cliente();
 				for (Jogador adv : Controller.getInstance().getAdversarios()) {
-					System.out.println("####################ENVIOU PARA O: " + adv.getId());
+					System.out.println("####################ENVIOU PARA O: " + adv.getId()); 
 					System.out.println("Resposta: " + 
-							cliente.enviar(adv.getIp(), 4040 + adv.getId(), ProtocoloJogadores.enviarJogador(1, Controller.getInstance().getEuJogador()))); //mudar pra jogador.getIP()
+							cliente.enviar(adv.getIp(), 4040 + adv.getId(), msg)); //mudar pra jogador.getIP()
 				}
 
 			}
 		}).start();
 	}
-	private void requisitarAniversario() {
-		// Envia a minha posicao para os outros jogadores
-				(new Thread() {
-					@Override
-					public void run() {
-						Cliente cliente = new Cliente();
-						for (Jogador adv : Controller.getInstance().getAdversarios()) {
-							System.out.println("####################ENVIOU PARA O: " + adv.getId());
-							System.out.println("Resposta: " +
-									cliente.enviar(adv.getIp(), 4040 + adv.getId(), ProtocoloJogadores.requisitar(Acao.REQUISICAO_ANIVERSARIO, Controller.getInstance().getEuJogador().getId()))); //mudar pra jogador.getIP()
-						}
-
-					}
-				}).start();
-	}
+//	private void enviaMeuEstado() {
+//		(new Thread() {
+//			@Override
+//			public void run() {
+//				Cliente cliente = new Cliente();
+//				for (Jogador adv : Controller.getInstance().getAdversarios()) {
+//					System.out.println("####################ENVIOU PARA O: " + adv.getId()); 
+//					System.out.println("Resposta: " + 
+//							cliente.enviar(adv.getIp(), 4040 + adv.getId(), ProtocoloJogadores.enviarJogador(1, Controller.getInstance().getEuJogador()))); //mudar pra jogador.getIP()
+//				}
+//
+//			}
+//		}).start();
+//	}
+//	private void requisitarAniversario() {
+//		// Envia a minha posicao para os outros jogadores
+//				(new Thread() {
+//					@Override
+//					public void run() {
+//						Cliente cliente = new Cliente();
+//						for (Jogador adv : Controller.getInstance().getAdversarios()) {
+//							System.out.println("####################ENVIOU PARA O: " + adv.getId());
+//							System.out.println("Resposta: " +
+//									cliente.enviar(adv.getIp(), 4040 + adv.getId(), ProtocoloJogadores.requisitar(Acao.REQUISICAO_ANIVERSARIO, Controller.getInstance().getEuJogador().getId()))); //mudar pra jogador.getIP()
+//						}
+//
+//					}
+//				}).start();
+//	}
 
 	public void pegaCartaCompraEntretenimento() {
 		Controller controller = Controller.getInstance();
