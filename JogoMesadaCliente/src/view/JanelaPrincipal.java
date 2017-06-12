@@ -23,7 +23,6 @@ import model.Jogador;
 
 public class JanelaPrincipal {
 
-
 	private static JButton btnRodarDado;
 	private static JFrame frame;
 	private static ArrayList<Pino> pinos;
@@ -49,11 +48,6 @@ public class JanelaPrincipal {
 		frame.setVisible(true);
 	}
 
-
-	/**
-	 * Initialize the contents of the frame.
-	 * @throws IdNaoEncontradoException 
-	 */
 	public void initialize() {
 		frame = new JFrame();
 		

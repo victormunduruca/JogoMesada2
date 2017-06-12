@@ -14,7 +14,7 @@ import view.JanelaPrincipal;
 import view.JanelaPrincipal.OnJogo;
 import view.JanelaSalaDeEspera;
 
-public class TesteAndaDado2 implements OnJogo {
+public class Jogo implements OnJogo {
 	
 	private static JanelaSalaDeEspera janelaEspera;
 	private static JanelaPrincipal janelaTabuleiro;
@@ -22,10 +22,10 @@ public class TesteAndaDado2 implements OnJogo {
     private static int PORTA_BASE = 4040;
  
 	public static void main(String[] args) {
-		new TesteAndaDado2();
+		new Jogo();
 	}
     
-    public TesteAndaDado2() {
+    public Jogo() {
     	janelaEspera = new JanelaSalaDeEspera();
     	janelaEspera.iniciar(new SalaDeEsperaRequestCallback());
 	}
@@ -91,7 +91,7 @@ public class TesteAndaDado2 implements OnJogo {
 
 		@Override
 		public void onClose() {
-	    	janelaTabuleiro = new JanelaPrincipal(TesteAndaDado2.this);
+	    	janelaTabuleiro = new JanelaPrincipal(Jogo.this);
 	    	janelaTabuleiro.iniciar();
 	    	janelaTabuleiro.atualizaJogadores(
 	    			Controller.getInstance().getEuJogador(), 
