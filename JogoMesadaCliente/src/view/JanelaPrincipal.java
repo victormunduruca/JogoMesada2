@@ -251,4 +251,12 @@ public class JanelaPrincipal {
 		}
 		return false;
 	}
+
+	public void casaAchouComprador(String achouComprador) {
+		if(achouComprador == null) {
+			JOptionPane.showMessageDialog(null, "Voce nao tem nenhuma carta Compra e Entretenimento", "Poxa :(", JOptionPane.INFORMATION_MESSAGE);
+		} else {
+			JOptionPane.showMessageDialog(null, "Voce achou o comprador pra a carta:\n" +achouComprador, "Parabéns!", JOptionPane.INFORMATION_MESSAGE);
+		}
+	}
 }

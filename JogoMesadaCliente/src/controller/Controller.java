@@ -262,13 +262,15 @@ public class Controller implements Publisher{
 	 * entretenimento.
 	 * @param Jogador 
 	 */
-	public void casaAchouComprador(Jogador jogador) {
+	public String casaAchouComprador(Jogador jogador) {
 		CartaCompra carta;
 		if(!jogador.getCartasCompras().isEmpty()) {
 			carta = jogador.getCartasCompras().get(0);
 			jogador.getCartasCompras().remove(0);
 			jogador.setSaldo(jogador.getSaldo()+carta.getValorRevendaCarta());
-		}			
+			return carta.toString();
+		} 
+		return null;
 	}
 	/**
 	 *M�todo casa pr�mio: adiciona 5000 ao saldo do jogador de par�metro

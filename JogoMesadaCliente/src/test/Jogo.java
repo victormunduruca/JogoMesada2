@@ -124,7 +124,10 @@ public class Jogo implements OnJogo {
 			if(janelaTabuleiro.casaCompraEntretenimento(cartaCompra.toString(), eEmprestimo)) {
 				controller.acaoCompraEntretenimento(eEmprestimo, controller.getEuJogador(), cartaCompra);
 			}
+		} else if(posicao == 9 || posicao == 17 || posicao == 23 || posicao == 26 || posicao == 29) {
+			janelaTabuleiro.casaAchouComprador(controller.casaAchouComprador(controller.getEuJogador()));
 		}
+		
 		System.out.println("%%%%%%%%%%%% APERTOU O BOTAO DE JOGAR O DADO");
 
 		// Envia a minha posicao para os outros jogadores
