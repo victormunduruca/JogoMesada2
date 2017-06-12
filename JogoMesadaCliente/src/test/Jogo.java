@@ -113,7 +113,7 @@ public class Jogo implements OnJogo {
 	public void onDadoLancado() {
 		Controller controller = Controller.getInstance();
 		
-		controller.lancarDado(); // Lanca o dado
+		int valorDado = controller.lancarDado(); // Lanca o dado
 		int posicao = controller.getEuJogador().getPosicaoPino();
 		if(posicao == 2) {
 			controller.casaPremio(controller.getEuJogador());

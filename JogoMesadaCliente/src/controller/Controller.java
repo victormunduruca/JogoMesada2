@@ -124,10 +124,7 @@ public class Controller implements Publisher{
 //		
 //	}
 	
-	private static int jogaDado() {
-		Random rand = new Random();
-		return rand.nextInt(6) + 1;
-	}
+	
 	/**
 	 * M�todo que realiza as a��es da casa correio
 	 * @param JogadorAtual
@@ -335,12 +332,22 @@ public class Controller implements Publisher{
 		System.out.println("atualizarAdversario(): Adversario nao encontrado");
 	}
 	
-	public int lancarDado() {
-		int posicao = ((euJogador.getPosicaoPino() + 1) % 32); // Se igual a 32, zera a posicao
-		euJogador.setPosicaoPino(posicao);
-		return posicao;
+//	public int lancarDado() {
+//		int posicao = ((euJogador.getPosicaoPino() + 1) % 32); // Se igual a 32, zera a posicao
+//		euJogador.setPosicaoPino(posicao);
+//		return posicao;
+//	}
+	private static int valorDado() {
+		Random rand = new Random();
+		return rand.nextInt(6) + 1;
 	}
-	
+	public int lancarDado() {
+	//int valorDado = valorDado();
+	int valorDado = 1;
+	int posicao = ((euJogador.getPosicaoPino() + valorDado) % 32); // Se igual a 32, zera a posicao
+	euJogador.setPosicaoPino(posicao);
+	return valorDado;
+	}
 	private int randInt(int min, int max) {
 	    Random rand = new Random();
 	    return rand.nextInt((max - min) + 1) + min;
