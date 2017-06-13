@@ -65,7 +65,7 @@ public class JanelaSalaDeEspera extends JPanel {
 		add(info, BorderLayout.SOUTH);
 
 		setListeners();
-		conectar();
+		//conectar();
 	}
 
 	public void atualizarListaJogadores(final Jogador euJogador, final ArrayList<Jogador> adversarios) {
@@ -97,7 +97,14 @@ public class JanelaSalaDeEspera extends JPanel {
 			cliente.requisitar(ip, Integer.valueOf(porta), requestCallback);
 			conButton.setText("Desconectar");
 		}
-		conectado = true;  
+		setConetado(true);  
+	}
+	
+	public void setConetado(boolean conectado) {
+		this.conectado = conectado;
+		if (!this.conectado) {
+			conButton.setText("Conectar");
+		}
 	}
 
 	private void setListeners() {

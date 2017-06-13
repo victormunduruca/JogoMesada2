@@ -236,6 +236,7 @@ public class Jogo implements OnJogo {
 		@Override
 		public void onErro(String erro) {
 			janelaEspera.setInfo("Erro de conexão");
+			janelaEspera.setConetado(false);
 		}
 	}
 
