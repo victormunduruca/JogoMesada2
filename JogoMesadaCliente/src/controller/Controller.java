@@ -153,7 +153,7 @@ public class Controller{
 		ArrayList<String> cartasAleatorias = new ArrayList<String>();
 		Random rand = new Random();
 		for(int i = 0; i < qtdCartas; i++) {
-			cartasAleatorias.add(cartasCorreio.get(rand.nextInt(1))); //TODO colocar 6 novamente
+			cartasAleatorias.add(cartasCorreio.get(rand.nextInt(2))); //TODO colocar 6 novamente
 		}
 		Iterator<String> it = (Iterator) cartasAleatorias.iterator();
 		while(it.hasNext()) {
@@ -168,7 +168,7 @@ public class Controller{
 	 */
 	public void criaCartas() {
 		cartasCorreio = new ArrayList<String>();
-		//cartasCorreio.add("contas");
+		cartasCorreio.add("contas");
 		cartasCorreio.add("pague a um vizinho agora");
 //		cartasCorreio.add("dinheiro extra");
 //		cartasCorreio.add("doacoes");
@@ -285,7 +285,7 @@ public class Controller{
 		euJogador.setPosicaoPino(posicao);
 		return valorDado;
 	}
-	private int randInt(int min, int max) {
+	private int randInt(int min, int max) { //TODO tirar static
 	    Random rand = new Random();
 	    return rand.nextInt((max - min) + 1) + min;
 	}
@@ -314,4 +314,17 @@ public class Controller{
 		}
 		return ids;
 	}
+	public String geraNovaContaAleatoria() {
+		ArrayList<String> contas = new ArrayList<String>();
+		contas.add("Conta de agua, 400$");
+		contas.add("Celular novo, 600$");
+		contas.add("Energia, 100$");
+		return contas.get(randInt(0, 2));
+	}
+	public float getValorConta(String conta) {
+		conta = conta.split(",")[1];
+		conta = conta.replace("$", "");
+		return Float.valueOf(conta);
+	}
+	
 }

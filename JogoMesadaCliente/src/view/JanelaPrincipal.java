@@ -299,4 +299,8 @@ public class JanelaPrincipal {
 		}
 		return null;
 	}
+
+	public void conta(String conta) {
+		JOptionPane.showMessageDialog(null, "Você teve que pagar a conta: " +conta, "Oops", JOptionPane.INFORMATION_MESSAGE);
+	}
 }

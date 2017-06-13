@@ -195,28 +195,29 @@ public class Jogo implements OnJogo {
 		switch (carta) {
 		case "contas":
 			System.out.println("CONTAS==================");
+			String conta = controller.geraNovaContaAleatoria();
+			controller.debita(controller.getValorConta(conta), controller.getEuJogador());
+			janelaTabuleiro.conta(conta); 
+			multiCastAdversarios(ProtocoloJogadores.enviarJogador(1, controller.getEuJogador()));
+			janelaTabuleiro.atualizaJogadores(
+	    			Controller.getInstance().getEuJogador(), 
+					Controller.getInstance().getAdversarios());
 			break;
 		case "pague a um vizinho agora":
 			System.out.println("PAGUE UM VIZINHO AGORA==================");	
-			final int idVizinho = janelaTabuleiro.pagueUmVizinhoAgora();
-			controller.debita(100, controller.getEuJogador());
-			multiCastAdversarios(ProtocoloJogadores.enviarJogador(1, controller.getEuJogador()));
+			final int idVizinho = janelaTabuleiro.pagueUmVizinhoAgora();//Pega o valor do id do vizinho a se pagar, da GUI
+			controller.debita(100, controller.getEuJogador()); // Debita o valor
+			multiCastAdversarios(ProtocoloJogadores.enviarJogador(1, controller.getEuJogador())); //Avisa pra os demais adversarios o debito
 			(new Thread() {
 				@Override
 				public void run() {
 					Cliente cliente = new Cliente();
 					//Envia ao aniversariante confirmando que pagou
-					System.out.println("---------------------------------------ENVIOU PRESENTE PAGAMENTO PARA: " +idVizinho);
+					System.out.println("---------------------------------------ENVIOU PAGAMENTO PARA O VIZINHO: " +idVizinho); 
 					System.out.println("Resposta: " + 
-							cliente.enviar(controller.getAdversario(idVizinho).getIp(), 4040 +idVizinho, ProtocoloJogadores.pagarVizinho(idVizinho))); 
+							cliente.enviar(controller.getAdversario(idVizinho).getIp(), 4040 +idVizinho, ProtocoloJogadores.pagarVizinho(idVizinho))); //Envia sinal de pagamento para o vizinho
 				}
 			}).start();
-		//	controller.acaoPagueVizinhoAgora(controller.getEuJogador());
-			//retira o valor no controller
-			//multicast adversarios
-			//avisa pra vizinho
-			//vizinho adiciona o valor
-			//multicast adversarios
 			break;
 		case "dinheiro extra":
 			System.out.println("dinheiro extra==================");
@@ -248,36 +249,6 @@ public class Jogo implements OnJogo {
 			}
 		}).start();
 	}
-//	private void enviaMeuEstado() {
-//		(new Thread() {
-//			@Override
-//			public void run() {
-//				Cliente cliente = new Cliente();
-//				for (Jogador adv : Controller.getInstance().getAdversarios()) {
-//					System.out.println("####################ENVIOU PARA O: " + adv.getId()); 
-//					System.out.println("Resposta: " + 
-//							cliente.enviar(adv.getIp(), 4040 + adv.getId(), ProtocoloJogadores.enviarJogador(1, Controller.getInstance().getEuJogador()))); //mudar pra jogador.getIP()
-//				}
-//
-//			}
-//		}).start();
-//	}
-//	private void requisitarAniversario() {
-//		// Envia a minha posicao para os outros jogadores
-//				(new Thread() {
-//					@Override
-//					public void run() {
-//						Cliente cliente = new Cliente();
-//						for (Jogador adv : Controller.getInstance().getAdversarios()) {
-//							System.out.println("####################ENVIOU PARA O: " + adv.getId());
-//							System.out.println("Resposta: " +
-//									cliente.enviar(adv.getIp(), 4040 + adv.getId(), ProtocoloJogadores.requisitar(Acao.REQUISICAO_ANIVERSARIO, Controller.getInstance().getEuJogador().getId()))); //mudar pra jogador.getIP()
-//						}
-//
-//					}
-//				}).start();
-//	}
-
 	public void pegaCartaCompraEntretenimento() {
 		Controller controller = Controller.getInstance();
 		CartaCompra cartaCompra = controller.getCompraEntretenimento();
