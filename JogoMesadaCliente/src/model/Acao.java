@@ -8,4 +8,6 @@ public interface Acao {
 	int INICIO_MARATONA_BENEFICENTE = 5;
 	int FIM_MARATONA_BENEFICENTE = 6;
 	int PAGUEI_VIZINHO = 7;
+	int INICIO_JOGADA = 8;
+	int PROXIMO_JOGADOR = 9;
 }

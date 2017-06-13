@@ -111,6 +111,7 @@ public class JanelaPrincipal {
 		panel.add(jLay);
 
 		btnRodarDado = new JButton("Jogar Dado");
+		btnRodarDado.setEnabled(false);
 		btnRodarDado.addActionListener(new ActionListener() {			
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -137,6 +138,31 @@ public class JanelaPrincipal {
 				
 				for (Jogador adv : adversarios) {
 					modelJogadores.addElement(adv.toString());
+					anda(adv.getPosicaoPino(), adv.getId());
+				}
+			}
+		});
+	}
+	
+	public void atualizaJogadores(final Jogador euJogador, final ArrayList<Jogador> adversarios, final int idJogadorAtual) {
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				modelJogadores.clear();
+				
+				if (euJogador.getId() == idJogadorAtual) {
+					modelJogadores.addElement(">" + euJogador.toString() + " (Você)");
+				} else {
+					modelJogadores.addElement(euJogador.toString() + " (Você)");
+				}
+				anda(euJogador.getPosicaoPino(), euJogador.getId());
+				
+				for (Jogador adv : adversarios) {
+					if (adv.getId() == idJogadorAtual) {
+						modelJogadores.addElement(">" + adv.toString());
+					} else {
+						modelJogadores.addElement(adv.toString());
+					}
 					anda(adv.getPosicaoPino(), adv.getId());
 				}
 			}

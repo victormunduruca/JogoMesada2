@@ -80,6 +80,7 @@ public class Controller{
 	public ArrayList<Jogador> getAdversarios() {
 		return adversarios;
 	}
+	
 	public Jogador getAdversario(int id) {
 		for(Jogador jogador : adversarios) {
 			if(jogador.getId() == id) {
@@ -272,7 +273,7 @@ public class Controller{
 //	}
 	
 	public int lancarDado() {
-		int valorDado = 30; // FIXME Util.randInt(1, 6);
+		int valorDado = 1; // FIXME Util.randInt(1, 6);
 		int posicao = ((euJogador.getPosicaoPino() + valorDado) % 32); // Se igual a 32, zera a posicao
 		euJogador.setPosicaoPino(posicao);
 		return valorDado;

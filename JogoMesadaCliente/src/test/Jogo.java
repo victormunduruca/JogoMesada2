@@ -57,6 +57,19 @@ public class Jogo implements OnJogo {
 		final Controller controller = Controller.getInstance();
 		
 		switch (acaoDeJogo) {
+		case Acao.INICIO_JOGADA:
+			int idJogador = ProtocoloJogadores.getId(data);
+	    	janelaTabuleiro.atualizaJogadores(
+	    			controller.getEuJogador(), 
+					controller.getAdversarios(),
+					idJogador);
+			break;
+			
+		case Acao.PROXIMO_JOGADOR:
+			janelaTabuleiro.habilitaJogar(true);
+			janelaTabuleiro.eSuaVez();
+			break;
+			
 		case Acao.ATUALIZACAO_ESTADO:
 			// Atualiza o adversario no model
 			controller.atualizarAdversario(
@@ -203,10 +216,10 @@ public class Jogo implements OnJogo {
 			inicializaServidor();
 			janelaEspera.fechar();
 			
-			// Se deve tomar a inciativa ao começar a partida
-			if (Controller.getInstance().getEuJogador().getId() == 0) {
-				janelaTabuleiro.eSuaVez();
+			// O primeiro jogador de id 1 deve tomar a inciativa ao começar a partida
+			if (Controller.getInstance().getEuJogador().getId() == 1) {
 				janelaTabuleiro.habilitaJogar(true);
+				janelaTabuleiro.eSuaVez();
 			}
 		}
 		
@@ -224,6 +237,10 @@ public class Jogo implements OnJogo {
 		
 		int valorDado = controller.lancarDado(); // Lanca o dado
 		int posicao = controller.getEuJogador().getPosicaoPino();
+		
+		// Notifica todos os jogadores sobre o inicio de jogada
+		multiCastAdversarios(ProtocoloJogadores.enviarNotificacaoComecoDeJogada(Acao.INICIO_JOGADA, 
+				controller.getEuJogador().getId()));
 		
 		if (controller.isHabilitarMaratonaBeneficente() && valorDado == 6) {
 			
@@ -315,14 +332,18 @@ public class Jogo implements OnJogo {
 					Acao.INICIO_MARATONA_BENEFICENTE, 
 					controller.getEuJogador().getId()));
 		}
-
-		// Envia meu estado para os outros jogadores
-		multiCastAdversarios(ProtocoloJogadores.enviarJogador(Acao.ATUALIZACAO_ESTADO, 
-				Controller.getInstance().getEuJogador()));
 		
 		janelaTabuleiro.atualizaJogadores(
     			Controller.getInstance().getEuJogador(), 
 				Controller.getInstance().getAdversarios());
+		
+		janelaTabuleiro.habilitaJogar(false); // Desabilita a o botão de jogar
+		
+		// Envia meu estado para os outros jogadores
+		multiCastAdversarios(ProtocoloJogadores.enviarJogador(Acao.ATUALIZACAO_ESTADO, 
+				Controller.getInstance().getEuJogador()));
+		
+		notificarProximoAJogar(controller.getEuJogador().getId());
 	}
 	@Override
 	public void onAcaoCorreio(String carta) {
@@ -371,6 +392,28 @@ public class Jogo implements OnJogo {
 			break;
 		}
 	}
+	
+	void notificarProximoAJogar(final int meuId) {
+		(new Thread() {
+			@Override
+			public void run() {
+				Cliente cliente = new Cliente();
+				Controller controller = Controller.getInstance();
+				int proximoJogadorId = meuId + 1;
+				boolean resultado = false;;
+				Jogador adv;
+				while ((adv = controller.getAdversario(proximoJogadorId)) != null && !resultado) {
+					resultado = cliente.enviar(
+							adv.getIp(), 
+							4040 + adv.getId(), 
+							ProtocoloJogadores.enviarNotificacaoProximoJogador(Acao.PROXIMO_JOGADOR, 
+									controller.getEuJogador().getId()));
+					proximoJogadorId++;
+				}
+			}
+		}).start();
+	}
+	
 	private void multiCastAdversarios(final String msg) {
 		(new Thread() {
 			@Override
@@ -385,6 +428,7 @@ public class Jogo implements OnJogo {
 			}
 		}).start();
 	}
+	
 	public void pegaCartaCompraEntretenimento() {
 		Controller controller = Controller.getInstance();
 		CartaCompra cartaCompra = controller.getCompraEntretenimento();
