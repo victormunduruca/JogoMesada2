@@ -98,7 +98,7 @@ public class Jogo implements OnJogo {
 			if(ProtocoloJogadores.getIdResponderAniversariante(data) == controller.getEuJogador().getId()) { // se eu for o aniversariante
 				System.out.println("----------------EU SOU O ANIVERSARIANTE -------------------");
 				System.out.println("++++++++++++++++++++++++=RECEBEU 100 reais de " +ProtocoloJogadores.getId(data));
-				controller.getEuJogador().setSaldo(controller.getEuJogador().getSaldo()+100);
+				controller.getEuJogador().setSaldo(controller.getEuJogador().getSaldo()+100); //TODO Transformar isso em um m�todo
 				// Envia meu estado para os outros jogadores
 				multiCastAdversarios(ProtocoloJogadores.enviarJogador(1, Controller.getInstance().getEuJogador()));
 				janelaTabuleiro.atualizaJogadores(
@@ -142,6 +142,15 @@ public class Jogo implements OnJogo {
 			janelaTabuleiro.showDialogJogadorVencedorMaratonaBeneficente(ProtocoloJogadores.getId(data));
 			break;
 			
+		case Acao.PAGUEI_VIZINHO:
+			if(ProtocoloJogadores.getId(data) == Controller.getInstance().getEuJogador().getId()) { //Se eu for o vizinho que pagaram
+				controller.getEuJogador().setSaldo(controller.getEuJogador().getSaldo()+100);
+				multiCastAdversarios(ProtocoloJogadores.enviarJogador(1, Controller.getInstance().getEuJogador()));
+				janelaTabuleiro.atualizaJogadores(
+		    			Controller.getInstance().getEuJogador(), 
+						Controller.getInstance().getAdversarios());
+			}
+			break;
 		default:
 			break;
 		}
@@ -208,22 +217,23 @@ public class Jogo implements OnJogo {
 		if (posicao == 2) { //Acao casa premio
 			controller.casaPremio(controller.getEuJogador());
 			janelaTabuleiro.casaPremio();
-			
 		} else if(posicao == 4 || posicao == 12 || posicao == 15 || posicao == 25) { //Acao casa Compra e Entetenimento
 			pegaCartaCompraEntretenimento();
-			
 		} else if(posicao == 9 || posicao == 17 || posicao == 23 || posicao == 26 || posicao == 29) { //Acao casa Achou um Comprador
 			janelaTabuleiro.casaAchouComprador(controller.casaAchouComprador(controller.getEuJogador()));
-			
-		} else if(posicao == 21) {
-			controller.casaVendese(valorDado, controller.getEuJogador());
+		} else if(posicao == 21) { //Acao casa vende-se
+			controller.debita(100*valorDado, controller.getEuJogador()); 
 			janelaTabuleiro.casaVendese();
 			pegaCartaCompraEntretenimento();
-			
-		} else if(posicao == 10) {
+		} else if(posicao == 10) { //Acao Aniversario
 			janelaTabuleiro.aniversario();
 			multiCastAdversarios(ProtocoloJogadores.requisitar(Acao.REQUISICAO_ANIVERSARIO, Controller.getInstance().getEuJogador().getId()));
-			
+		} else if(posicao == 1 || posicao == 3 || posicao == 5 || posicao == 11 || posicao == 16 || posicao == 19 
+			||	posicao == 22 || posicao == 24) {
+			ArrayList<String> cartas = controller.casaCorreio(controller.getEuJogador());
+			janelaTabuleiro.casaCorreio(cartas); //mostra um comboBox, vc vai escolhendo uma por uma
+			//criar onAcaoCorreio(String carta), aqui, pra realizar a acao da carta
+
 		} else if (posicao == 7 || posicao == 14 || posicao == 18 || posicao == 28) {
 			// Casas: praia de domingo, ajude a amazonia, lanchonete, compras no shopping
 			float quantia = 100;
@@ -279,7 +289,53 @@ public class Jogo implements OnJogo {
     			Controller.getInstance().getEuJogador(), 
 				Controller.getInstance().getAdversarios());
 	}
-	
+	@Override
+	public void onAcaoCorreio(String carta) {
+//		Controller.getInstance().acaoCasaCorreio(carta);	
+		final Controller controller = Controller.getInstance();
+		switch (carta) {
+		case "contas":
+			System.out.println("CONTAS==================");
+			String conta = controller.geraNovaContaAleatoria();
+			controller.debita(controller.getValorConta(conta), controller.getEuJogador());
+			janelaTabuleiro.conta(conta); 
+			multiCastAdversarios(ProtocoloJogadores.enviarJogador(1, controller.getEuJogador()));
+			janelaTabuleiro.atualizaJogadores(
+	    			Controller.getInstance().getEuJogador(), 
+					Controller.getInstance().getAdversarios());
+			break;
+		case "pague a um vizinho agora":
+			System.out.println("PAGUE UM VIZINHO AGORA==================");	
+			final int idVizinho = janelaTabuleiro.pagueUmVizinhoAgora();//Pega o valor do id do vizinho a se pagar, da GUI
+			controller.debita(100, controller.getEuJogador()); // Debita o valor
+			multiCastAdversarios(ProtocoloJogadores.enviarJogador(1, controller.getEuJogador())); //Avisa pra os demais adversarios o debito
+			(new Thread() {
+				@Override
+				public void run() {
+					Cliente cliente = new Cliente();
+					//Envia ao aniversariante confirmando que pagou
+					System.out.println("---------------------------------------ENVIOU PAGAMENTO PARA O VIZINHO: " +idVizinho); 
+					System.out.println("Resposta: " + 
+							cliente.enviar(controller.getAdversario(idVizinho).getIp(), 4040 +idVizinho, ProtocoloJogadores.pagarVizinho(idVizinho))); //Envia sinal de pagamento para o vizinho
+				}
+			}).start();
+			break;
+		case "dinheiro extra":
+			System.out.println("dinheiro extra==================");
+			break;
+		case "doacoes":
+			System.out.println("doacoes==================");
+			break;
+		case "cobranca monstro":
+			System.out.println("cobranca monstro==================");
+			break;
+		case "va para frente agora":
+			System.out.println("va para frente agora==================");
+			break;
+		default:
+			break;
+		}
+	}
 	private void multiCastAdversarios(final String msg) {
 		(new Thread() {
 			@Override
@@ -294,37 +350,6 @@ public class Jogo implements OnJogo {
 			}
 		}).start();
 	}
-	
-//	private void enviaMeuEstado() {
-//		(new Thread() {
-//			@Override
-//			public void run() {
-//				Cliente cliente = new Cliente();
-//				for (Jogador adv : Controller.getInstance().getAdversarios()) {
-//					System.out.println("####################ENVIOU PARA O: " + adv.getId()); 
-//					System.out.println("Resposta: " + 
-//							cliente.enviar(adv.getIp(), 4040 + adv.getId(), ProtocoloJogadores.enviarJogador(1, Controller.getInstance().getEuJogador()))); //mudar pra jogador.getIP()
-//				}
-//
-//			}
-//		}).start();
-//	}
-//	private void requisitarAniversario() {
-//		// Envia a minha posicao para os outros jogadores
-//				(new Thread() {
-//					@Override
-//					public void run() {
-//						Cliente cliente = new Cliente();
-//						for (Jogador adv : Controller.getInstance().getAdversarios()) {
-//							System.out.println("####################ENVIOU PARA O: " + adv.getId());
-//							System.out.println("Resposta: " +
-//									cliente.enviar(adv.getIp(), 4040 + adv.getId(), ProtocoloJogadores.requisitar(Acao.REQUISICAO_ANIVERSARIO, Controller.getInstance().getEuJogador().getId()))); //mudar pra jogador.getIP()
-//						}
-//
-//					}
-//				}).start();
-//	}
-
 	public void pegaCartaCompraEntretenimento() {
 		Controller controller = Controller.getInstance();
 		CartaCompra cartaCompra = controller.getCompraEntretenimento();
@@ -333,4 +358,6 @@ public class Jogo implements OnJogo {
 			controller.acaoCompraEntretenimento(eEmprestimo, controller.getEuJogador(), cartaCompra);
 		}
 	}
+
+	
 }

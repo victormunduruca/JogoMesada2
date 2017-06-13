@@ -7,4 +7,5 @@ public interface Acao {
 	int ATUALIZAR_SORTE_GRANDE = 4;
 	int INICIO_MARATONA_BENEFICENTE = 5;
 	int FIM_MARATONA_BENEFICENTE = 6;
+	int PAGUEI_VIZINHO = 7;
 }

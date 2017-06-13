@@ -11,6 +11,7 @@ import java.util.Iterator;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -18,7 +19,8 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-import excpeptions.IdNaoEncontradoException;
+
+import controller.Controller;
 import model.Jogador;
 
 public class JanelaPrincipal {
@@ -37,7 +39,7 @@ public class JanelaPrincipal {
 	 */
 	public interface OnJogo { // TODO Impelementar metodos para o jogo
 		void onDadoLancado();
-
+		void onAcaoCorreio(String carta);
 		//void onAcaoCasaEntretenimento();
 	}
 	
@@ -324,5 +326,32 @@ public class JanelaPrincipal {
 				"Você tirou " + dadoValor + " no dado. Você contribuirá com R$" + quantia, 
 				"Acao", 
 				JOptionPane.INFORMATION_MESSAGE);
+	}
+
+
+	public void casaCorreio(ArrayList<String> cartas) {
+		while(!cartas.isEmpty()) {
+			JComboBox comboCartas = new JComboBox(cartas.toArray());
+			int opcao = JOptionPane.showConfirmDialog(null, comboCartas, "Selecione a carta", JOptionPane.OK_CANCEL_OPTION);
+			if(opcao == JOptionPane.OK_OPTION) {
+				String cartaEscolhida = (String) comboCartas.getSelectedItem();
+				jogoListener.onAcaoCorreio(cartaEscolhida);
+				cartas.remove(cartaEscolhida);
+			}
+		}
+	}
+
+	public Integer pagueUmVizinhoAgora() {
+		JComboBox comboIds = new JComboBox(Controller.getInstance().getListaIdsAdversarios().toArray());
+		int opcao = JOptionPane.showConfirmDialog(null, comboIds, "Selecione o adversario", JOptionPane.OK_CANCEL_OPTION);
+		if(opcao == JOptionPane.OK_OPTION) {
+			Integer idEscolhido = (Integer) comboIds.getSelectedItem();
+			return idEscolhido;
+		}
+		return null;
+	}
+
+	public void conta(String conta) {
+		JOptionPane.showMessageDialog(null, "Voc� teve que pagar a conta: " +conta, "Oops", JOptionPane.INFORMATION_MESSAGE);
 	}
 }

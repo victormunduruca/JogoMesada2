@@ -52,4 +52,8 @@ public class ProtocoloJogadores {
 	public static String enviarFimMaratonaBeneficente(int acao, int id) {
 		return acao + "#" + id;
 	}
+	
+	public static String pagarVizinho(int idVizinho) {
+		return Acao.PAGUEI_VIZINHO+"#"+idVizinho;
+	}
  }

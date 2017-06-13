@@ -39,7 +39,9 @@ public class Cliente {
 	        
 	    } finally {
 	        try {
-				socket.close();
+	        	if (socket != null) {
+	        		socket.close();
+	        	}
 			} catch (IOException e) {
 				return false;
 				//e.printStackTrace();
