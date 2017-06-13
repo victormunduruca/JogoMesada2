@@ -21,11 +21,6 @@ public class TesteEcoRede {
 				
 				@Override
 				public void onDadoRecebido(String data) {
-					// XXX Apagar quando você ler, Victor
-					// É aqui onde começa a lógica do jogo.
-					// Falta apenas formatar esse "data" bruto que representa o protocolo 
-					// para as informações de jogo (semelhante o que eu fiz em network.Protocolo
-					// para implementar a sala de espera
 					System.out.println("Eco recbedido: " + data);
 				}
 				

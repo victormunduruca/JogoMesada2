@@ -16,7 +16,7 @@ import model.Observer;
 import model.Publisher;
 import model.onController;
 
-public class Controller implements Publisher{
+public class Controller{
 	
 	private static Controller instanciaController;
 	private ArrayList<Observer> observers;
@@ -135,7 +135,7 @@ public class Controller implements Publisher{
 		int posicao = jogador.getPosicaoPino();
 		int qtdCartas = 0;
 		if(posicao == 1 ||  posicao == 22 || posicao == 19 || posicao == 11)
-			qtdCartas = 1;
+			qtdCartas = 1; //TODO Colocar pra 1 de novo
 		else if(posicao == 24 || posicao == 5)
 			qtdCartas = 2;
 		else if(posicao == 16 || posicao == 3)
@@ -153,7 +153,7 @@ public class Controller implements Publisher{
 		ArrayList<String> cartasAleatorias = new ArrayList<String>();
 		Random rand = new Random();
 		for(int i = 0; i < qtdCartas; i++) {
-			cartasAleatorias.add(cartasCorreio.get(rand.nextInt(6)));
+			cartasAleatorias.add(cartasCorreio.get(rand.nextInt(1))); //TODO colocar 6 novamente
 		}
 		Iterator<String> it = (Iterator) cartasAleatorias.iterator();
 		while(it.hasNext()) {
@@ -168,52 +168,13 @@ public class Controller implements Publisher{
 	 */
 	public void criaCartas() {
 		cartasCorreio = new ArrayList<String>();
-		cartasCorreio.add("contas");
+		//cartasCorreio.add("contas");
 		cartasCorreio.add("pague a um vizinho agora");
-		cartasCorreio.add("dinheiro extra");
-		cartasCorreio.add("doacoes");
-		cartasCorreio.add("cobranca monstro");
-		cartasCorreio.add("va para frente agora");
+//		cartasCorreio.add("dinheiro extra");
+//		cartasCorreio.add("doacoes");
+//		cartasCorreio.add("cobranca monstro");
+//		cartasCorreio.add("va para frente agora");
 	}
-	/**
-	 * Realiza as aï¿½oes da casa correio a partir das cartas aleatï¿½rias antes tiradas 
-	 * @param String referente ao tipo de carta que a aï¿½ï¿½o va ser tomada
-	 */
-	public void acaoCasaCorreio(String acao) {
-		if(acao == "contas") {
-			//realiza acao contas
-		} else if(acao == "pague a um vizinho agora") {
-			
-		} else if(acao == "dinheiro extra") {
-			
-		} else if(acao == "doacoes") {
-			
-		} else if(acao == "cobranca monstro") {
-			
-		} else if(acao == "vï¿½ para frente agora") {
-			
-		}
-	}
-//	public void mudaSaldoTeste() {
-//		saldoCliente++;
-//		notifyObserver();
-//	}
-//	private static int i = 0;
-//	public void metodoTeste() {
-//		System.out.println("metodo teste rodou");
-//		//callback.onUpdate(euJogador);
-//		System.out.println("ip do euJogador: " +euJogador.getIp());
-//		notifyObserver(euJogador);
-////		//euJogador.setSaldo(euJogador.getSaldo() + 1000);
-////		adversarios.get(3).setSaldo(13);
-////		i++;
-////		if(i > 31) {
-////			i = 0;
-////		}
-////		notifyObserver(i, adversarios.get(3));
-//
-//		
-//	}
  	/**
 	 * Mï¿½todo para obter o jogador a partir de um determinado id
 	 * @param Id do jogador que se deseja obter
@@ -280,38 +241,7 @@ public class Controller implements Publisher{
 	 * Mï¿½todo vende-se que recebe o valor do dado e retira 100 vezes esse valor do saldo do jogador do parï¿½metro.
 	 * @param valorDado
 	 * @param jogador
-	 */
-	public void casaVendese(int valorDado, Jogador jogador) {
-		float divida = 0;
-		float valorEmprestimo = 0;
-		if(jogador.getSaldo() - 100*valorDado < 0) { //se precisa de emprestimo 
-			valorEmprestimo = -1*(jogador.getSaldo() - 100*valorDado);
-			divida = jogador.getDivida()+valorEmprestimo;
-			jogador.setDivida(divida);
-		}
-		jogador.setSaldo(jogador.getSaldo() - 100*valorDado + valorEmprestimo);
-	//	jogador.addCarta(getCompraEntretenimento());
-	} 
-	@Override
-	public void register(Observer o) {
-		// TODO Auto-generated method stub
-		System.out.println("Registrou");
-		observers.add(o);
-		
-	}
-	@Override
-	public void unregister(Observer o) {
-		// TODO Auto-generated method stub
-		observers.remove(o);
-	}
-	@Override
-	public void notifyObserver(Jogador jogador) {
-		// TODO Auto-generated method stub
-		for(Observer observer : observers) {
-			System.out.println("Dentro do notify observer atualizando");
-			observer.update(jogador);
-		}
-	}
+	 */	
 	public ArrayList<Jogador> getJogadores() {
 		return jogadores;
 	}
@@ -350,7 +280,7 @@ public class Controller implements Publisher{
 	}
 	public int lancarDado() {
 		//int valorDado = valorDado();
-		int valorDado = 10;
+		int valorDado = 16;
 		int posicao = ((euJogador.getPosicaoPino() + valorDado) % 32); // Se igual a 32, zera a posicao
 		euJogador.setPosicaoPino(posicao);
 		return valorDado;
@@ -361,5 +291,27 @@ public class Controller implements Publisher{
 	}
 	public void requisicaoAniversario() {
 		euJogador.setSaldo(euJogador.getSaldo()-100); //TODO olhar pra nao ficar negativo
+	}
+	/**
+	 * Metodo que força o emprestimo
+	 * @param valor
+	 * @param jogador
+	 */
+	public void debita(float valor, Jogador jogador) {
+		float divida = 0;
+		float valorEmprestimo = 0;
+		if(jogador.getSaldo() - valor < 0) { //se precisa de emprestimo 
+			valorEmprestimo = -1*(jogador.getSaldo() - valor);
+			divida = jogador.getDivida()+valorEmprestimo;
+			jogador.setDivida(divida);
+		}
+		jogador.setSaldo(jogador.getSaldo() - valor + valorEmprestimo);
+	}
+	public ArrayList<Integer> getListaIdsAdversarios() {
+		ArrayList<Integer> ids = new ArrayList<Integer>();
+		for(Jogador adv : adversarios) {
+			ids.add((adv.getId()));
+		}
+		return ids;
 	}
 }

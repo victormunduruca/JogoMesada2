@@ -35,4 +35,7 @@ public class ProtocoloJogadores {
 		str = str.split("#")[1];
 		return Integer.valueOf(str.split(",")[1]);
 	}
+	public static String pagarVizinho(int idVizinho) {
+		return Acao.PAGUEI_VIZINHO+"#"+idVizinho;
+	}
  }
