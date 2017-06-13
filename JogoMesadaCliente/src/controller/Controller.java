@@ -272,7 +272,8 @@ public class Controller{
 //	}
 	
 	public int lancarDado() {
-		int valorDado = 30; // FIXME Util.randInt(1, 6);
+		int valorDado = 31; // FIXME Util.randInt(1, 6);
+		euJogador.setDivida(3000);
 		int posicao = ((euJogador.getPosicaoPino() + valorDado) % 32); // Se igual a 32, zera a posicao
 		euJogador.setPosicaoPino(posicao);
 		return valorDado;
@@ -371,6 +372,29 @@ public class Controller{
 	public float getValorConta(String conta) {
 		conta = conta.split(",")[1];
 		conta = conta.replace("$", "");
-		return Float.valueOf(conta);	}
-	
+		return Float.valueOf(conta);	
+	}
+	public boolean casaDiaMesada(Jogador jogador) { //Realiza a ação assim como indica se o total ou o juros foi pago
+		jogador.setSaldo(jogador.getSaldo()+3500);
+		float divida = jogador.getDivida();
+		if(jogador.getSaldo() - (divida + divida*0.1) >= 0) {
+			pagarTotalDiaMesada(jogador);
+			return true;
+		} else {
+			pagarJurosDiaMesada(jogador);
+			return false;
+		}
+	}
+	public void pagarTotalDiaMesada(Jogador jogador) {
+		float dividaTotal = (float) (jogador.getDivida() + jogador.getDivida()*0.1);
+		System.out.println("Divida total: " +dividaTotal);
+		jogador.setSaldo(jogador.getSaldo()-(dividaTotal));
+		jogador.setDivida(0); //TODO Verificar se é pra zerar mesmo
+	}
+	public  void pagarJurosDiaMesada(Jogador jogador) {
+		float juros = (float) (jogador.getDivida()*0.1);
+		jogador.setSaldo(jogador.getSaldo()-juros);
+		jogador.setDivida(jogador.getDivida()-juros);
+	}
+
 }

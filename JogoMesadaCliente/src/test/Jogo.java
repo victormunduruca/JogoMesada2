@@ -314,8 +314,9 @@ public class Jogo implements OnJogo {
 			multiCastAdversarios(ProtocoloJogadores.enviarInicioMaratonaBeneficente(
 					Acao.INICIO_MARATONA_BENEFICENTE, 
 					controller.getEuJogador().getId()));
+		} else if(posicao == 31) {
+			janelaTabuleiro.casaDiaMesada(controller.getEuJogador().getDivida(), controller.casaDiaMesada(controller.getEuJogador()));
 		}
-
 		// Envia meu estado para os outros jogadores
 		multiCastAdversarios(ProtocoloJogadores.enviarJogador(Acao.ATUALIZACAO_ESTADO, 
 				Controller.getInstance().getEuJogador()));

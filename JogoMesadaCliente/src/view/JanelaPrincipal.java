@@ -349,4 +349,11 @@ public class JanelaPrincipal {
 	public void conta(String conta) {
 		JOptionPane.showMessageDialog(null, "Voc� teve que pagar a conta: " +conta, "Oops", JOptionPane.INFORMATION_MESSAGE);
 	}
+	public void casaDiaMesada(float divida, boolean podePagarTotal) {
+		if(podePagarTotal) {
+			JOptionPane.showMessageDialog(null, "Voce pagou o emprestimo de " +divida+" Alem dos juros" ,"Acao", JOptionPane.INFORMATION_MESSAGE);
+		} else {
+			JOptionPane.showMessageDialog(null, "Voce pagou os juros de " +divida*0.1,"Acao", JOptionPane.INFORMATION_MESSAGE);
+		}
+	}
 }
