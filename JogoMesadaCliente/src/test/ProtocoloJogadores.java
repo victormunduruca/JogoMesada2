@@ -35,4 +35,21 @@ public class ProtocoloJogadores {
 		str = str.split("#")[1];
 		return Integer.valueOf(str.split(",")[1]);
 	}
+	
+	public static String enviarSorteGrandeQuantia(int acao, int id, float quantia) {
+		return acao + "#" + id + "," + quantia;
+	}
+	
+	public static float formatarSorteGrandeQuantia(String str) {
+		str = str.split("#")[1];
+		return Float.valueOf(str.split(",")[1]);
+	}
+	
+	public static String enviarInicioMaratonaBeneficente(int acao, int id) {
+		return acao + "#" + id;
+	}
+	
+	public static String enviarFimMaratonaBeneficente(int acao, int id) {
+		return acao + "#" + id;
+	}
  }

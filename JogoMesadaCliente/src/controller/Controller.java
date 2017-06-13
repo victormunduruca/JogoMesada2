@@ -1,20 +1,16 @@
 package controller;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
 
-import javax.swing.JOptionPane;
+import util.Util;
 
-import network.Servidor;
-import network.Servidor.OnServidor;
 import excpeptions.IdNaoEncontradoException;
 import model.CartaCompra;
 import model.Jogador;
 import model.Observer;
 import model.Publisher;
-import model.onController;
 
 public class Controller implements Publisher{
 	
@@ -26,10 +22,10 @@ public class Controller implements Publisher{
 	
 	private ArrayList<Jogador> jogadores; //Jogadores na partida
 	private ArrayList<String> cartasCorreio; //Cartas referentes a casa correio
-//	private ArrayList<String> bufferCartasCorreio;
-	private int saldoCliente;
 	
-	private Servidor servidor;
+	private float totalSorteGrande = 0;
+	
+	private boolean habilitarMaratonaBeneficente = false;
 	
 	private Controller() {
 //		//TESTEEEEEEEEE
@@ -344,22 +340,77 @@ public class Controller implements Publisher{
 //		euJogador.setPosicaoPino(posicao);
 //		return posicao;
 //	}
+	
 	private static int valorDado() {
 		Random rand = new Random();
 		return rand.nextInt(6) + 1;
 	}
+	
 	public int lancarDado() {
-		//int valorDado = valorDado();
-		int valorDado = 10;
+		int valorDado = 30; // FIXME Util.randInt(1, 6);
 		int posicao = ((euJogador.getPosicaoPino() + valorDado) % 32); // Se igual a 32, zera a posicao
 		euJogador.setPosicaoPino(posicao);
 		return valorDado;
 	}
-	private int randInt(int min, int max) {
-	    Random rand = new Random();
-	    return rand.nextInt((max - min) + 1) + min;
-	}
+	
 	public void requisicaoAniversario() {
 		euJogador.setSaldo(euJogador.getSaldo()-100); //TODO olhar pra nao ficar negativo
 	}
+	
+	private void fazerEmprestimoEuJogador(float quantia) {
+		getEuJogador().setDivida(getEuJogador().getDivida() + quantia);
+		getEuJogador().setSaldo(getEuJogador().getSaldo() + quantia);
+	}
+	
+	/**
+	 * Adiciona uma quantia para o montante do "Sorte Grande"
+	 * 
+	 * @param quantia
+	 * @param fazerEmprestimo
+	 * @return false caso o jogador nao tenha creditos suficientes, caso contrario true
+	 */
+	public boolean pagarSorteGrandeEuJogador(float quantia, boolean fazerEmprestimo) {
+		if (fazerEmprestimo) {
+			fazerEmprestimoEuJogador(quantia);
+		}
+		
+		if ((getEuJogador().getSaldo() - quantia) >= 0) { // Checa saldo
+			getEuJogador().setSaldo(getEuJogador().getSaldo() - quantia);
+			addQuantiaParaSorteGrande(quantia);
+			return true;
+			
+		} else { // Sem saldo, e' preciso fazer um emprestimo
+			return false;
+		}
+	}
+	
+	/**
+	 *  Atualiza a quantia da "sorte grande" para esse jogador
+	 *  
+	 * @param quantia
+	 */
+	public void addQuantiaParaSorteGrande(float quantia) {
+		setTotalSorteGrande(getTotalSorteGrande() + quantia);
+	}
+	
+	public float getTotalSorteGrande() {
+		return totalSorteGrande;
+	}
+	
+	public void zerarSorteGrande() {
+		setTotalSorteGrande(0);
+	}
+	
+	private void setTotalSorteGrande(float totalSorteGrande) {
+		this.totalSorteGrande = totalSorteGrande;
+	}
+
+	public boolean isHabilitarMaratonaBeneficente() {
+		return habilitarMaratonaBeneficente;
+	}
+	
+	public void setHabilitarMaratonaBeneficente(boolean habilitarMaratonaBeneficente) {
+		this.habilitarMaratonaBeneficente = habilitarMaratonaBeneficente;
+	}
+	
 }

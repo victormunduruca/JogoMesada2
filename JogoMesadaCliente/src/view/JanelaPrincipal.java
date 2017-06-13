@@ -221,6 +221,11 @@ public class JanelaPrincipal {
 		btnRodarDado.setEnabled(true);
 	}
 	
+	public void setQuantiaSorteGrande(float quantia) {
+		System.out.println("SORTE GRANDE ATUALIZADA: R$" + quantia); // FIXME Remover!
+		// TODO Atualizar uma label com a quantia na janela
+	}
+	
 //	public static void desabilitarBtnRodarDado() {
 //		btnRodarDado.setEnabled(false);
 //	}
@@ -268,9 +273,55 @@ public class JanelaPrincipal {
 		JOptionPane.showMessageDialog(null, "Feliz aniversario! Voce recebera 100$ de cada jogador!", "Eba!", JOptionPane.INFORMATION_MESSAGE);
 	}
 	
-	public void sorteGrande(String nomeCasa, float quantia) {
+	public void showDialogSorteGrande(String nomeCasa, float quantia) {
 		JOptionPane.showMessageDialog(null, 
 				"Voce caiu na casa " + "\"" + nomeCasa + "\"!. Um valor de R$" + quantia + " sera descontado.", 
+				"Acao", 
+				JOptionPane.INFORMATION_MESSAGE);
+	}
+	
+	public void showDialogEmprestimo(float quantia) {
+		JOptionPane.showMessageDialog(null, 
+				"Seu saldo é insuficiente. É necessário realizar um emprestimo de R$" + quantia, 
+				"Acao", 
+				JOptionPane.INFORMATION_MESSAGE);
+	}
+	
+	public void showDialogInicioMaratonaBeneficente() {
+		JOptionPane.showMessageDialog(null, 
+				"Início da Maratona Beneficiente! Todos os seus adversários devem contribuir para o montante do Sorte Grande." +
+				"O próximo jogador que tirar um número 6 no lançamento do dado, na sua vez de jogar, leva a bolada. Boa Sorte!", 
+				"Acao", 
+				JOptionPane.INFORMATION_MESSAGE);
+	}
+	
+	public void showDialogVencedorMaratonaBeneficente() {
+		JOptionPane.showMessageDialog(null, 
+				"Parabéns você tirou um 6 e venceu a Maratona Beficente!", 
+				"Acao", 
+				JOptionPane.INFORMATION_MESSAGE);
+	}
+	
+	public void showDialogJogadorVencedorMaratonaBeneficente(int id) {
+		JOptionPane.showMessageDialog(null, 
+				"O jogador " + id + " venceu a Maratona Beficente!", 
+				"Acao", 
+				JOptionPane.INFORMATION_MESSAGE);
+	}
+	
+	public void showJogarMaratonaBeneficente() {
+		JOptionPane.showMessageDialog(null, 
+				"Início da Maratona Beneficiente!\n" +
+				"Todos os jogadores devem contribuir para o montante do Sorte Grande.\n" +
+				"Clique em Ok para lançar o dado e contribuir para a Sorte Grande\n " +
+				"Boa Sorte!", 
+				"Acao", 
+				JOptionPane.INFORMATION_MESSAGE);
+	}
+	
+	public void showJogarMaratonaBeneficente(int dadoValor, float quantia) {
+		JOptionPane.showMessageDialog(null, 
+				"Você tirou " + dadoValor + " no dado. Você contribuirá com R$" + quantia, 
 				"Acao", 
 				JOptionPane.INFORMATION_MESSAGE);
 	}

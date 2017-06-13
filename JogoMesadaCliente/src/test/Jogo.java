@@ -12,6 +12,7 @@ import network.Servidor.OnServidor;
 import network.Cliente;
 import network.Protocolo;
 import network.Servidor;
+import util.Util;
 import view.JanelaPrincipal;
 import view.JanelaPrincipal.OnJogo;
 import view.JanelaSalaDeEspera;
@@ -54,8 +55,9 @@ public class Jogo implements OnJogo {
 	private void executaLogicaDeJogo(final String data) {
 		int acaoDeJogo = ProtocoloJogadores.getAcao(data);
 		final Controller controller = Controller.getInstance();
+		
 		switch (acaoDeJogo) {
-		case 1:
+		case Acao.ATUALIZACAO_ESTADO:
 			// Atualiza o adversario no model
 			controller.atualizarAdversario(
 					ProtocoloJogadores.getId(data), 
@@ -67,8 +69,9 @@ public class Jogo implements OnJogo {
 	    	janelaTabuleiro.atualizaJogadores(
 	    			controller.getEuJogador(), 
 					controller.getAdversarios());
-	    	
+	
 			break;
+			
 		case Acao.REQUISICAO_ANIVERSARIO: //Se for requisitado a pagar a quantia do aniversario
 			System.out.println("%%%%%%%%%%% REQUISICAO ANIVERSARIO DO JOGADOR " +ProtocoloJogadores.getId(data));
 			controller.requisicaoAniversario(); //Debita a quantia
@@ -90,6 +93,7 @@ public class Jogo implements OnJogo {
 				}
 			}).start();
 			break;
+			
 		case Acao.RESPOSTA_PARA_O_ANIVERSARIANTE:
 			if(ProtocoloJogadores.getIdResponderAniversariante(data) == controller.getEuJogador().getId()) { // se eu for o aniversariante
 				System.out.println("----------------EU SOU O ANIVERSARIANTE -------------------");
@@ -102,6 +106,42 @@ public class Jogo implements OnJogo {
 						Controller.getInstance().getAdversarios());
 			}
 			break;
+			
+		case Acao.ATUALIZAR_SORTE_GRANDE:
+			float quantia = ProtocoloJogadores.formatarSorteGrandeQuantia(data);
+			controller.addQuantiaParaSorteGrande(quantia);
+			// Atualiza a view com uma nova quantia do "Sorte Grande"
+			janelaTabuleiro.setQuantiaSorteGrande(controller.getTotalSorteGrande());
+			break;
+			
+		case Acao.INICIO_MARATONA_BENEFICENTE:
+			int dado = Util.randInt(1, 6);
+			float valor = dado * 100;
+			
+			janelaTabuleiro.showJogarMaratonaBeneficente();
+			janelaTabuleiro.showJogarMaratonaBeneficente(dado, valor);
+
+			controller.addQuantiaParaSorteGrande(valor); // Atualiza a quantia da sorte grande
+			controller.setHabilitarMaratonaBeneficente(true); // Habilita a Maratono Beneficente
+			
+			// Atualizar view do sorte grande
+			janelaTabuleiro.setQuantiaSorteGrande(controller.getTotalSorteGrande());
+			
+			// Envia a quantia a ser somada na "Sorte Grande" para os outros jogadores
+			multiCastAdversarios(ProtocoloJogadores.enviarSorteGrandeQuantia(
+					Acao.ATUALIZAR_SORTE_GRANDE,
+					controller.getEuJogador().getId(),
+					valor));
+			break;
+			
+		case Acao.FIM_MARATONA_BENEFICENTE:
+			controller.zerarSorteGrande();
+			controller.setHabilitarMaratonaBeneficente(false);
+			
+			janelaTabuleiro.setQuantiaSorteGrande(0);
+			janelaTabuleiro.showDialogJogadorVencedorMaratonaBeneficente(ProtocoloJogadores.getId(data));
+			break;
+			
 		default:
 			break;
 		}
@@ -144,10 +184,26 @@ public class Jogo implements OnJogo {
 
 	@Override
 	public void onDadoLancado() {
+		System.out.println("%%%%%%%%%%%% APERTOU O BOTAO DE JOGAR O DADO");
+		
 		Controller controller = Controller.getInstance();
 		
 		int valorDado = controller.lancarDado(); // Lanca o dado
 		int posicao = controller.getEuJogador().getPosicaoPino();
+		
+		if (controller.isHabilitarMaratonaBeneficente() && valorDado == 6) {
+			multiCastAdversarios(ProtocoloJogadores.enviarFimMaratonaBeneficente(
+					Acao.FIM_MARATONA_BENEFICENTE, 
+					controller.getEuJogador().getId()));
+			
+			// Atualiza o novo saldo com o dinheiro da Maratona Beneficente
+			controller.getEuJogador().setSaldo(
+					controller.getEuJogador().getSaldo() + controller.getTotalSorteGrande());
+			
+			controller.zerarSorteGrande(); // Zera o montante da sorte grande
+			janelaTabuleiro.setQuantiaSorteGrande(0); // Atualiza a view o novo montante do Sorte Grande
+			janelaTabuleiro.showDialogVencedorMaratonaBeneficente();
+		}
 		
 		if (posicao == 2) { //Acao casa premio
 			controller.casaPremio(controller.getEuJogador());
@@ -169,19 +225,55 @@ public class Jogo implements OnJogo {
 			multiCastAdversarios(ProtocoloJogadores.requisitar(Acao.REQUISICAO_ANIVERSARIO, Controller.getInstance().getEuJogador().getId()));
 			
 		} else if (posicao == 7 || posicao == 14 || posicao == 18 || posicao == 28) {
-			// Praia de domingo, ajude a amazonia, lanchonete, compras no shopping
+			// Casas: praia de domingo, ajude a amazonia, lanchonete, compras no shopping
 			float quantia = 100;
-			if ((controller.getEuJogador().getSaldo() - quantia) > 0) {
-				// Descontar quantia
-			} else { // Sem saldo, e preciso fazer um emprestimo
+			
+			switch (posicao) { // Eu sei, e' uma pessima abordagem
+			case 7:
+				janelaTabuleiro.showDialogSorteGrande("Praia de Domingo", 100);
+				break;
+
+			case 14:
+				janelaTabuleiro.showDialogSorteGrande("Ajude a Floresta Amazônica", 100);
+				break;
+			
+			case 18:
+				janelaTabuleiro.showDialogSorteGrande("Lanchonete", 100);
+				break;
 				
+			case 28:
+				janelaTabuleiro.showDialogSorteGrande("Compras no Shopping", 100);
+				break;
+			
+			default:
+				break;
 			}
+			
+			if (!controller.pagarSorteGrandeEuJogador(quantia, false)) { // Sem saldo
+				janelaTabuleiro.showDialogEmprestimo(quantia);
+				controller.pagarSorteGrandeEuJogador(quantia, true);
+			}
+			
+			// Atualiza a view com uma nova quantia do "Sorte Grande"
+			janelaTabuleiro.setQuantiaSorteGrande(controller.getTotalSorteGrande());
+			
+			// Envia a quantia a ser somada na "Sorte Grande" para os outros jogadores
+			multiCastAdversarios(ProtocoloJogadores.enviarSorteGrandeQuantia(
+					Acao.ATUALIZAR_SORTE_GRANDE,
+					controller.getEuJogador().getId(),
+					quantia));
+			
+		} else if (posicao == 30) { // Maratona beneficente
+			multiCastAdversarios(ProtocoloJogadores.enviarInicioMaratonaBeneficente(
+					Acao.INICIO_MARATONA_BENEFICENTE, 
+					controller.getEuJogador().getId()));
+			
+			janelaTabuleiro.showDialogInicioMaratonaBeneficente();
 		}
-		
-		System.out.println("%%%%%%%%%%%% APERTOU O BOTAO DE JOGAR O DADO");
 
 		// Envia meu estado para os outros jogadores
-		multiCastAdversarios(ProtocoloJogadores.enviarJogador(1, Controller.getInstance().getEuJogador()));
+		multiCastAdversarios(ProtocoloJogadores.enviarJogador(Acao.ATUALIZACAO_ESTADO, 
+				Controller.getInstance().getEuJogador()));
 		
 		janelaTabuleiro.atualizaJogadores(
     			Controller.getInstance().getEuJogador(), 
