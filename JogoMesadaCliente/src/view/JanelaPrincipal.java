@@ -1,8 +1,6 @@
 package view;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -26,11 +24,11 @@ import model.Jogador;
 public class JanelaPrincipal {
 
 	private static JButton btnRodarDado;
+	private static JLabel sorteGrandeLabel;
 	private static JFrame frame;
 	private static ArrayList<Pino> pinos;
 	private static JList listaJogadores;
 	private DefaultListModel modelJogadores;
-	private static JLabel label; //Label com o saldo
 	
 	private OnJogo jogoListener;
 
@@ -60,18 +58,15 @@ public class JanelaPrincipal {
 		// Configura a lista de jogadores 
 		modelJogadores = new DefaultListModel();		
 		listaJogadores = new JList(modelJogadores);
-		listaJogadores.setBounds(927, 39, 222, 138); 
-		
-		label = new JLabel();
-
-		label.setFont(new Font("Lucida Sans Typewriter", Font.BOLD, 22));
-		label.setText("Saldo: 0");
-		label.setBounds(77, 756, 360, 51);
-		frame.getContentPane().add(label, BorderLayout.CENTER);
+		listaJogadores.setBounds(927, 39, 222, 138);
 		frame.getContentPane().add(listaJogadores);
 		
 		
 		//----------------------------------------------------------
+		
+		sorteGrandeLabel = new JLabel("Sorte Grande: 0");
+		sorteGrandeLabel.setBounds(927, 355, 222, 14);
+		frame.getContentPane().add(sorteGrandeLabel);
 		
 		pinos = new ArrayList<Pino>();
 		Pino pinoAmarelo = new Pino("Amarelo.png");
@@ -96,7 +91,7 @@ public class JanelaPrincipal {
 
 		frame.setResizable(true);
 		frame.setLocationRelativeTo(null);
-		frame.setBounds(100, 100, 1190, 871);
+		frame.setBounds(100, 100, 1178, 811);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		panel.setBounds(10, 39, 896, 685);
@@ -125,19 +120,8 @@ public class JanelaPrincipal {
 		});
 		btnRodarDado.setBounds(927, 266, 113, 51);
 		frame.getContentPane().add(btnRodarDado);
-
-		JButton btnConsultarSaldos = new JButton("Mudar Saldo");
-//		btnConsultarSaldos.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent arg0) {
-//				Controller.getInstance().metodoTeste();
-//			}
-//		});
-		btnConsultarSaldos.setBounds(927, 216, 113, 23);
-		frame.getContentPane().add(btnConsultarSaldos);
-
-		JButton btnConsultarCartas = new JButton("Consultar Cartas");
-		btnConsultarCartas.setBounds(1050, 216, 113, 23);
-		frame.getContentPane().add(btnConsultarCartas);
+		
+		
 
 	}
 	
@@ -224,8 +208,8 @@ public class JanelaPrincipal {
 	}
 	
 	public void setQuantiaSorteGrande(float quantia) {
-		System.out.println("SORTE GRANDE ATUALIZADA: R$" + quantia); // FIXME Remover!
-		// TODO Atualizar uma label com a quantia na janela
+	//	System.out.println("SORTE GRANDE ATUALIZADA: R$" + quantia); // FIXME Remover!
+		sorteGrandeLabel.setText("Sorte Grande: " +quantia);
 	}
 	
 //	public static void desabilitarBtnRodarDado() {
