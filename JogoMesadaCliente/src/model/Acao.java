@@ -10,4 +10,5 @@ public interface Acao {
 	int PAGUEI_VIZINHO = 7;
 	int INICIO_JOGADA = 8;
 	int PROXIMO_JOGADOR = 9;
+	int FIM_DE_MES = 10;
 }

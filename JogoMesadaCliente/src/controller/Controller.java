@@ -27,6 +27,10 @@ public class Controller{
 	
 	private boolean habilitarMaratonaBeneficente = false;
 	
+	private boolean fimDeJogo = false;
+	
+	private int totalJogadoresAtivos = 6;
+	
 	private Controller() {
 //		//TESTEEEEEEEEE
 //		adversarios = new ArrayList<Jogador>();
@@ -38,6 +42,19 @@ public class Controller{
 	//	iniciarServidor();
 		observers = new ArrayList<Observer>();
 		criaCartas();
+	}
+	
+	
+	public int getTotalJogadoresAtivos() {
+		return totalJogadoresAtivos;
+	}
+	
+	public int incrementarTotalJogadoresAtivos() {
+		return (++totalJogadoresAtivos);
+	}
+	
+	public int decrementarTotalJogadoresAtivos() {
+		return (--totalJogadoresAtivos);
 	}
 	/**
 	 * M�todo que notfica o come�o da partida, no momento que sai da sala de espera
@@ -272,9 +289,14 @@ public class Controller{
 //		return posicao;
 //	}
 	
+	/**
+	 * Lança o dado e atualiza a posicao do jogador
+	 * 
+	 * @return valor do dado lancado
+	 */
 	public int lancarDado() {
-		int valorDado = 1; // FIXME Util.randInt(1, 6);
-		int posicao = ((euJogador.getPosicaoPino() + valorDado) % 32); // Se igual a 32, zera a posicao
+		int valorDado = Util.randInt(1, 6);
+		int posicao = Math.min((euJogador.getPosicaoPino() + valorDado), 31); // Se igual a 32, zera a posicao
 		euJogador.setPosicaoPino(posicao);
 		return valorDado;
 	}
@@ -397,4 +419,11 @@ public class Controller{
 		jogador.setDivida(jogador.getDivida()-juros);
 	}
 
+	public boolean isFimDeJogo() {
+		return fimDeJogo;
+	}
+	
+	public void setFimDeJogo(boolean fimDeJogo) {
+		this.fimDeJogo = fimDeJogo;
+	}
 }

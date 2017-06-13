@@ -61,6 +61,10 @@ public class ProtocoloJogadores {
 		return acao + "#" + id;
 	}
 	
+	public static String enviarFimDeMes(int acao, int id) {
+		return acao + "#" + id;
+	}
+	
 	public static String pagarVizinho(int idVizinho) {
 		return Acao.PAGUEI_VIZINHO+"#"+idVizinho;
 	}

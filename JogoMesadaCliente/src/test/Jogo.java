@@ -66,8 +66,12 @@ public class Jogo implements OnJogo {
 			break;
 			
 		case Acao.PROXIMO_JOGADOR:
-			janelaTabuleiro.habilitaJogar(true);
-			janelaTabuleiro.eSuaVez();
+			if (controller.isFimDeJogo()) { // Passa a vez
+				notificarProximoAJogar(controller.getEuJogador().getId());
+			} else {
+				janelaTabuleiro.habilitaJogar(true);
+				janelaTabuleiro.eSuaVez();	
+			}
 			break;
 			
 		case Acao.ATUALIZACAO_ESTADO:
@@ -184,6 +188,12 @@ public class Jogo implements OnJogo {
 						Controller.getInstance().getAdversarios());
 			}
 			break;
+		case Acao.FIM_DE_MES:
+			if (controller.decrementarTotalJogadoresAtivos() == 0) {
+				janelaTabuleiro.showDialogFimDeJogo();
+			}
+			break;
+			
 		default:
 			break;
 		}
@@ -331,8 +341,19 @@ public class Jogo implements OnJogo {
 			multiCastAdversarios(ProtocoloJogadores.enviarInicioMaratonaBeneficente(
 					Acao.INICIO_MARATONA_BENEFICENTE, 
 					controller.getEuJogador().getId()));
+			
 		} else if(posicao == 31) {
-			janelaTabuleiro.casaDiaMesada(controller.getEuJogador().getDivida(), controller.casaDiaMesada(controller.getEuJogador()));
+			controller.setFimDeJogo(true); // Desabilita jogador do tabuleiro
+			
+			janelaTabuleiro.casaDiaMesada(controller.getEuJogador().getDivida(), 
+					controller.casaDiaMesada(controller.getEuJogador()));
+			
+			if (controller.decrementarTotalJogadoresAtivos() == 0) {
+				janelaTabuleiro.showDialogFimDeJogo();
+			}
+			
+			multiCastAdversarios(ProtocoloJogadores.enviarFimDeMes(Acao.FIM_DE_MES, 
+					controller.getEuJogador().getId()));
 		}
 		
 		janelaTabuleiro.atualizaJogadores(
@@ -412,6 +433,10 @@ public class Jogo implements OnJogo {
 							ProtocoloJogadores.enviarNotificacaoProximoJogador(Acao.PROXIMO_JOGADOR, 
 									controller.getEuJogador().getId()));
 					proximoJogadorId++;
+					if (proximoJogadorId == 7) {
+						proximoJogadorId = 1;
+						if (proximoJogadorId == meuId) ++proximoJogadorId; // Evitar o proprio ID
+					}
 				}
 			}
 		}).start();

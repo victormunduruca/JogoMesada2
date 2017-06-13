@@ -377,9 +377,13 @@ public class JanelaPrincipal {
 	}
 	public void casaDiaMesada(float divida, boolean podePagarTotal) {
 		if(podePagarTotal) {
-			JOptionPane.showMessageDialog(null, "Voce pagou o emprestimo de " +divida+" Alem dos juros" ,"Acao", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Voce pagou o emprestimo de " +divida+" Alem dos juros" ,"Final de Partida", JOptionPane.INFORMATION_MESSAGE);
 		} else {
-			JOptionPane.showMessageDialog(null, "Voce pagou os juros de " +divida*0.1,"Acao", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Voce pagou os juros de " +divida*0.1,"Final de Partida", JOptionPane.INFORMATION_MESSAGE);
 		}
+	}
+	
+	public void showDialogFimDeJogo() {
+		JOptionPane.showMessageDialog(null, "O jogo terminou" ,"Final de Jogo", JOptionPane.INFORMATION_MESSAGE);
 	}
 }
