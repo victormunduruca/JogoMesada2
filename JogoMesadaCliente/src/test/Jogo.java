@@ -331,6 +331,8 @@ public class Jogo implements OnJogo {
 			multiCastAdversarios(ProtocoloJogadores.enviarInicioMaratonaBeneficente(
 					Acao.INICIO_MARATONA_BENEFICENTE, 
 					controller.getEuJogador().getId()));
+		} else if(posicao == 31) {
+			janelaTabuleiro.casaDiaMesada(controller.getEuJogador().getDivida(), controller.casaDiaMesada(controller.getEuJogador()));
 		}
 		
 		janelaTabuleiro.atualizaJogadores(
@@ -345,6 +347,7 @@ public class Jogo implements OnJogo {
 		
 		notificarProximoAJogar(controller.getEuJogador().getId());
 	}
+	
 	@Override
 	public void onAcaoCorreio(String carta) {
 //		Controller.getInstance().acaoCasaCorreio(carta);	
