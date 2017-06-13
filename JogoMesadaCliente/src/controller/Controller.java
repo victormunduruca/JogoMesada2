@@ -298,9 +298,11 @@ public class Controller{
 		if ((getEuJogador().getSaldo() - quantia) >= 0) { // Checa saldo
 			getEuJogador().setSaldo(getEuJogador().getSaldo() - quantia);
 			addQuantiaParaSorteGrande(quantia);
+			System.out.println(">>>>>>>>>>>>>> Novo saldo: " + getEuJogador().getSaldo());
 			return true;
 			
 		} else { // Sem saldo, e' preciso fazer um emprestimo
+			System.out.println("++++++++++++++ Novo saldo: " + getEuJogador().getSaldo());
 			return false;
 		}
 	}

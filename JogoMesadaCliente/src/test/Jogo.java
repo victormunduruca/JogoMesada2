@@ -108,10 +108,15 @@ public class Jogo implements OnJogo {
 			break;
 			
 		case Acao.ATUALIZAR_SORTE_GRANDE:
+			//int adversarioId = ProtocoloJogadores.getId(data);
 			float quantia = ProtocoloJogadores.formatarSorteGrandeQuantia(data);
 			controller.addQuantiaParaSorteGrande(quantia);
+			
 			// Atualiza a view com uma nova quantia do "Sorte Grande"
 			janelaTabuleiro.setQuantiaSorteGrande(controller.getTotalSorteGrande());
+			janelaTabuleiro.atualizaJogadores(
+	    			Controller.getInstance().getEuJogador(), 
+					Controller.getInstance().getAdversarios());
 			break;
 			
 		case Acao.INICIO_MARATONA_BENEFICENTE:
@@ -120,25 +125,40 @@ public class Jogo implements OnJogo {
 			
 			janelaTabuleiro.showJogarMaratonaBeneficente();
 			janelaTabuleiro.showJogarMaratonaBeneficente(dado, valor);
+			
+			if (!controller.pagarSorteGrandeEuJogador(valor, false)) { // Sem saldo
+				janelaTabuleiro.showDialogEmprestimo(valor);
+				controller.pagarSorteGrandeEuJogador(valor, true);
+			}
 
-			controller.addQuantiaParaSorteGrande(valor); // Atualiza a quantia da sorte grande
 			controller.setHabilitarMaratonaBeneficente(true); // Habilita a Maratono Beneficente
 			
 			// Atualizar view do sorte grande
 			janelaTabuleiro.setQuantiaSorteGrande(controller.getTotalSorteGrande());
+			janelaTabuleiro.atualizaJogadores(
+	    			Controller.getInstance().getEuJogador(), 
+					Controller.getInstance().getAdversarios());
 			
 			// Envia a quantia a ser somada na "Sorte Grande" para os outros jogadores
 			multiCastAdversarios(ProtocoloJogadores.enviarSorteGrandeQuantia(
 					Acao.ATUALIZAR_SORTE_GRANDE,
 					controller.getEuJogador().getId(),
 					valor));
+			
+			// Envia meu estado para os outros jogadores
+			multiCastAdversarios(ProtocoloJogadores.enviarJogador(Acao.ATUALIZACAO_ESTADO, 
+					Controller.getInstance().getEuJogador()));
+			
 			break;
 			
 		case Acao.FIM_MARATONA_BENEFICENTE:
-			controller.zerarSorteGrande();
-			controller.setHabilitarMaratonaBeneficente(false);
+			controller.zerarSorteGrande(); // Zera o montante da Sorte Grande
+			controller.setHabilitarMaratonaBeneficente(false); // Desabilita a Maratona Beneficente
 			
-			janelaTabuleiro.setQuantiaSorteGrande(0);
+			janelaTabuleiro.setQuantiaSorteGrande(0); // Zera o montante da Sorte Grande
+			janelaTabuleiro.atualizaJogadores(
+	    			Controller.getInstance().getEuJogador(), 
+					Controller.getInstance().getAdversarios());
 			janelaTabuleiro.showDialogJogadorVencedorMaratonaBeneficente(ProtocoloJogadores.getId(data));
 			break;
 			
@@ -206,9 +226,6 @@ public class Jogo implements OnJogo {
 		int posicao = controller.getEuJogador().getPosicaoPino();
 		
 		if (controller.isHabilitarMaratonaBeneficente() && valorDado == 6) {
-			multiCastAdversarios(ProtocoloJogadores.enviarFimMaratonaBeneficente(
-					Acao.FIM_MARATONA_BENEFICENTE, 
-					controller.getEuJogador().getId()));
 			
 			// Atualiza o novo saldo com o dinheiro da Maratona Beneficente
 			controller.getEuJogador().setSaldo(
@@ -217,22 +234,31 @@ public class Jogo implements OnJogo {
 			controller.zerarSorteGrande(); // Zera o montante da sorte grande
 			janelaTabuleiro.setQuantiaSorteGrande(0); // Atualiza a view o novo montante do Sorte Grande
 			janelaTabuleiro.showDialogVencedorMaratonaBeneficente();
+			
+			multiCastAdversarios(ProtocoloJogadores.enviarFimMaratonaBeneficente(
+					Acao.FIM_MARATONA_BENEFICENTE, 
+					controller.getEuJogador().getId()));
 		}
 		
 		if (posicao == 2) { //Acao casa premio
 			controller.casaPremio(controller.getEuJogador());
 			janelaTabuleiro.casaPremio();
+			
 		} else if(posicao == 4 || posicao == 12 || posicao == 15 || posicao == 25) { //Acao casa Compra e Entetenimento
 			pegaCartaCompraEntretenimento();
+			
 		} else if(posicao == 9 || posicao == 17 || posicao == 23 || posicao == 26 || posicao == 29) { //Acao casa Achou um Comprador
 			janelaTabuleiro.casaAchouComprador(controller.casaAchouComprador(controller.getEuJogador()));
+			
 		} else if(posicao == 21) { //Acao casa vende-se
 			controller.debita(100*valorDado, controller.getEuJogador()); 
 			janelaTabuleiro.casaVendese();
 			pegaCartaCompraEntretenimento();
+			
 		} else if(posicao == 10) { //Acao Aniversario
 			janelaTabuleiro.aniversario();
 			multiCastAdversarios(ProtocoloJogadores.requisitar(Acao.REQUISICAO_ANIVERSARIO, Controller.getInstance().getEuJogador().getId()));
+			
 		} else if(posicao == 1 || posicao == 3 || posicao == 5 || posicao == 11 || posicao == 16 || posicao == 19 
 			||	posicao == 22 || posicao == 24) {
 			ArrayList<String> cartas = controller.casaCorreio(controller.getEuJogador());
@@ -241,23 +267,27 @@ public class Jogo implements OnJogo {
 
 		} else if (posicao == 7 || posicao == 14 || posicao == 18 || posicao == 28) {
 			// Casas: praia de domingo, ajude a amazonia, lanchonete, compras no shopping
-			float quantia = 100;
+			float quantia = 0;
 			
 			switch (posicao) { // Eu sei, e' uma pessima abordagem
 			case 7:
-				janelaTabuleiro.showDialogSorteGrande("Praia de Domingo", 100);
+				quantia = 500;
+				janelaTabuleiro.showDialogSorteGrande("Praia de Domingo", quantia);
 				break;
 
 			case 14:
-				janelaTabuleiro.showDialogSorteGrande("Ajude a Floresta Amazônica", 100);
+				quantia = 400;
+				janelaTabuleiro.showDialogSorteGrande("Ajude a Floresta Amazônica", quantia);
 				break;
 			
 			case 18:
-				janelaTabuleiro.showDialogSorteGrande("Lanchonete", 100);
+				quantia = 600;
+				janelaTabuleiro.showDialogSorteGrande("Lanchonete", quantia);
 				break;
 				
 			case 28:
-				janelaTabuleiro.showDialogSorteGrande("Compras no Shopping", 100);
+				quantia = 800;
+				janelaTabuleiro.showDialogSorteGrande("Compras no Shopping", quantia);
 				break;
 			
 			default:
@@ -279,11 +309,11 @@ public class Jogo implements OnJogo {
 					quantia));
 			
 		} else if (posicao == 30) { // Maratona beneficente
+			janelaTabuleiro.showDialogInicioMaratonaBeneficente();
+			
 			multiCastAdversarios(ProtocoloJogadores.enviarInicioMaratonaBeneficente(
 					Acao.INICIO_MARATONA_BENEFICENTE, 
 					controller.getEuJogador().getId()));
-			
-			janelaTabuleiro.showDialogInicioMaratonaBeneficente();
 		}
 
 		// Envia meu estado para os outros jogadores

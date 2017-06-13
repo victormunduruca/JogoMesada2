@@ -1,8 +1,6 @@
 package view;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -26,11 +24,11 @@ import model.Jogador;
 public class JanelaPrincipal {
 
 	private static JButton btnRodarDado;
+	private static JLabel sorteGrandeLabel;
 	private static JFrame frame;
 	private static ArrayList<Pino> pinos;
 	private static JList listaJogadores;
 	private DefaultListModel modelJogadores;
-	private static JLabel label; //Label com o saldo
 	
 	private OnJogo jogoListener;
 
@@ -60,18 +58,15 @@ public class JanelaPrincipal {
 		// Configura a lista de jogadores 
 		modelJogadores = new DefaultListModel();		
 		listaJogadores = new JList(modelJogadores);
-		listaJogadores.setBounds(927, 39, 222, 138); 
-		
-		label = new JLabel();
-
-		label.setFont(new Font("Lucida Sans Typewriter", Font.BOLD, 22));
-		label.setText("Saldo: 0");
-		label.setBounds(77, 756, 360, 51);
-		frame.getContentPane().add(label, BorderLayout.CENTER);
+		listaJogadores.setBounds(927, 39, 222, 138);
 		frame.getContentPane().add(listaJogadores);
 		
 		
 		//----------------------------------------------------------
+		
+		sorteGrandeLabel = new JLabel("Sorte Grande: 0");
+		sorteGrandeLabel.setBounds(927, 355, 222, 14);
+		frame.getContentPane().add(sorteGrandeLabel);
 		
 		pinos = new ArrayList<Pino>();
 		Pino pinoAmarelo = new Pino("Amarelo.png");
@@ -96,7 +91,7 @@ public class JanelaPrincipal {
 
 		frame.setResizable(true);
 		frame.setLocationRelativeTo(null);
-		frame.setBounds(100, 100, 1190, 871);
+		frame.setBounds(100, 100, 1178, 811);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		panel.setBounds(10, 39, 896, 685);
@@ -125,19 +120,8 @@ public class JanelaPrincipal {
 		});
 		btnRodarDado.setBounds(927, 266, 113, 51);
 		frame.getContentPane().add(btnRodarDado);
-
-		JButton btnConsultarSaldos = new JButton("Mudar Saldo");
-//		btnConsultarSaldos.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent arg0) {
-//				Controller.getInstance().metodoTeste();
-//			}
-//		});
-		btnConsultarSaldos.setBounds(927, 216, 113, 23);
-		frame.getContentPane().add(btnConsultarSaldos);
-
-		JButton btnConsultarCartas = new JButton("Consultar Cartas");
-		btnConsultarCartas.setBounds(1050, 216, 113, 23);
-		frame.getContentPane().add(btnConsultarCartas);
+		
+		
 
 	}
 	
@@ -150,7 +134,6 @@ public class JanelaPrincipal {
 				
 				modelJogadores.addElement(euJogador.toString() + " (Você)");
 				anda(euJogador.getPosicaoPino(), euJogador.getId());
-				System.out.println("EU JOGADOR: " + euJogador.toString());
 				
 				for (Jogador adv : adversarios) {
 					modelJogadores.addElement(adv.toString());
@@ -219,13 +202,23 @@ public class JanelaPrincipal {
 	//----------------------------------------------------------
 	
 	
-	public void habilitaJogar(boolean habilitar) {
-		btnRodarDado.setEnabled(habilitar);
+	public void habilitaJogar(final boolean habilitar) {
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				btnRodarDado.setEnabled(habilitar);
+			}
+		});
 	}
 	
-	public void setQuantiaSorteGrande(float quantia) {
-		System.out.println("SORTE GRANDE ATUALIZADA: R$" + quantia); // FIXME Remover!
-		// TODO Atualizar uma label com a quantia na janela
+	public void setQuantiaSorteGrande(final float quantia) {
+	//	System.out.println("SORTE GRANDE ATUALIZADA: R$" + quantia); // FIXME Remover!
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				sorteGrandeLabel.setText("Sorte Grande: " + quantia);
+			}
+		});
 	}
 	
 //	public static void desabilitarBtnRodarDado() {
@@ -285,29 +278,31 @@ public class JanelaPrincipal {
 	public void showDialogEmprestimo(float quantia) {
 		JOptionPane.showMessageDialog(null, 
 				"Seu saldo é insuficiente. É necessário realizar um emprestimo de R$" + quantia, 
-				"Acao", 
+				"Emprestimo", 
 				JOptionPane.INFORMATION_MESSAGE);
 	}
 	
 	public void showDialogInicioMaratonaBeneficente() {
 		JOptionPane.showMessageDialog(null, 
-				"Início da Maratona Beneficiente! Todos os seus adversários devem contribuir para o montante do Sorte Grande." +
-				"O próximo jogador que tirar um número 6 no lançamento do dado, na sua vez de jogar, leva a bolada. Boa Sorte!", 
-				"Acao", 
+				"Início da Maratona Beneficiente!\n" +
+				"Todos os seus adversários devem contribuir para o montante do Sorte Grande.\n" +
+				"O próximo jogador que tirar um número 6 no lançamento do dado, na sua vez de jogar, leva a bolada.\n" +
+				"Boa Sorte!\n", 
+				"Maratona Beneficente", 
 				JOptionPane.INFORMATION_MESSAGE);
 	}
 	
 	public void showDialogVencedorMaratonaBeneficente() {
 		JOptionPane.showMessageDialog(null, 
 				"Parabéns você tirou um 6 e venceu a Maratona Beficente!", 
-				"Acao", 
+				"Vencedor!", 
 				JOptionPane.INFORMATION_MESSAGE);
 	}
 	
 	public void showDialogJogadorVencedorMaratonaBeneficente(int id) {
 		JOptionPane.showMessageDialog(null, 
 				"O jogador " + id + " venceu a Maratona Beficente!", 
-				"Acao", 
+				"Maratona Beneficente", 
 				JOptionPane.INFORMATION_MESSAGE);
 	}
 	
@@ -317,14 +312,14 @@ public class JanelaPrincipal {
 				"Todos os jogadores devem contribuir para o montante do Sorte Grande.\n" +
 				"Clique em Ok para lançar o dado e contribuir para a Sorte Grande\n " +
 				"Boa Sorte!", 
-				"Acao", 
+				"Jogar Maratona Beneficente", 
 				JOptionPane.INFORMATION_MESSAGE);
 	}
 	
 	public void showJogarMaratonaBeneficente(int dadoValor, float quantia) {
 		JOptionPane.showMessageDialog(null, 
 				"Você tirou " + dadoValor + " no dado. Você contribuirá com R$" + quantia, 
-				"Acao", 
+				"Resultado do Lançamento nos Dados", 
 				JOptionPane.INFORMATION_MESSAGE);
 	}
 
