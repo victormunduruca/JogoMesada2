@@ -219,8 +219,8 @@ public class JanelaPrincipal {
 	//----------------------------------------------------------
 	
 	
-	public void habilitaJogar() {
-		btnRodarDado.setEnabled(true);
+	public void habilitaJogar(boolean habilitar) {
+		btnRodarDado.setEnabled(habilitar);
 	}
 	
 	public void setQuantiaSorteGrande(float quantia) {

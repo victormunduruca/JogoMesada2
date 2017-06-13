@@ -181,8 +181,13 @@ public class Jogo implements OnJogo {
 					Controller.getInstance().getAdversarios());
 	    	
 			inicializaServidor();
-			//iniciaLogicaDeJogo();
 			janelaEspera.fechar();
+			
+			// Se deve tomar a inciativa ao começar a partida
+			if (Controller.getInstance().getEuJogador().getId() == 0) {
+				janelaTabuleiro.eSuaVez();
+				janelaTabuleiro.habilitaJogar(true);
+			}
 		}
 		
 		@Override
