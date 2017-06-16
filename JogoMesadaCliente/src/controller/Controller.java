@@ -9,14 +9,12 @@ import util.Util;
 import excpeptions.IdNaoEncontradoException;
 import model.CartaCompra;
 import model.Jogador;
-import model.Observer;
-import model.Publisher;
+
 
 public class Controller{
 	
 	private static Controller instanciaController;
-	private ArrayList<Observer> observers;
-	
+
 	private ArrayList<Jogador> adversarios = new ArrayList<>();
 	private Jogador euJogador;
 	
@@ -31,7 +29,6 @@ public class Controller{
 	private int totalJogadoresAtivos = 6;
 	
 	private Controller() {
-		observers = new ArrayList<Observer>();
 		criaCartas();
 	}
 	
