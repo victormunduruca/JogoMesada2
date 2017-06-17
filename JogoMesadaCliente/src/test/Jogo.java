@@ -424,7 +424,7 @@ public class Jogo implements OnJogo {
 			public void run() {
 				Cliente cliente = new Cliente();
 				Controller controller = Controller.getInstance();
-				int proximoJogadorId = meuId + 1;
+				int proximoJogadorId = (meuId + 1) > 6 ? 1 : (meuId + 1);
 				boolean resultado = false;;
 				Jogador adv;
 				while ((adv = controller.getAdversario(proximoJogadorId)) != null && !resultado) {
@@ -434,7 +434,7 @@ public class Jogo implements OnJogo {
 							ProtocoloJogadores.enviarNotificacaoProximoJogador(Acao.PROXIMO_JOGADOR, 
 									controller.getEuJogador().getId()));
 					proximoJogadorId++;
-					if (proximoJogadorId == 7) {
+					if (proximoJogadorId > 6) {
 						proximoJogadorId = 1;
 						if (proximoJogadorId == meuId) ++proximoJogadorId; // Evitar o proprio ID
 					}
