@@ -183,7 +183,7 @@ public class JanelaPrincipal {
 			return;
 		}
 		
-		pino.setX(0);
+		pino.setX(0); //Restaura a posicao do pino para que ocorra a iteracao
 		pino.setY(0);
 		if(posicao == 0) {
 			pino.getLabel().setBounds(0, 0, 128, 137);

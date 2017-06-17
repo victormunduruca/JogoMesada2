@@ -11,9 +11,6 @@ public class Jogador {
 	private String ip;
 	private ArrayList<CartaCompra> cartasCompras = new ArrayList<CartaCompra>(); //Cartas de compras, obtidas em casas do tipo "compras e entretenimento"
 	
-	public Jogador() { }
-	
-	
 	
 	public Jogador(int id, float saldo, String ip) {
 		this.id = id;

@@ -9,18 +9,15 @@ import util.Util;
 import excpeptions.IdNaoEncontradoException;
 import model.CartaCompra;
 import model.Jogador;
-import model.Observer;
-import model.Publisher;
+
 
 public class Controller{
 	
 	private static Controller instanciaController;
-	private ArrayList<Observer> observers;
-	
+
 	private ArrayList<Jogador> adversarios = new ArrayList<>();
 	private Jogador euJogador;
 	
-	private ArrayList<Jogador> jogadores; //Jogadores na partida
 	private ArrayList<String> cartasCorreio; //Cartas referentes a casa correio
 	
 	private float totalSorteGrande = 0;
@@ -32,15 +29,6 @@ public class Controller{
 	private int totalJogadoresAtivos = 6;
 	
 	private Controller() {
-//		//TESTEEEEEEEEE
-//		adversarios = new ArrayList<Jogador>();
-//		for(int i = 0; i < 7; i++) {
-//			Jogador jogador = new Jogador(i, i*1000, "abc"); //tirar esse construtor
-//			adversarios.add(jogador);
-//		}
-//		//TESTEEEEEEEEE
-	//	iniciarServidor();
-		observers = new ArrayList<Observer>();
 		criaCartas();
 	}
 	
@@ -56,44 +44,13 @@ public class Controller{
 	public int decrementarTotalJogadoresAtivos() {
 		return (--totalJogadoresAtivos);
 	}
-	/**
-	 * M�todo que notfica o come�o da partida, no momento que sai da sala de espera
-	 */
-//	public void notificarComeco() {
-//		notifyObserver(0, euJogador);
-//		for(Jogador j : jogadores) {
-//			notifyObserver(0, j);
-//		}
-//	}
+	
 	public static Controller getInstance(){
 		if(instanciaController == null) 
 			instanciaController = new Controller();
 		return instanciaController;
 	}
-	
-//	private void iniciarServidor() {
-//		try {
-//			servidor = new Servidor(4040 + getEuJogador().getId());
-//			servidor.run(new OnServidor() {
-//				
-//				@Override
-//				public void onDadoRecebido(String data) {
-//					// XXX Apagar quando você ler, Victor
-//					// É aqui onde começa a lógica do jogo.
-//					// Falta apenas formatar esse "data" bruto que representa o protocolo 
-//					// para as informações de jogo (semelhante o que eu fiz em network.Protocolo
-//					// para implementar a sala de espera
-//					
-//					System.out.println("Eco recbedido: " + data);
-//				}
-//				@Override
-//				public void onErro() { }
-//			});
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//	}
-	
+		
 	public ArrayList<Jogador> getAdversarios() {
 		return adversarios;
 	}
@@ -115,30 +72,9 @@ public class Controller{
 	}
 
 	public void setEuJogador(Jogador euJogador) {
-	//	System.out.println("Atualizou eu jogador com o id: " +euJogador.getId());
+	
 		this.euJogador = euJogador;
-		//notifyObserver(euJogador);
 	}
-	
-//	public static void main(String[] args) {
-//		//JOptionPane.showConfirmDialog(null, "teste");
-//		System.out.println("AFF");
-//		Controller controller = new Controller();
-//		Jogador jogador = new Jogador();
-//		jogador.setId(1);
-//		int opcao = JOptionPane.showConfirmDialog(null, "WOW", "Selecione os pontos", JOptionPane.OK_CANCEL_OPTION);
-////		System.out.println("Saldo antes: " +jogador.getSaldo());
-////		controller.acaoCompraEntretenimento(false, jogador, controller.getCompraEntretenimento());
-////		System.out.println("Nome da carta: " +jogador.getCartasCompras().get(0).getNomeCarta());
-////		controller.casaAchouComprador(jogador);
-////		System.out.println("Saldo depois: " +jogador.getSaldo());
-//		
-//		//jogador.setPosicaoPino(3);
-//		//ArrayList<String> cartinhas = controller.casaCorreio(jogador);
-//		
-//	}
-	
-	
 	/**
 	 * M�todo que realiza as a��es da casa correio
 	 * @param JogadorAtual
@@ -189,21 +125,6 @@ public class Controller{
 //		cartasCorreio.add("cobranca monstro");
 //		cartasCorreio.add("va para frente agora");
 	}
- 	/**
-	 * M�todo para obter o jogador a partir de um determinado id
-	 * @param Id do jogador que se deseja obter
-	 * @return O jogador com o id especificado
-	 * @throws IdNaoEncontradoException
-	 */
-	public Jogador getJogador(int idJogador) throws IdNaoEncontradoException {
-		Iterator<Jogador> it = (Iterator) jogadores.iterator();
-		while(it.hasNext()) {
-			Jogador jogador = (Jogador) it.next();
-			if(jogador.getId() == idJogador)
-				return jogador;
-		}
-		throw new IdNaoEncontradoException();
-	}
 	/**
 	 * 
 	 * @return CartaCompra criada no controller
@@ -251,19 +172,6 @@ public class Controller{
 	public void casaPremio(Jogador jogador) {
 		jogador.setSaldo(jogador.getSaldo() + 5000);
 	}
-	/**
-	 * M�todo vende-se que recebe o valor do dado e retira 100 vezes esse valor do saldo do jogador do par�metro.
-	 * @param valorDado
-	 * @param jogador
-	 */	
-	public ArrayList<Jogador> getJogadores() {
-		return jogadores;
-	}
-
-	public void setJogadores(ArrayList<Jogador> jogadores) {
-		this.jogadores = jogadores;
-	}
-
 	public Jogador jogarDado() {
 		// TODO Auto-generated method stub
 		euJogador.setPosicaoPino(euJogador.getPosicaoPino()+1);
@@ -282,13 +190,6 @@ public class Controller{
 		}
 		System.out.println("atualizarAdversario(): Adversario nao encontrado");
 	}
-	
-//	public int lancarDado() {
-//		int posicao = ((euJogador.getPosicaoPino() + 1) % 32); // Se igual a 32, zera a posicao
-//		euJogador.setPosicaoPino(posicao);
-//		return posicao;
-//	}
-	
 	/**
 	 * Lança o dado e atualiza a posicao do jogador
 	 * 
@@ -321,7 +222,6 @@ public class Controller{
 		if ((getEuJogador().getSaldo() - quantia) >= 0) { // Checa saldo
 			getEuJogador().setSaldo(getEuJogador().getSaldo() - quantia);
 			addQuantiaParaSorteGrande(quantia);
-			System.out.println(">>>>>>>>>>>>>> Novo saldo: " + getEuJogador().getSaldo());
 			return true;
 			
 		} else { // Sem saldo, e' preciso fazer um emprestimo

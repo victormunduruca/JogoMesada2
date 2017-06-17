@@ -1,4 +1,4 @@
-package test;
+package main;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -9,6 +9,7 @@ import model.CartaCompra;
 import model.Jogador;
 import network.Cliente.OnRequest;
 import network.Servidor.OnServidor;
+import test.ProtocoloJogadores;
 import network.Cliente;
 import network.Protocolo;
 import network.Servidor;
