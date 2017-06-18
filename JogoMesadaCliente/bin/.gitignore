@@ -1,6 +1,8 @@
 /controller/
-/model/
-/view/
-/Observer.class
+/excpeptions/
 /main/
+/model/
+/network/
 /test/
+/util/
+/view/

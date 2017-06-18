@@ -58,14 +58,14 @@ public class JanelaPrincipal {
 		// Configura a lista de jogadores 
 		modelJogadores = new DefaultListModel();		
 		listaJogadores = new JList(modelJogadores);
-		listaJogadores.setBounds(927, 39, 222, 138);
+		listaJogadores.setBounds(914, 39, 248, 138);
 		frame.getContentPane().add(listaJogadores);
 		
 		
 		//----------------------------------------------------------
 		
 		sorteGrandeLabel = new JLabel("Sorte Grande: 0");
-		sorteGrandeLabel.setBounds(927, 355, 222, 14);
+		sorteGrandeLabel.setBounds(914, 286, 222, 14);
 		frame.getContentPane().add(sorteGrandeLabel);
 		
 		pinos = new ArrayList<Pino>();
@@ -119,7 +119,7 @@ public class JanelaPrincipal {
 			}
 			
 		});
-		btnRodarDado.setBounds(927, 266, 113, 51);
+		btnRodarDado.setBounds(914, 202, 113, 51);
 		frame.getContentPane().add(btnRodarDado);
 		
 		

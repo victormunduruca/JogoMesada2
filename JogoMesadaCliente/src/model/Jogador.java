@@ -42,7 +42,7 @@ public class Jogador {
 	}
 	@Override
 	public String toString() {
-		return "ID: "+id+" Pos: "+posicaoPino+" Saldo: "+saldo;
+		return "ID: "+id+" Pos: "+posicaoPino+" Saldo: "+saldo+" Divida: "+divida;
 	}
 	public float getDivida() {
 		return divida;
