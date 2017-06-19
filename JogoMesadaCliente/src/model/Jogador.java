@@ -2,7 +2,7 @@ package model;
 
 import java.util.ArrayList;
 
-public class Jogador {
+public class Jogador implements Comparable{
 	
 	private int id; //Id identificador para cada jogador
 	private int posicaoPino = 0; //Posi��o no pino no tabuleiro, de 1 a 31
@@ -58,5 +58,16 @@ public class Jogador {
 	}
 	public void setIp(String ip) {
 		this.ip = ip;
+	}
+
+	@Override
+	public int compareTo(Object arg0) {
+		Jogador comp = (Jogador) arg0;
+		if(comp.getSaldo() - comp.getDivida() == saldo - divida) {
+			return 0;
+		} else if(comp.getSaldo() - comp.getDivida() > saldo - divida) {
+			return 1;
+		} 
+		return -1;
 	}
 }

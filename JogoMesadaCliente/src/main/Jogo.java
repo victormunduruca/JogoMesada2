@@ -7,9 +7,9 @@ import controller.Controller;
 import model.Acao;
 import model.CartaCompra;
 import model.Jogador;
+import model.ProtocoloJogadores;
 import network.Cliente.OnRequest;
 import network.Servidor.OnServidor;
-import test.ProtocoloJogadores;
 import network.Cliente;
 import network.Protocolo;
 import network.Servidor;
@@ -193,6 +193,11 @@ public class Jogo implements OnJogo {
 			if (controller.decrementarTotalJogadoresAtivos() == 0) {
 				janelaTabuleiro.showDialogFimDeJogo();
 			}
+//			controller.addJogadorInativo(controller.getAdversario(ProtocoloJogadores.getId(data)));
+//			if (controller.getAdversariosInativos().size() == 6) {
+//				janelaTabuleiro.showDialogFimDeJogo();
+//			}
+			
 			break;
 			//		case Acao.DINHEIRO_EXTRA:
 			//			if(ProtocoloJogadores.getId(data) == controller.getEuJogador().getId()) { // Se eu for o 
@@ -358,7 +363,11 @@ public class Jogo implements OnJogo {
 			if (controller.decrementarTotalJogadoresAtivos() == 0) {
 				janelaTabuleiro.showDialogFimDeJogo();
 			}
-
+//		controller.addJogadorInativo(controller.getEuJogador());
+//			if (controller.getAdversariosInativos().size() == 6) {
+//				janelaTabuleiro.showDialogFimDeJogo();
+//			}
+	
 			multiCastAdversarios(ProtocoloJogadores.enviarFimDeMes(Acao.FIM_DE_MES, 
 					controller.getEuJogador().getId()));
 		}

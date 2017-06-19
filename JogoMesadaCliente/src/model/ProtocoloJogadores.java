@@ -1,8 +1,6 @@
-package test;
+package model;
 
 import controller.Controller;
-import model.Acao;
-import model.Jogador;
 
 /**
  * Protocolo: NUMERO_ACAO(int)#ID(int),POSICAO(int),SALDO(float)

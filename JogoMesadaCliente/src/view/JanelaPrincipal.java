@@ -388,7 +388,8 @@ public class JanelaPrincipal {
 	}
 	
 	public void showDialogFimDeJogo() {
-		JOptionPane.showMessageDialog(null, "O jogo terminou" ,"Final de Jogo", JOptionPane.INFORMATION_MESSAGE);
+		JList listaJogadores = new JList(Controller.getInstance().getListaJogadoresOrdenada().toArray()); 
+		JOptionPane.showMessageDialog(null, listaJogadores ,"Final de Jogo", JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	public int dinheiroExtra() {

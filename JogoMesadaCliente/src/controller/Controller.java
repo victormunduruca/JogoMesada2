@@ -1,6 +1,7 @@
 package controller;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.Random;
 
@@ -32,6 +33,16 @@ public class Controller{
 		criaCartas();
 	}
 	
+	////
+	private ArrayList<Jogador> adversariosDesconectados = new ArrayList<>();
+	
+	public void addJogadorDesconectado(Jogador jogador) {
+		adversariosDesconectados.add(jogador);
+	}
+	public ArrayList<Jogador> getAdversariosDesconectados() {
+		return adversariosDesconectados;
+	}
+	//////
 	
 	public int getTotalJogadoresAtivos() {
 		return totalJogadoresAtivos;
@@ -195,8 +206,9 @@ public class Controller{
 	 * @return valor do dado lancado
 	 */
 	public int lancarDado() {
-		int valorDado = Util.randInt(1, 6);
-		int posicao = Math.min((euJogador.getPosicaoPino() + valorDado), 31); // Se igual a 32, zera a posicao
+	//	int valorDado = Util.randInt(1, 6); FIXME
+		int valorDado = Util.randInt(1, 3)*10;
+		int posicao = Math.min((euJogador.getPosicaoPino() + valorDado), 31); // Se maior que 31, fica 31
 		euJogador.setPosicaoPino(posicao);
 		return valorDado; 
 	}
@@ -357,5 +369,11 @@ public class Controller{
 	 */
 	public float geraCobrancaMonstro() {
 		return Util.randInt(1, 4)*100;
+	}
+	public ArrayList<Jogador> getListaJogadoresOrdenada() {
+		ArrayList<Jogador> jogadores = adversarios;
+		jogadores.add(euJogador);
+		Collections.sort(jogadores);
+		return jogadores;
 	}
 }
