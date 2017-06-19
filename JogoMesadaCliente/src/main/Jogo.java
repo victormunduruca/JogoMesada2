@@ -254,13 +254,13 @@ public class Jogo implements OnJogo {
 
 		int valorDado = controller.lancarDado(); // Lanca o dado
 		int posicao = controller.getEuJogador().getPosicaoPino();
-
+		janelaTabuleiro.atualizaBotao(valorDado);
 		// Notifica todos os jogadores sobre o inicio de jogada
 		multiCastAdversarios(ProtocoloJogadores.enviarNotificacaoComecoDeJogada(Acao.INICIO_JOGADA, 
 				controller.getEuJogador().getId()));
 
 		if (controller.isHabilitarMaratonaBeneficente() && valorDado == 6) {
-
+			
 			// Atualiza o novo saldo com o dinheiro da Maratona Beneficente
 			controller.getEuJogador().setSaldo(
 					controller.getEuJogador().getSaldo() + controller.getTotalSorteGrande());
@@ -362,7 +362,6 @@ public class Jogo implements OnJogo {
 			multiCastAdversarios(ProtocoloJogadores.enviarFimDeMes(Acao.FIM_DE_MES, 
 					controller.getEuJogador().getId()));
 		}
-
 		janelaTabuleiro.atualizaJogadores(
 				Controller.getInstance().getEuJogador(), 
 				Controller.getInstance().getAdversarios());
@@ -429,14 +428,11 @@ public class Jogo implements OnJogo {
 			controller.debita(valorCobrancaMonstro, controller.getEuJogador());
 			janelaTabuleiro.showDialogCobrancaMonstro(valorCobrancaMonstro);
 			break;
-		case "va para frente agora":
-			System.out.println("va para frente agora==================");
-			break;
 		default:
 			break;
 		}
 	}
-
+	//TODO Comentar essa parte do codigo, importante
 	void notificarProximoAJogar(final int meuId) {
 		(new Thread() {
 			@Override

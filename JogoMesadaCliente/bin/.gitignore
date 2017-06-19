@@ -1,5 +1,6 @@
-/main/
 /model/
+/network/
 /test/
+/util/
 /view/
-/controller/
+/main/

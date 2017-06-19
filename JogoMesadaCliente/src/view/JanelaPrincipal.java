@@ -119,13 +119,15 @@ public class JanelaPrincipal {
 			}
 			
 		});
-		btnRodarDado.setBounds(914, 202, 113, 51);
+		btnRodarDado.setBounds(914, 202, 155, 51);
 		frame.getContentPane().add(btnRodarDado);
 		
 		
 
 	}
-	
+	public void atualizaBotao(int valor) {
+		btnRodarDado.setText("Jogar Dado (" +valor+")");
+	}
 	public void atualizaJogadores(final Jogador euJogador, final ArrayList<Jogador> adversarios) {
 		SwingUtilities.invokeLater(new Runnable() {
 			
