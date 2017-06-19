@@ -396,4 +396,8 @@ public class JanelaPrincipal {
 	public void showDialogDoacoes() {
 		JOptionPane.showMessageDialog(null, "Voce doou o valor de 100$" ,"Info", JOptionPane.INFORMATION_MESSAGE);
 	}
+
+	public void showDialogCobrancaMonstro(float valorCobrancaMonstro) {
+		JOptionPane.showMessageDialog(null, "O valor de "+valorCobrancaMonstro+" foi debitado de sua conta" ,"Cobranca Monstro", JOptionPane.INFORMATION_MESSAGE);
+	}
 }

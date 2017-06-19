@@ -12,7 +12,7 @@ public class CartaCompra {
 	private int valorCarta;
 	private int valorRevendaCarta;
 	
-	public CartaCompra() { //Toda vez q uma nova instância de uma Carta Compra e Entretenimento for criada isso vai ser feito de forma aleatória
+	public CartaCompra() { //Toda vez q uma nova instancia de uma Carta Compra e Entretenimento for criada isso vai ser feito de forma aleatoria
 		criaCartaAleatoria();
 	}
 	
@@ -34,19 +34,27 @@ public class CartaCompra {
 	public void setValorRevendaCarta(int valorRevendaCarta) {
 		this.valorRevendaCarta = valorRevendaCarta;
 	}
+	/**
+	 * Metodo que configura uma nova carta compra e entretenimento aleatoria
+	 */
 	public void criaCartaAleatoria() {
 		Random rand = new Random();
-		int i = rand.nextInt(2);
+		int i = rand.nextInt(3);
 		switch (i) {
 		case 0:
-			this.nomeCarta = "Item1";
+			this.nomeCarta = "Ida ao medico";
 			this.valorCarta = 600;
 			this.valorRevendaCarta = 1000;
 			break;
 		case 1:
-			this.nomeCarta = "Item2";
+			this.nomeCarta = "Smartphone";
 			this.valorCarta = 700;
 			this.valorRevendaCarta = 800;
+			break;
+		case 2:
+			this.nomeCarta = "Notebook";
+			this.valorCarta = 1000;
+			this.valorRevendaCarta = 1200;
 			break;
 		default:
 			break;

@@ -103,7 +103,7 @@ public class Controller{
 		ArrayList<String> cartasAleatorias = new ArrayList<String>();
 		Random rand = new Random();
 		for(int i = 0; i < qtdCartas; i++) {
-			cartasAleatorias.add(cartasCorreio.get(rand.nextInt(2))); //TODO colocar 6 novamente
+			cartasAleatorias.add(cartasCorreio.get(rand.nextInt(4))); 
 		}
 		Iterator<String> it = (Iterator) cartasAleatorias.iterator();
 		while(it.hasNext()) {
@@ -121,7 +121,7 @@ public class Controller{
 		cartasCorreio.add("pague a um vizinho agora");
 //		cartasCorreio.add("dinheiro extra");
 		cartasCorreio.add("doacoes");
-//		cartasCorreio.add("cobranca monstro");
+		cartasCorreio.add("cobranca monstro");
 //		cartasCorreio.add("va para frente agora");
 	}
 	/**
@@ -198,7 +198,7 @@ public class Controller{
 		int valorDado = Util.randInt(1, 6);
 		int posicao = Math.min((euJogador.getPosicaoPino() + valorDado), 31); // Se igual a 32, zera a posicao
 		euJogador.setPosicaoPino(posicao);
-		return valorDado;
+		return valorDado; 
 	}
 	
 	private void fazerEmprestimoEuJogador(float quantia) {
@@ -276,6 +276,9 @@ public class Controller{
 		}
 		jogador.setSaldo(jogador.getSaldo() - valor + valorEmprestimo);
 	}
+	/**
+	 * @return Uma lista de inteiros que representam os ids adversarios
+	 */
 	public ArrayList<Integer> getListaIdsAdversarios() {
 		ArrayList<Integer> ids = new ArrayList<Integer>();
 		for(Jogador adv : adversarios) {
@@ -283,6 +286,10 @@ public class Controller{
 		}
 		return ids;
 	}
+	/**
+	 * Gera uma nova conta (String contendo a descricao e o valor)
+	 * @return
+	 */
 	public String geraNovaContaAleatoria() {
 		ArrayList<String> contas = new ArrayList<String>();
 		contas.add("Conta de agua, 400$");
@@ -290,11 +297,21 @@ public class Controller{
 		contas.add("Energia, 100$");
 		return contas.get(Util.randInt(0, 2));
 	}
+	/**
+	 * Obtem o valor de uma conta, formatada como "NomeConta, valor$"
+	 * @param conta
+	 * @return
+	 */
 	public float getValorConta(String conta) {
 		conta = conta.split(",")[1];
 		conta = conta.replace("$", "");
 		return Float.valueOf(conta);	
 	}
+	/**
+	 * Realiza as ações do dia da mesada, ou seja, o pagamento das dividas
+	 * @param jogador
+	 * @return
+	 */
 	public boolean casaDiaMesada(Jogador jogador) { //Realiza a aï¿½ï¿½o assim como indica se o total ou o juros foi pago
 		jogador.setSaldo(jogador.getSaldo()+3500);
 		float divida = jogador.getDivida();
@@ -306,12 +323,20 @@ public class Controller{
 			return false;
 		}
 	}
+	/**
+	 * Metodo que realiza o pagamento total da divida (divida + juros)
+	 * @param jogador
+	 */
 	public void pagarTotalDiaMesada(Jogador jogador) {
 		float dividaTotal = (float) (jogador.getDivida() + jogador.getDivida()*0.1);
 		System.out.println("Divida total: " +dividaTotal);
 		jogador.setSaldo(jogador.getSaldo()-(dividaTotal));
 		jogador.setDivida(0); //TODO Verificar se ï¿½ pra zerar mesmo
 	}
+	/**
+	 * Metodo que realiza o pagamento parcial da divida, somente os juros
+	 * @param jogador
+	 */
 	public  void pagarJurosDiaMesada(Jogador jogador) {
 		float juros = (float) (jogador.getDivida()*0.1);
 		jogador.setSaldo(jogador.getSaldo()-juros);
@@ -324,5 +349,13 @@ public class Controller{
 	
 	public void setFimDeJogo(boolean fimDeJogo) {
 		this.fimDeJogo = fimDeJogo;
+	}
+
+	/**
+	 * Metodo que gera valores 100, 200, 300 ou 400, para serem debitatos na casa cobranca monstro
+	 * @return
+	 */
+	public float geraCobrancaMonstro() {
+		return Util.randInt(1, 4)*100;
 	}
 }

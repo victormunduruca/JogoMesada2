@@ -424,6 +424,10 @@ public class Jogo implements OnJogo {
 			break;
 		case "cobranca monstro":
 			System.out.println("cobranca monstro==================");
+			float valorCobrancaMonstro = controller.geraCobrancaMonstro();
+			valorCobrancaMonstro = (float) (valorCobrancaMonstro + 0.1*valorCobrancaMonstro);
+			controller.debita(valorCobrancaMonstro, controller.getEuJogador());
+			janelaTabuleiro.showDialogCobrancaMonstro(valorCobrancaMonstro);
 			break;
 		case "va para frente agora":
 			System.out.println("va para frente agora==================");
