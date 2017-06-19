@@ -110,7 +110,6 @@ public class Controller{
 			String s = (String) it.next();
 			System.out.println("Carta: " +s);
 		}
-		
 		return cartasAleatorias;
 	}
 	/**
@@ -121,7 +120,7 @@ public class Controller{
 		cartasCorreio.add("contas");
 		cartasCorreio.add("pague a um vizinho agora");
 //		cartasCorreio.add("dinheiro extra");
-//		cartasCorreio.add("doacoes");
+		cartasCorreio.add("doacoes");
 //		cartasCorreio.add("cobranca monstro");
 //		cartasCorreio.add("va para frente agora");
 	}

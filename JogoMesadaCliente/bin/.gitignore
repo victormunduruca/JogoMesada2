@@ -1,8 +1,5 @@
-/controller/
-/excpeptions/
 /main/
 /model/
-/network/
 /test/
-/util/
 /view/
+/controller/

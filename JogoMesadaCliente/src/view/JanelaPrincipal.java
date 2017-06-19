@@ -361,15 +361,17 @@ public class JanelaPrincipal {
 			}
 		}
 	}
-
-	public Integer pagueUmVizinhoAgora() {
+	public Integer selecioneVizinho(String mensagem) {
 		JComboBox comboIds = new JComboBox(Controller.getInstance().getListaIdsAdversarios().toArray());
-		int opcao = JOptionPane.showConfirmDialog(null, comboIds, "Selecione o adversario", JOptionPane.OK_CANCEL_OPTION);
+		int opcao = JOptionPane.showConfirmDialog(null, comboIds, mensagem, JOptionPane.OK_CANCEL_OPTION);
 		if(opcao == JOptionPane.OK_OPTION) {
 			Integer idEscolhido = (Integer) comboIds.getSelectedItem();
 			return idEscolhido;
 		}
 		return null;
+	}
+	public Integer pagueUmVizinhoAgora() {
+		return selecioneVizinho("Selecione o vizinho a quem pagar");
 	}
 
 	public void conta(String conta) {
@@ -385,5 +387,13 @@ public class JanelaPrincipal {
 	
 	public void showDialogFimDeJogo() {
 		JOptionPane.showMessageDialog(null, "O jogo terminou" ,"Final de Jogo", JOptionPane.INFORMATION_MESSAGE);
+	}
+
+	public int dinheiroExtra() {
+		return selecioneVizinho("Selecione o vizinho no qual deseja receber o dinheiro extra");
+	}
+
+	public void showDialogDoacoes() {
+		JOptionPane.showMessageDialog(null, "Voce doou o valor de 100$" ,"Info", JOptionPane.INFORMATION_MESSAGE);
 	}
 }

@@ -11,4 +11,5 @@ public interface Acao {
 	int INICIO_JOGADA = 8;
 	int PROXIMO_JOGADOR = 9;
 	int FIM_DE_MES = 10;
+	int DINHEIRO_EXTRA = 11;
 }
