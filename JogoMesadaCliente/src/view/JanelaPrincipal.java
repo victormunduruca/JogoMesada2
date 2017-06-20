@@ -144,7 +144,7 @@ public class JanelaPrincipal {
 			public void run() {
 				modelJogadores.clear();
 				
-				modelJogadores.addElement(euJogador.toString() + " (Você)");
+				modelJogadores.addElement(euJogador.toString() + " (Voce)");
 				anda(euJogador.getPosicaoPino(), euJogador.getId());
 				
 				for (Jogador adv : adversarios) {
@@ -168,9 +168,9 @@ public class JanelaPrincipal {
 				modelJogadores.clear();
 				
 				if (euJogador.getId() == idJogadorAtual) {
-					modelJogadores.addElement(">" + euJogador.toString() + " (Você)");
+					modelJogadores.addElement(">" + euJogador.toString() + " (Voce)");
 				} else {
-					modelJogadores.addElement(euJogador.toString() + " (Você)");
+					modelJogadores.addElement(euJogador.toString() + " (Voce)");
 				}
 				anda(euJogador.getPosicaoPino(), euJogador.getId());
 				
@@ -312,7 +312,7 @@ public class JanelaPrincipal {
 	
 	public void showDialogEmprestimo(float quantia) {
 		JOptionPane.showMessageDialog(null, 
-				"Seu saldo é insuficiente. É necessário realizar um emprestimo de R$" + quantia, 
+				"Seu saldo e insuficiente. E necessario realizar um emprestimo de R$" + quantia, 
 				"Emprestimo", 
 				JOptionPane.INFORMATION_MESSAGE);
 	}
@@ -320,8 +320,8 @@ public class JanelaPrincipal {
 	public void showDialogInicioMaratonaBeneficente() {
 		JOptionPane.showMessageDialog(null, 
 				"Início da Maratona Beneficiente!\n" +
-				"Todos os seus adversários devem contribuir para o montante do Sorte Grande.\n" +
-				"O próximo jogador que tirar um número 6 no lançamento do dado, na sua vez de jogar, leva a bolada.\n" +
+				"Todos os seus adversarios devem contribuir para o montante do Sorte Grande.\n" +
+				"O proximo jogador que tirar um número 6 no lancamento do dado, na sua vez de jogar, leva a bolada.\n" +
 				"Boa Sorte!\n", 
 				"Maratona Beneficente", 
 				JOptionPane.INFORMATION_MESSAGE);
@@ -329,7 +329,7 @@ public class JanelaPrincipal {
 	
 	public void showDialogVencedorMaratonaBeneficente() {
 		JOptionPane.showMessageDialog(null, 
-				"Parabéns você tirou um 6 e venceu a Maratona Beficente!", 
+				"Parabens voce tirou um 6 e venceu a Maratona Beficente!", 
 				"Vencedor!", 
 				JOptionPane.INFORMATION_MESSAGE);
 	}
@@ -345,7 +345,7 @@ public class JanelaPrincipal {
 		JOptionPane.showMessageDialog(null, 
 				"Início da Maratona Beneficiente!\n" +
 				"Todos os jogadores devem contribuir para o montante do Sorte Grande.\n" +
-				"Clique em Ok para lançar o dado e contribuir para a Sorte Grande\n " +
+				"Clique em Ok para lancar o dado e contribuir para a Sorte Grande\n " +
 				"Boa Sorte!", 
 				"Jogar Maratona Beneficente", 
 				JOptionPane.INFORMATION_MESSAGE);
@@ -353,8 +353,8 @@ public class JanelaPrincipal {
 	
 	public void showJogarMaratonaBeneficente(int dadoValor, float quantia) {
 		JOptionPane.showMessageDialog(null, 
-				"Você tirou " + dadoValor + " no dado. Você contribuirá com R$" + quantia, 
-				"Resultado do Lançamento nos Dados", 
+				"Voce tirou " + dadoValor + " no dado. Voce contribuira com R$" + quantia, 
+				"Resultado do Lancamento nos Dados", 
 				JOptionPane.INFORMATION_MESSAGE);
 	}
 
@@ -384,7 +384,7 @@ public class JanelaPrincipal {
 	}
 
 	public void conta(String conta) {
-		JOptionPane.showMessageDialog(null, "Voc� teve que pagar a conta: " +conta, "Oops", JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(null, "Voce teve que pagar a conta: " +conta, "Oops", JOptionPane.INFORMATION_MESSAGE);
 	}
 	public void casaDiaMesada(float divida, boolean podePagarTotal) {
 		if(podePagarTotal) {
