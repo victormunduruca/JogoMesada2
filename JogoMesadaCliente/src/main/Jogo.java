@@ -190,14 +190,17 @@ public class Jogo implements OnJogo {
 			}
 			break;
 		case Acao.FIM_DE_MES:
-			if (controller.decrementarTotalJogadoresAtivos() == 0) {
+			int jogadoresOnline = getJogadoresOnline();
+			if (controller.incrementarJogadoresFinalizados() == jogadoresOnline) {
 				janelaTabuleiro.showDialogFimDeJogo();
 			}
-//			controller.addJogadorInativo(controller.getAdversario(ProtocoloJogadores.getId(data)));
-//			if (controller.getAdversariosInativos().size() == 6) {
-//				janelaTabuleiro.showDialogFimDeJogo();
-//			}
-			
+			System.out.println("1@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ NUMERO ONLINE = "+jogadoresOnline);
+			System.out.println("1############################## NUMERO JOGADORES = " +Controller.getInstance().getTotalJogadoresFinalizados());
+			//			controller.addJogadorInativo(controller.getAdversario(ProtocoloJogadores.getId(data)));
+			//			if (controller.getAdversariosInativos().size() == 6) {
+			//				janelaTabuleiro.showDialogFimDeJogo();
+			//			}
+
 			break;
 			//		case Acao.DINHEIRO_EXTRA:
 			//			if(ProtocoloJogadores.getId(data) == controller.getEuJogador().getId()) { // Se eu for o 
@@ -265,7 +268,7 @@ public class Jogo implements OnJogo {
 				controller.getEuJogador().getId()));
 
 		if (controller.isHabilitarMaratonaBeneficente() && valorDado == 6) {
-			
+
 			// Atualiza o novo saldo com o dinheiro da Maratona Beneficente
 			controller.getEuJogador().setSaldo(
 					controller.getEuJogador().getSaldo() + controller.getTotalSorteGrande());
@@ -359,15 +362,17 @@ public class Jogo implements OnJogo {
 
 			janelaTabuleiro.casaDiaMesada(controller.getEuJogador().getDivida(), 
 					controller.casaDiaMesada(controller.getEuJogador()));
-
-			if (controller.decrementarTotalJogadoresAtivos() == 0) {
-				janelaTabuleiro.showDialogFimDeJogo();
+			int jogadoresOn = getJogadoresOnline();
+			if (controller.incrementarJogadoresFinalizados() == jogadoresOn) {
+				janelaTabuleiro.showDialogFimDeJogo(); //FIXME impedir que essa janela trave o resto do codigo
 			}
-//		controller.addJogadorInativo(controller.getEuJogador());
-//			if (controller.getAdversariosInativos().size() == 6) {
-//				janelaTabuleiro.showDialogFimDeJogo();
-//			}
-	
+			System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ NUMERO ONLINE = "+jogadoresOn);
+			System.out.println("############################## NUMERO JOGADORES = " +Controller.getInstance().getTotalJogadoresFinalizados());
+			//		controller.addJogadorInativo(controller.getEuJogador());
+			//			if (controller.getAdversariosInativos().size() == 6) {
+			//				janelaTabuleiro.showDialogFimDeJogo();
+			//			}
+
 			multiCastAdversarios(ProtocoloJogadores.enviarFimDeMes(Acao.FIM_DE_MES, 
 					controller.getEuJogador().getId()));
 		}
@@ -508,6 +513,19 @@ public class Jogo implements OnJogo {
 			controller.acaoCompraEntretenimento(eEmprestimo, controller.getEuJogador(), cartaCompra);
 		}
 	}
+	private Integer numOnline;
+	public synchronized int getJogadoresOnline() {
+		numOnline = 1;//Adiciona o euJogador online
 
+		Cliente cliente = new Cliente();
+		for (Jogador adv : Controller.getInstance().getAdversarios()) {
+			if(cliente.enviar(adv.getIp(), 4040 + adv.getId(), 
+					ProtocoloJogadores.enviarFimDeMes(0, Controller.getInstance().getEuJogador().getId()))) {
+				numOnline++;
+			}
+		}
+		
+		return numOnline; 
+	}
 
 }

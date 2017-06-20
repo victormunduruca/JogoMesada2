@@ -27,7 +27,7 @@ public class Controller{
 	
 	private boolean fimDeJogo = false;
 	
-	private int totalJogadoresAtivos = 6;
+	private int totalJogadoresFinalizados = 0;
 	
 	private Controller() {
 		criaCartas();
@@ -44,16 +44,16 @@ public class Controller{
 	}
 	//////
 	
-	public int getTotalJogadoresAtivos() {
-		return totalJogadoresAtivos;
+	public int getTotalJogadoresFinalizados() {
+		return totalJogadoresFinalizados;
 	}
 	
-	public int incrementarTotalJogadoresAtivos() {
-		return (++totalJogadoresAtivos);
+	public int incrementarJogadoresFinalizados() {
+		return (++totalJogadoresFinalizados);
 	}
 	
-	public int decrementarTotalJogadoresAtivos() {
-		return (--totalJogadoresAtivos);
+	public int decrementarJogadoresFinalizados() {
+		return (--totalJogadoresFinalizados);
 	}
 	
 	public static Controller getInstance(){
@@ -206,8 +206,8 @@ public class Controller{
 	 * @return valor do dado lancado
 	 */
 	public int lancarDado() {
-	//	int valorDado = Util.randInt(1, 6); FIXME
-		int valorDado = Util.randInt(1, 3)*10;
+//		int valorDado = Util.randInt(1, 6); 
+		int valorDado = 31; 
 		int posicao = Math.min((euJogador.getPosicaoPino() + valorDado), 31); // Se maior que 31, fica 31
 		euJogador.setPosicaoPino(posicao);
 		return valorDado; 
@@ -376,4 +376,5 @@ public class Controller{
 		Collections.sort(jogadores);
 		return jogadores;
 	}
+	
 }
