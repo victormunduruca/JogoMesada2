@@ -364,7 +364,13 @@ public class Jogo implements OnJogo {
 					controller.casaDiaMesada(controller.getEuJogador()));
 			int jogadoresOn = getJogadoresOnline();
 			if (controller.incrementarJogadoresFinalizados() == jogadoresOn) {
-				janelaTabuleiro.showDialogFimDeJogo(); //FIXME impedir que essa janela trave o resto do codigo
+				Thread t = new Thread(new Runnable(){
+			        public void run(){
+			        	janelaTabuleiro.showDialogFimDeJogo(); //FIXME impedir que essa janela trave o resto do codigo
+			        }
+			    });
+			  t.start();
+				
 			}
 			System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ NUMERO ONLINE = "+jogadoresOn);
 			System.out.println("############################## NUMERO JOGADORES = " +Controller.getInstance().getTotalJogadoresFinalizados());
@@ -432,7 +438,6 @@ public class Jogo implements OnJogo {
 					100));
 			break;
 		case "cobranca monstro":
-			System.out.println("cobranca monstro==================");
 			float valorCobrancaMonstro = controller.geraCobrancaMonstro();
 			valorCobrancaMonstro = (float) (valorCobrancaMonstro + 0.1*valorCobrancaMonstro);
 			controller.debita(valorCobrancaMonstro, controller.getEuJogador());
@@ -467,19 +472,6 @@ public class Jogo implements OnJogo {
 			}
 		}).start();
 	}
-	//	private void enviaMensagem(final String mensagem, final int id) {
-	//		final Controller controller = Controller.getInstance();
-	//		(new Thread() {
-	//			@Override
-	//			public void run() {
-	//				Cliente cliente = new Cliente();
-	//				//Envia ao aniversariante confirmando que pagou
-	//				System.out.println("---------------------------------------ENVIOU PAGAMENTO PARA O VIZINHO: " +id); 
-	//				System.out.println("Resposta: " + 
-	//						cliente.enviar(controller.getAdversario(id).getIp(), 4040 +id,mensagem)); //Envia sinal de pagamento para o vizinho
-	//			}
-	//		}).start();
-	//	}
 	/**
 	 * Metodo para enviar mensagem protocolada a todos os outros adversarios
 	 * @param Mensagem em protocolo a ser enviada
@@ -509,7 +501,7 @@ public class Jogo implements OnJogo {
 			controller.acaoCompraEntretenimento(eEmprestimo, controller.getEuJogador(), cartaCompra);
 		}
 	}
-	private Integer numOnline;
+	private Integer numOnline; //Variavel utilizada para incrementar dentro da thread  de envio
 	public synchronized int getJogadoresOnline() {
 		numOnline = 1;//Adiciona o euJogador online
 
