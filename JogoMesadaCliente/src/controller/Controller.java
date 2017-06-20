@@ -204,8 +204,7 @@ public class Controller{
 	 * @return valor do dado lancado
 	 */
 	public int lancarDado() {
-//		int valorDado = Util.randInt(1, 6); 
-		int valorDado = 31; 
+		int valorDado = Util.randInt(1, 6); 
 		int posicao = Math.min((euJogador.getPosicaoPino() + valorDado), 31); // Se maior que 31, fica 31
 		euJogador.setPosicaoPino(posicao);
 		return valorDado; 
