@@ -35,10 +35,9 @@ public class JanelaPrincipal {
 	/**
 	 * Interface utilizada para comunicar a UI com a logica de jogo
 	 */
-	public interface OnJogo { // TODO Impelementar metodos para o jogo
+	public interface OnJogo { 
 		void onDadoLancado();
 		void onAcaoCorreio(String carta);
-		//void onAcaoCasaEntretenimento();
 	}
 	
 	public JanelaPrincipal(OnJogo listener) {
@@ -68,22 +67,22 @@ public class JanelaPrincipal {
 		sorteGrandeLabel.setBounds(914, 286, 222, 14);
 		frame.getContentPane().add(sorteGrandeLabel);
 		
-		pinos = new ArrayList<Pino>();
-		Pino pinoAmarelo = new Pino("Amarelo.png");
+		pinos = new ArrayList<Pino>(); //cria uma lista de pinos
+		Pino pinoAmarelo = new Pino("Amarelo.png"); //Cada pino e associado a uma cor fixa
 		Pino pinoAzul = new Pino("Azul.png");
 		Pino pinoRosa = new Pino("Rosa.png");
 		Pino pinoRoxo = new Pino("Roxo.png");
 		Pino pinoVerde = new Pino("Verde.png");
 		Pino pinoVermelho = new Pino("Vermelho.png");
 
-		//TESTE
-		pinos.add(pinoVermelho);
+		
+		pinos.add(pinoVermelho); //Adiciona os pinos criados a lista de pinos
 		pinos.add(pinoVerde);
 		pinos.add(pinoAmarelo);
 		pinos.add(pinoRoxo);
 		pinos.add(pinoRosa);
 		pinos.add(pinoAzul);
-		//TESTE
+		
 
 		JPanel panel = new JPanel();
 		JLayeredPane jLay = new JLayeredPane();
@@ -125,9 +124,19 @@ public class JanelaPrincipal {
 		
 
 	}
+	/**
+	 * Metodo que atualiza o botao de jogar dado com o valor tirado
+	 * @param valor
+	 */
 	public void atualizaBotao(int valor) {
 		btnRodarDado.setText("Jogar Dado (" +valor+")");
 	}
+	/**
+	 * Metodo que atualiza os jogadores na view
+	 * @param euJogador
+	 * @param adversarios
+	 * @param idJogadorAtual
+	 */
 	public void atualizaJogadores(final Jogador euJogador, final ArrayList<Jogador> adversarios) {
 		SwingUtilities.invokeLater(new Runnable() {
 			
@@ -146,6 +155,12 @@ public class JanelaPrincipal {
 		});
 	}
 	
+	/**
+	 * Metodo que atualiza os jogadores na view
+	 * @param euJogador
+	 * @param adversarios
+	 * @param idJogadorAtual
+	 */
 	public void atualizaJogadores(final Jogador euJogador, final ArrayList<Jogador> adversarios, final int idJogadorAtual) {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
@@ -240,7 +255,6 @@ public class JanelaPrincipal {
 	}
 	
 	public void setQuantiaSorteGrande(final float quantia) {
-	//	System.out.println("SORTE GRANDE ATUALIZADA: R$" + quantia); // FIXME Remover!
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
@@ -248,13 +262,6 @@ public class JanelaPrincipal {
 			}
 		});
 	}
-	
-//	public static void desabilitarBtnRodarDado() {
-//		btnRodarDado.setEnabled(false);
-//	}
-//	public static void habilitarBtnRodarDado() {
-//		btnRodarDado.setEnabled(true);
-//	}
 	
 	public void eSuaVez() {
 		JOptionPane.showMessageDialog(null, "Sua vez!", "Sua vez!", JOptionPane.INFORMATION_MESSAGE);

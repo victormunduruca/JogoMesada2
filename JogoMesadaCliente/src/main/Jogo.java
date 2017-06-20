@@ -52,7 +52,11 @@ public class Jogo implements OnJogo {
 			e.printStackTrace();
 		}
 	}
-
+	
+	/**
+	 * Metodo que executa as acoes provindas dos outros jogadores, por meio de uma string protocolada
+	 * @param String de acordo com o protocolo
+	 */
 	private void executaLogicaDeJogo(final String data) {
 		int acaoDeJogo = ProtocoloJogadores.getAcao(data);
 		final Controller controller = Controller.getInstance();
@@ -182,16 +186,17 @@ public class Jogo implements OnJogo {
 
 		case Acao.PAGUEI_VIZINHO:
 			if(ProtocoloJogadores.getId(data) == Controller.getInstance().getEuJogador().getId()) { //Se eu for o vizinho que pagaram
-				controller.getEuJogador().setSaldo(controller.getEuJogador().getSaldo()+100); //TODO Colocar isso dentro do controller
-				multiCastAdversarios(ProtocoloJogadores.enviarJogador(1, Controller.getInstance().getEuJogador()));
+				controller.getEuJogador().setSaldo(controller.getEuJogador().getSaldo()+100);  //Atualiza o saldo
+				multiCastAdversarios(ProtocoloJogadores.enviarJogador(1, Controller.getInstance().getEuJogador())); //avisa aos outros oponentes
 				janelaTabuleiro.atualizaJogadores(
 						Controller.getInstance().getEuJogador(), 
-						Controller.getInstance().getAdversarios());
+						Controller.getInstance().getAdversarios()); 
 			}
 			break;
 		case Acao.FIM_DE_MES:
-			int jogadoresOnline = getJogadoresOnline();
-			if (controller.incrementarJogadoresFinalizados() == jogadoresOnline) {
+			int jogadoresOnline = getJogadoresOnline(); //Pega o numero de jogadores online
+			if (controller.incrementarJogadoresFinalizados() == jogadoresOnline) { //Se o numero de jogadores online for igual ao numero de jogadores que finalizaram o jogo
+				//significa que o jogo acabou
 				janelaTabuleiro.showDialogFimDeJogo();
 			}
 			break;
@@ -217,7 +222,7 @@ public class Jogo implements OnJogo {
 		}
 
 		@Override
-		public void onClose() {
+		public void onClose() { //Acoes realizadas quando a sala de espera e fechada, abrindo o tabuleiro
 			janelaTabuleiro = new JanelaPrincipal(Jogo.this);
 			janelaTabuleiro.iniciar();
 			janelaTabuleiro.atualizaJogadores(
@@ -417,10 +422,10 @@ public class Jogo implements OnJogo {
 					100));
 			break;
 		case "cobranca monstro":
-			float valorCobrancaMonstro = controller.geraCobrancaMonstro();
-			valorCobrancaMonstro = (float) (valorCobrancaMonstro + 0.1*valorCobrancaMonstro);
-			controller.debita(valorCobrancaMonstro, controller.getEuJogador());
-			janelaTabuleiro.showDialogCobrancaMonstro(valorCobrancaMonstro);
+			float valorCobrancaMonstro = controller.geraCobrancaMonstro(); //Gera um valor para a cobranca
+			valorCobrancaMonstro = (float) (valorCobrancaMonstro + 0.1*valorCobrancaMonstro); //define o valor da cobranca + o juros
+			controller.debita(valorCobrancaMonstro, controller.getEuJogador()); // debita o valor na conta do eu jogador
+			janelaTabuleiro.showDialogCobrancaMonstro(valorCobrancaMonstro); //informa ao usuario
 			break;
 		default:
 			break;
@@ -480,6 +485,10 @@ public class Jogo implements OnJogo {
 		}
 	}
 	private Integer numOnline; //Variavel utilizada para incrementar dentro da thread  de envio
+	/**
+	 * Metodo que retorna os jogadores conectados 
+	 * @return
+	 */
 	public synchronized int getJogadoresOnline() {
 		numOnline = 1;//Adiciona o euJogador online
 
@@ -487,10 +496,9 @@ public class Jogo implements OnJogo {
 		for (Jogador adv : Controller.getInstance().getAdversarios()) {
 			if(cliente.enviar(adv.getIp(), 4040 + adv.getId(), 
 					ProtocoloJogadores.enviarFimDeMes(0, Controller.getInstance().getEuJogador().getId()))) { //Envia protocolo nao indexado para testar a conexao
-				numOnline++;
+				numOnline++; //Incrementa a variavel caso o jogador esteja conectado
 			}
 		}
-		
 		return numOnline; 
 	}
 
