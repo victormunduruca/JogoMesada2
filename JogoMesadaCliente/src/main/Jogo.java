@@ -196,20 +196,7 @@ public class Jogo implements OnJogo {
 			}
 			System.out.println("1@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ NUMERO ONLINE = "+jogadoresOnline);
 			System.out.println("1############################## NUMERO JOGADORES = " +Controller.getInstance().getTotalJogadoresFinalizados());
-			//			controller.addJogadorInativo(controller.getAdversario(ProtocoloJogadores.getId(data)));
-			//			if (controller.getAdversariosInativos().size() == 6) {
-			//				janelaTabuleiro.showDialogFimDeJogo();
-			//			}
-
 			break;
-			//		case Acao.DINHEIRO_EXTRA:
-			//			if(ProtocoloJogadores.getId(data) == controller.getEuJogador().getId()) { // Se eu for o 
-			//				controller.debita(100, controller.getEuJogador());
-			//			}
-			//			multiCastAdversarios(ProtocoloJogadores.enviarJogador(1, Controller.getInstance().getEuJogador()));
-			//			enviaMensagem(ProtocoloJogadores.enviarRespostaDinheiroExtra, );
-			//			break;
-
 		default:
 			break;
 		}
@@ -360,24 +347,21 @@ public class Jogo implements OnJogo {
 		} else if(posicao == 31) {
 			controller.setFimDeJogo(true); // Desabilita jogador do tabuleiro
 
-			janelaTabuleiro.casaDiaMesada(controller.getEuJogador().getDivida(), 
+			janelaTabuleiro.casaDiaMesada(controller.getEuJogador().getDivida(), //Realiza acoes do dia da mesada
 					controller.casaDiaMesada(controller.getEuJogador()));
-			int jogadoresOn = getJogadoresOnline();
-			if (controller.incrementarJogadoresFinalizados() == jogadoresOn) {
-				Thread t = new Thread(new Runnable(){
+			
+			int jogadoresOn = getJogadoresOnline(); //Pega quantidade de jogadores online
+			if (controller.incrementarJogadoresFinalizados() == jogadoresOn) { //se a quantidade de jogadores que finalizaram for igual a de jogadores online o jogo termina
+				Thread t = new Thread(new Runnable(){ //Cria-se uma thread para nao exigir a confirmacao do usuario
 			        public void run(){
-			        	janelaTabuleiro.showDialogFimDeJogo(); //FIXME impedir que essa janela trave o resto do codigo
+			        	janelaTabuleiro.showDialogFimDeJogo(); 
 			        }
 			    });
 			  t.start();
 				
 			}
-			System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ NUMERO ONLINE = "+jogadoresOn);
+			System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ NUMERO ONLINE = "+jogadoresOn); //FIXME
 			System.out.println("############################## NUMERO JOGADORES = " +Controller.getInstance().getTotalJogadoresFinalizados());
-			//		controller.addJogadorInativo(controller.getEuJogador());
-			//			if (controller.getAdversariosInativos().size() == 6) {
-			//				janelaTabuleiro.showDialogFimDeJogo();
-			//			}
 
 			multiCastAdversarios(ProtocoloJogadores.enviarFimDeMes(Acao.FIM_DE_MES, 
 					controller.getEuJogador().getId()));
@@ -508,7 +492,7 @@ public class Jogo implements OnJogo {
 		Cliente cliente = new Cliente();
 		for (Jogador adv : Controller.getInstance().getAdversarios()) {
 			if(cliente.enviar(adv.getIp(), 4040 + adv.getId(), 
-					ProtocoloJogadores.enviarFimDeMes(0, Controller.getInstance().getEuJogador().getId()))) {
+					ProtocoloJogadores.enviarFimDeMes(0, Controller.getInstance().getEuJogador().getId()))) { //Envia protocolo nao indexado para testar a conexao
 				numOnline++;
 			}
 		}
