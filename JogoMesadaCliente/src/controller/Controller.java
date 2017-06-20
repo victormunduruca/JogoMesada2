@@ -130,10 +130,8 @@ public class Controller{
 		cartasCorreio = new ArrayList<String>();
 		cartasCorreio.add("contas");
 		cartasCorreio.add("pague a um vizinho agora");
-//		cartasCorreio.add("dinheiro extra");
 		cartasCorreio.add("doacoes");
 		cartasCorreio.add("cobranca monstro");
-//		cartasCorreio.add("va para frente agora");
 	}
 	/**
 	 * 

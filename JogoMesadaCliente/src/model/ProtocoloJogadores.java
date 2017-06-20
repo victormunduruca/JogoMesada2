@@ -67,9 +67,6 @@ public class ProtocoloJogadores {
 	public static String pagarVizinho(int idVizinho) {
 		return Acao.PAGUEI_VIZINHO+"#"+idVizinho;
 	}
-//	public static String enviarDinheiroExtra(int idDinheiroExtra, int euJogador) {
-//		return Acao.DINHEIRO_EXTRA+"#"+idDinheiroExtra+Co; 
-//	}
 	public static int getIdResponderDinheiroExtra(String str) {
 		str = str.split("#")[1];
 		return Integer.valueOf(str.split(",")[1]);

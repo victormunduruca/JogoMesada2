@@ -415,10 +415,6 @@ public class Jogo implements OnJogo {
 				}
 			}).start();
 			break;
-		case "dinheiro extra":
-			//			final int idDinheiroExtra = janelaTabuleiro.dinheiroExtra();
-			//			enviaMensagem(ProtocoloJogadores.enviarDinheiroExtra(idDinheiroExtra), idDinheiroExtra);
-			break;
 		case "doacoes":
 			janelaTabuleiro.showDialogDoacoes();
 			if (!controller.pagarSorteGrandeEuJogador(100, false)) { // Sem saldo
