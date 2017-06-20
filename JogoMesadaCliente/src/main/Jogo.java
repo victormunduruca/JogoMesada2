@@ -194,8 +194,6 @@ public class Jogo implements OnJogo {
 			if (controller.incrementarJogadoresFinalizados() == jogadoresOnline) {
 				janelaTabuleiro.showDialogFimDeJogo();
 			}
-			System.out.println("1@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ NUMERO ONLINE = "+jogadoresOnline);
-			System.out.println("1############################## NUMERO JOGADORES = " +Controller.getInstance().getTotalJogadoresFinalizados());
 			break;
 		default:
 			break;
@@ -360,9 +358,6 @@ public class Jogo implements OnJogo {
 			  t.start();
 				
 			}
-			System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ NUMERO ONLINE = "+jogadoresOn); //FIXME
-			System.out.println("############################## NUMERO JOGADORES = " +Controller.getInstance().getTotalJogadoresFinalizados());
-
 			multiCastAdversarios(ProtocoloJogadores.enviarFimDeMes(Acao.FIM_DE_MES, 
 					controller.getEuJogador().getId()));
 		}
@@ -431,7 +426,6 @@ public class Jogo implements OnJogo {
 			break;
 		}
 	}
-	//TODO Comentar essa parte do codigo, importante
 	void notificarProximoAJogar(final int meuId) {
 		(new Thread() {
 			@Override
